@@ -96,7 +96,7 @@ export function WorkoutExec({ onDone }: Props) {
       <div className="exec-body">
         <div className="exec-main">
           <div className="ex-name">{currentExercise.name}</div>
-          <div className="ex-reps">{currentExercise.reps}</div>
+          <div className="ex-reps">{`${currentExercise.reps} · 共${currentExercise.sets}组`}</div>
           <div className="ex-anim">
             <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
           </div>

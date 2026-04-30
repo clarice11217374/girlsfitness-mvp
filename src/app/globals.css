@@ -100,7 +100,7 @@ body { background: var(--bg, #f7f5f2); font-family: var(--font-dm-sans), sans-se
 .wstrip { display: flex; justify-content: space-between; padding: 0 28px 4px; }
 .dcell { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
 .dname { font-size: 11px; color: var(--gray); font-weight: 500; text-transform: uppercase; }
-.dnum { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-syne), sans-serif; font-size: 15px; font-weight: 700; color: var(--black); }
+.dnum { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-syne), sans-serif; font-size: 15px; font-weight: 700; color: var(--black); background: rgba(255,255,255,.32); border: 1px solid rgba(255,255,255,.55); }
 .dnum.today { background: var(--lime); }
 .ddot { width: 4px; height: 4px; border-radius: 50%; background: var(--blue-deep); }
 .home-screen {
@@ -112,26 +112,36 @@ body { background: var(--bg, #f7f5f2); font-family: var(--font-dm-sans), sans-se
 }
 .wcard {
   margin: 14px 28px 0;
-  background: linear-gradient(135deg, rgba(255,255,255,.84) 0%, rgba(198,228,249,.54) 48%, rgba(216,236,174,.52) 100%);
+  background: linear-gradient(135deg, rgba(255,255,255,.72) 0%, rgba(198,228,249,.42) 50%, rgba(216,236,174,.4) 100%);
+  border: 1px solid rgba(255,255,255,.56);
   border-radius: 24px;
   padding: 22px 22px 20px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 22px rgba(0,0,0,.05);
+  box-shadow: 0 5px 14px rgba(0,0,0,.035);
 }
 .wtag { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,.09); color: var(--black); padding: 5px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 12px; }
 .wname { font-family: var(--font-syne), sans-serif; font-size: 22px; font-weight: 800; color: var(--black); margin-bottom: 4px; }
 .wmeta { font-size: 13px; color: rgba(0,0,0,.5); margin-bottom: 18px; }
 .wbtn { background: var(--black); color: #fff; border: none; border-radius: 100px; padding: 13px 28px; font-family: var(--font-syne), sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; }
-.wbig { position: absolute; right: -8px; bottom: -12px; font-family: var(--font-syne), sans-serif; font-size: 90px; font-weight: 800; color: rgba(0,0,0,.04); line-height: 1; pointer-events: none; }
-.mcard { margin: 14px 28px 0; background: var(--card); border-radius: 20px; padding: 18px 20px; }
+.wbig { position: absolute; right: -8px; bottom: -12px; font-family: var(--font-syne), sans-serif; font-size: 90px; font-weight: 800; color: rgba(0,0,0,.03); line-height: 1; pointer-events: none; }
+.mcard {
+  margin: 14px 28px 0;
+  background: rgba(255,255,255,.45);
+  border: 1px solid rgba(255,255,255,.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 18px 20px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.035);
+}
 .mtop { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .mlbl { font-family: var(--font-syne), sans-serif; font-size: 13px; font-weight: 700; color: var(--black); }
 .mval { font-family: var(--font-syne), sans-serif; font-size: 13px; font-weight: 700; color: var(--blue-deep); }
-.ptrack { height: 10px; background: var(--light); border-radius: 100px; overflow: hidden; }
+.ptrack { height: 10px; background: rgba(255,255,255,.62); border: 1px solid rgba(255,255,255,.65); border-radius: 100px; overflow: hidden; }
 .pfill { height: 100%; background: linear-gradient(90deg,var(--lime) 0%,var(--blue-deep) 100%); border-radius: 100px; transition: width .6s ease; }
 .msub { font-size: 12px; color: var(--gray); margin-top: 6px; }
-.bnav { position: absolute; bottom: 20px; left: 20px; right: 20px; background: var(--black); border-radius: 100px; padding: 14px 28px; display: flex; justify-content: space-around; align-items: center; }
+.bnav { position: absolute; bottom: 20px; left: 20px; right: 20px; background: rgba(26,26,26,.96); border-radius: 100px; padding: 14px 28px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 8px 22px rgba(0,0,0,.18); }
 .ni { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; opacity: .42; transition: opacity .15s; }
 .ni.on { opacity: 1; }
 .nicon { font-size: 20px; }

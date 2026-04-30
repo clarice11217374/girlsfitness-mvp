@@ -100,6 +100,7 @@ export function WorkoutExec({ onDone }: Props) {
           <div className="ex-anim">
             <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
           </div>
+          <div className="set-progress-title">组数进度</div>
           <div className="sets-row">
             {Array.from({ length: currentExercise.sets }).map((_, i) => {
               const isDone = completedSets.includes(i);

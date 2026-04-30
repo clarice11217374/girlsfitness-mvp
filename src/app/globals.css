@@ -103,12 +103,27 @@ body { background: var(--bg, #f7f5f2); font-family: var(--font-dm-sans), sans-se
 .dnum { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-syne), sans-serif; font-size: 15px; font-weight: 700; color: var(--black); }
 .dnum.today { background: var(--lime); }
 .ddot { width: 4px; height: 4px; border-radius: 50%; background: var(--blue-deep); }
-.wcard { margin: 14px 28px 0; background: var(--grad-workout); border-radius: 24px; padding: 22px 22px 20px; position: relative; overflow: hidden; }
+.home-screen {
+  background:
+    radial-gradient(84% 58% at 22% 44%, rgba(246, 220, 198, 0.22) 0%, rgba(246, 220, 198, 0) 72%),
+    radial-gradient(90% 60% at 92% 10%, rgba(184, 221, 252, 0.24) 0%, rgba(184, 221, 252, 0) 68%),
+    radial-gradient(86% 54% at 56% 92%, rgba(210, 236, 166, 0.22) 0%, rgba(210, 236, 166, 0) 74%),
+    var(--bg);
+}
+.wcard {
+  margin: 14px 28px 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.84) 0%, rgba(198,228,249,.54) 48%, rgba(216,236,174,.52) 100%);
+  border-radius: 24px;
+  padding: 22px 22px 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 22px rgba(0,0,0,.05);
+}
 .wtag { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,.09); color: var(--black); padding: 5px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 12px; }
 .wname { font-family: var(--font-syne), sans-serif; font-size: 22px; font-weight: 800; color: var(--black); margin-bottom: 4px; }
 .wmeta { font-size: 13px; color: rgba(0,0,0,.5); margin-bottom: 18px; }
 .wbtn { background: var(--black); color: #fff; border: none; border-radius: 100px; padding: 13px 28px; font-family: var(--font-syne), sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; }
-.wbig { position: absolute; right: -8px; bottom: -12px; font-family: var(--font-syne), sans-serif; font-size: 90px; font-weight: 800; color: rgba(0,0,0,.06); line-height: 1; pointer-events: none; }
+.wbig { position: absolute; right: -8px; bottom: -12px; font-family: var(--font-syne), sans-serif; font-size: 90px; font-weight: 800; color: rgba(0,0,0,.04); line-height: 1; pointer-events: none; }
 .mcard { margin: 14px 28px 0; background: var(--card); border-radius: 20px; padding: 18px 20px; }
 .mtop { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .mlbl { font-family: var(--font-syne), sans-serif; font-size: 13px; font-weight: 700; color: var(--black); }

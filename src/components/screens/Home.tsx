@@ -36,7 +36,7 @@ export function Home({ onStart, onTraining }: Props) {
   const barPct = Math.min(100, (totalHours / CHALLENGE_GOAL_HOURS) * 100);
 
   return (
-    <div className="page">
+    <div className="page home-screen">
       <div className="sbar"><span>9:41</span><span>●●●</span></div>
       <div className="hdr">
         <div><div style={{ fontSize: 13, color: "var(--gray)" }}>欢迎回来 👋</div><div className="t-title" style={{ fontSize: 26 }}>今日训练</div></div>

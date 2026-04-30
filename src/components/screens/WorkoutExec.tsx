@@ -94,39 +94,39 @@ export function WorkoutExec({ onDone }: Props) {
         </div>
       </div>
       <div className="exec-body">
-        <div className="ex-card">
+        <div className="exec-main">
           <div className="ex-name">{currentExercise.name}</div>
           <div className="ex-reps">{currentExercise.reps}</div>
           <div className="ex-anim">
             <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
           </div>
-        </div>
-        <div className="sets-row">
-          {Array.from({ length: currentExercise.sets }).map((_, i) => {
-            const isDone = completedSets.includes(i);
-            const isActive = !isDone && completedSets.length < currentExercise.sets && i === currentSet;
-            const baseLabel = `第${["一", "二", "三", "四"][i]}组`;
-            return (
-              <div key={i} className={`set-btn ${isDone ? "done" : isActive ? "active" : ""}`}>
-                {isDone ? `✓ ${baseLabel}` : baseLabel}
-              </div>
-            );
-          })}
-        </div>
-        <div className="rest-card">
-          <div className="rest-top">
-            <div className="rest-lbl">休息</div>
-            <div className="rest-timer">{fmt(restSec)}</div>
-            <button className={`rest-go ${ticking ? "skip" : "start"}`} onClick={ticking ? skipRest : startRest} disabled={!ticking && completedSets.length >= currentExercise.sets}>
-              {ticking ? "跳过" : "开始"}
-            </button>
+          <div className="sets-row">
+            {Array.from({ length: currentExercise.sets }).map((_, i) => {
+              const isDone = completedSets.includes(i);
+              const isActive = !isDone && completedSets.length < currentExercise.sets && i === currentSet;
+              const baseLabel = `第${["一", "二", "三", "四"][i]}组`;
+              return (
+                <div key={i} className={`set-btn ${isDone ? "done" : isActive ? "active" : ""}`}>
+                  {isDone ? `✓ ${baseLabel}` : baseLabel}
+                </div>
+              );
+            })}
           </div>
-          <div className="rest-opts">
-            {["30s", "1min", "3min"].map((o) => (
-              <div key={o} className={`rest-opt ${restSel === o ? "sel" : ""}`} onClick={() => !ticking && setRestSel(o)}>
-                {o}
-              </div>
-            ))}
+          <div className="exec-rest">
+            <div className="rest-top">
+              <div className="rest-lbl">组间休息</div>
+              <div className="rest-timer">{fmt(restSec)}</div>
+              <button className={`rest-go ${ticking ? "skip" : "start"}`} onClick={ticking ? skipRest : startRest} disabled={!ticking && completedSets.length >= currentExercise.sets}>
+                {ticking ? "跳过" : "开始"}
+              </button>
+            </div>
+            <div className="rest-opts">
+              {["30s", "1min", "3min"].map((o) => (
+                <div key={o} className={`rest-opt ${restSel === o ? "sel" : ""}`} onClick={() => !ticking && setRestSel(o)}>
+                  {o}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <div className={`equip-panel ${equipmentOpen ? "open" : ""}`}>

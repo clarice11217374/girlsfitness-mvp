@@ -84,19 +84,54 @@ body { background: var(--bg, #f7f5f2); font-family: var(--font-dm-sans), sans-se
 .t-sec { font-family: var(--font-syne), sans-serif; font-size: 17px; font-weight: 800; color: var(--black); }
 .t-label { font-family: var(--font-syne), sans-serif; font-size: 11px; font-weight: 700; color: var(--gray); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; }
 .chips { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 22px; }
-.chip { padding: 10px 18px; border-radius: 100px; border: 1.5px solid var(--light); background: var(--card); font-size: 14px; font-weight: 500; color: var(--black); cursor: pointer; transition: all .15s; white-space: nowrap; }
-.chip.sl { background: var(--lime); border-color: var(--lime); font-weight: 700; }
-.chip.sb { background: var(--blue); border-color: var(--blue-deep); font-weight: 700; }
+.chip {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.6);
+  background: rgba(255,255,255,.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(26,26,26,.72);
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.chip.sl { background: #1f1f1f; border-color: #1f1f1f; color: #fff; font-weight: 700; }
+.chip.sb { background: #1f1f1f; border-color: #1f1f1f; color: #fff; font-weight: 700; }
 .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
-.pcard { background: var(--card); border: 1.5px solid var(--light); border-radius: 20px; padding: 16px; cursor: pointer; transition: all .15s; }
-.pcard.sel { background: var(--black); border-color: var(--black); }
+.pcard {
+  background: rgba(255,255,255,.52);
+  border: 1px solid rgba(255,255,255,.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all .15s;
+  box-shadow: 0 4px 12px rgba(0,0,0,.025);
+}
+.pcard.sel { background: var(--black); border-color: var(--black); box-shadow: 0 6px 14px rgba(0,0,0,.08); }
 .pcard.sel .pname { color: #fff; } .pcard.sel .pdesc { color: rgba(255,255,255,.45); }
 .picon { font-size: 22px; margin-bottom: 6px; }
 .pname { font-family: var(--font-syne), sans-serif; font-size: 14px; font-weight: 700; color: var(--black); }
 .pdesc { font-size: 12px; color: var(--gray); margin-top: 2px; }
 .smart-wrap { position: relative; margin-bottom: 16px; }
-.smart { background: var(--grad-lime); border-radius: 20px; padding: 16px 20px; cursor: pointer; border: 1.5px solid transparent; display: flex; align-items: center; gap: 12px; margin-bottom: 28px; transition: all .15s; }
-.smart.sel { border-color: var(--lime-deep); box-shadow: 0 0 0 3px rgba(200,241,53,.3); }
+.smart {
+  background: linear-gradient(135deg, rgba(232,245,200,.9) 0%, rgba(214,236,156,.86) 100%);
+  border-radius: 20px;
+  padding: 16px 20px;
+  cursor: pointer;
+  border: 1px solid rgba(157,196,0,.28);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  transition: all .15s;
+  box-shadow: 0 8px 18px rgba(157,196,0,.08);
+}
+.smart.sel { border-color: rgba(119,151,0,.48); box-shadow: 0 0 0 2px rgba(200,241,53,.25), 0 8px 20px rgba(157,196,0,.12); }
 .smart-wrap .smart { margin-bottom: 0; }
 .smart-badge {
   position: absolute;

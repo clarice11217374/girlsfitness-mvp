@@ -5,6 +5,7 @@ import { Complete } from "@/components/screens/Complete";
 import { Home } from "@/components/screens/Home";
 import { Preview } from "@/components/screens/Preview";
 import { StatusInput } from "@/components/screens/StatusInput";
+import { Training } from "@/components/screens/Training";
 import { WorkoutExec } from "@/components/screens/WorkoutExec";
 import { createThemeCssVars } from "@/theme";
 
@@ -18,6 +19,7 @@ export default function AppPage() {
         {[
           { id: "status", lbl: "状态输入" },
           { id: "home", lbl: "首页" },
+          { id: "training", lbl: "训练页" },
           { id: "preview", lbl: "预览页" },
           { id: "exec", lbl: "训练执行" },
           { id: "complete", lbl: "完成页" },
@@ -30,7 +32,8 @@ export default function AppPage() {
 
       <div className="shell">
         {page === "status" && <StatusInput onDone={() => setPage("home")} />}
-        {page === "home" && <Home onStart={() => setPage("preview")} />}
+        {page === "home" && <Home onStart={() => setPage("preview")} onTraining={() => setPage("training")} />}
+        {page === "training" && <Training onHome={() => setPage("home")} onOpenPreview={() => setPage("preview")} />}
         {page === "preview" && <Preview onBack={() => setPage("home")} onStart={() => setPage("exec")} />}
         {page === "exec" && <WorkoutExec onDone={() => setPage("complete")} />}
         {page === "complete" && <Complete onHome={() => setPage("home")} />}

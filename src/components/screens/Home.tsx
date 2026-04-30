@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { getTrainingRecords } from "@/utils/trainingRecordStorage";
 
-type Props = { onStart: () => void };
+type Props = { onStart: () => void; onTraining: () => void };
 
 const CHALLENGE_GOAL_HOURS = 100;
 
@@ -13,7 +13,7 @@ function formatHoursValue(hours: number): string {
   return rounded.toFixed(1).replace(/\.0$/, "");
 }
 
-export function Home({ onStart }: Props) {
+export function Home({ onStart, onTraining }: Props) {
   const [totalMinutes, setTotalMinutes] = useState(0);
 
   useEffect(() => {
@@ -67,8 +67,8 @@ export function Home({ onStart }: Props) {
         </div>
       </div>
       <div className="bnav">
-        {[{ icon: "🏠", lbl: "首页", on: true }, { icon: "📋", lbl: "计划" }, { icon: "📊", lbl: "记录" }].map((n) => (
-          <div key={n.lbl} className={`ni ${n.on ? "on" : ""}`}><div className="nicon">{n.icon}</div><div className="nlbl">{n.lbl}</div></div>
+        {[{ icon: "🏠", lbl: "首页", on: true }, { icon: "📋", lbl: "训练", click: onTraining }, { icon: "📊", lbl: "记录" }].map((n) => (
+          <div key={n.lbl} className={`ni ${n.on ? "on" : ""}`} onClick={n.click}><div className="nicon">{n.icon}</div><div className="nlbl">{n.lbl}</div></div>
         ))}
       </div>
     </div>

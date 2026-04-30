@@ -24,7 +24,7 @@ export function StatusInput({ onDone }: Props) {
   ];
 
   return (
-    <div className="page">
+    <div className="page status-screen">
       <div className="sbar"><span>9:41</span><span>●●●</span></div>
       <div className="scrollable" style={{ padding: "0 28px" }}>
         <div style={{ paddingTop: 24, marginBottom: 28 }}>

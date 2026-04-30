@@ -34,6 +34,13 @@ body { background: var(--bg, #f7f5f2); font-family: var(--font-dm-sans), sans-se
 .sbar { display: flex; justify-content: space-between; align-items: center; padding: 14px 28px 6px; font-size: 13px; font-weight: 600; color: var(--black); font-family: var(--font-dm-sans), sans-serif; }
 .page { min-height: 844px; padding-bottom: 100px; background: var(--bg); }
 .scrollable { overflow-y: auto; max-height: 790px; padding-bottom: 110px; }
+.status-screen {
+  background:
+    radial-gradient(84% 58% at 22% 44%, rgba(246, 220, 198, 0.2) 0%, rgba(246, 220, 198, 0) 72%),
+    radial-gradient(90% 60% at 92% 10%, rgba(184, 221, 252, 0.22) 0%, rgba(184, 221, 252, 0) 68%),
+    radial-gradient(86% 54% at 56% 92%, rgba(210, 236, 166, 0.2) 0%, rgba(210, 236, 166, 0) 74%),
+    var(--bg);
+}
 
 /* Reusable style primitives for future page migrations */
 .mesh-page-bg {

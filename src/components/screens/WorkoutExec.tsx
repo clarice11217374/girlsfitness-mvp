@@ -78,7 +78,7 @@ export function WorkoutExec({ onDone }: Props) {
   };
 
   return (
-    <div className="page" style={{ paddingBottom: 0 }}>
+    <div className="page exec-page" style={{ paddingBottom: 0 }}>
       <div className="exec-top">
         <div className="sbar" style={{ padding: "0 0 10px" }}><span>9:41</span><span>●●●</span></div>
         <button className="exec-back" type="button" aria-label="返回">←</button>

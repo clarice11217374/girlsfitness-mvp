@@ -37,23 +37,22 @@ export function Preview({ onBack, onStart }: Props) {
           <span className="preview-tag tag-equip">🔁 {meta.equipmentSummary}</span>
         </div>
 
-        <div className="flow-card">
+        <div className="schedule-list-wrap">
           <div className="flow-title">训练安排</div>
           <div className="schedule-list">
             {phaseSummary.map((phase) => (
               <div key={phase.key} className="schedule-group">
                 <div className="schedule-head">
+                  <div className={`phase-dot phase-dot-${phase.key}`} aria-hidden />
                   <div className="phase-name">{phase.label}</div>
-                  <div className="phase-meta">{phase.count} 个动作</div>
+                  <div className="phase-line" aria-hidden />
                 </div>
-                <div className="schedule-card">
-                  {phase.moves.map((move) => (
-                    <div className="schedule-row" key={move.id}>
-                      <div className="compact-name">{move.name}</div>
-                      <div className="compact-meta">{formatMoveMeta(move)}</div>
-                    </div>
-                  ))}
-                </div>
+                {phase.moves.map((move) => (
+                  <div className="schedule-row" key={move.id}>
+                    <div className="compact-name">{move.name}</div>
+                    <div className="compact-meta">{formatMoveMeta(move)}</div>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
@@ -67,6 +66,13 @@ export function Preview({ onBack, onStart }: Props) {
 }
 
 function formatMoveMeta(move: WorkoutExercise): string {
-  if (move.reps.includes("秒") || move.reps.includes("分钟")) return move.reps;
-  return `${move.sets}组 × ${move.reps}`;
+  if (move.sets > 1) return `${move.sets}组 × ${move.reps}`;
+
+  if (move.reps.includes("分钟")) {
+    const matched = move.reps.match(/\d+\s*分钟/);
+    return matched?.[0] ?? move.reps;
+  }
+
+  if (move.reps.includes("秒")) return move.reps;
+  return `1组 × ${move.reps}`;
 }

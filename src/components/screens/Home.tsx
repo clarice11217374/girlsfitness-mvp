@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { workoutByPhase, workoutTemplateMeta } from "@/data/workoutData";
 import { getTrainingRecords } from "@/utils/trainingRecordStorage";
 
 type Props = { onStart: () => void; onTraining: () => void };
@@ -34,6 +35,11 @@ export function Home({ onStart, onTraining }: Props) {
   const hasProgress = totalMinutes > 0;
   const remainingHours = Math.max(0, CHALLENGE_GOAL_HOURS - totalHours);
   const barPct = Math.min(100, (totalHours / CHALLENGE_GOAL_HOURS) * 100);
+  const totalExerciseCount =
+    workoutByPhase.warmup.length +
+    workoutByPhase.strength.length +
+    workoutByPhase.cardio.length +
+    workoutByPhase.stretch.length;
 
   return (
     <div className="page home-screen">
@@ -49,8 +55,8 @@ export function Home({ onStart, onTraining }: Props) {
         ))}
       </div>
       <div className="wcard">
-        <div className="wtag">⚡ 今日计划</div><div className="wname">上肢推 · 力量日</div><div className="wmeta">45分钟 · 中等强度 · 4个动作</div>
-        <button className="wbtn" onClick={onStart}>开始训练</button><div className="wbig">45’</div>
+        <div className="wtag">⚡ 今日计划</div><div className="wname">{workoutTemplateMeta.title}</div><div className="wmeta">{`${workoutTemplateMeta.estimatedMinutes}分钟 · ${workoutTemplateMeta.intensity} · ${totalExerciseCount}个动作`}</div>
+        <button className="wbtn" onClick={onStart}>开始训练</button><div className="wbig">{`${workoutTemplateMeta.estimatedMinutes}’`}</div>
       </div>
       <div className="mcard">
         <div className="mtop">

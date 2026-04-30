@@ -12,6 +12,8 @@ export function Preview({ onBack, onStart }: Props) {
     { key: "stretch", label: "拉伸" },
   ];
   const meta = workoutTemplateMeta;
+  const titleDisplay = meta.title.replace(" · ", "\n");
+  const fixedDescription = "以胸、肩、三头为主的上肢推训练";
   const phaseSummary = phaseMeta.map((phase) => ({
     ...phase,
     moves: workoutByPhase[phase.key],
@@ -22,25 +24,17 @@ export function Preview({ onBack, onStart }: Props) {
     <div className="page preview-page">
       <div className="prev-hero">
         <div className="prev-back" onClick={onBack}>←</div>
-        <div className="prev-body-label">上肢推训练</div>
       </div>
       <div className="scrollable preview-scrollable"><div className="prev-content">
-        <div className="prev-title">{meta.title}</div>
-        <div className="prev-desc">{meta.description}</div>
+        <div className="prev-title">{titleDisplay}</div>
+        <div className="prev-desc">{fixedDescription}</div>
 
-        <div className="preview-meta">
-          <div className="preview-meta-row">
-            <span className="meta-icon meta-icon-time" aria-hidden />
-            <span>{meta.estimatedMinutes} 分钟 · {meta.intensity}</span>
-          </div>
-          <div className="preview-meta-row">
-            <span className="meta-icon meta-icon-focus" aria-hidden />
-            <span>{meta.focus} · {meta.trainingType}</span>
-          </div>
-          <div className="preview-meta-row">
-            <span className="meta-icon meta-icon-equip" aria-hidden />
-            <span>{meta.equipmentSummary}</span>
-          </div>
+        <div className="preview-tags">
+          <span className="preview-tag tag-time">⏱ {meta.estimatedMinutes} 分钟</span>
+          <span className="preview-tag tag-intensity">🔥 {meta.intensity}</span>
+          <span className="preview-tag tag-focus">💪 {meta.focus}</span>
+          <span className="preview-tag tag-type">🏋️ {meta.trainingType}</span>
+          <span className="preview-tag tag-equip">🔁 {meta.equipmentSummary}</span>
         </div>
 
         <div className="flow-card">

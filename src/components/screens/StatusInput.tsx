@@ -43,6 +43,14 @@ export function StatusInput({ onDone }: Props) {
             <div key={o.l} className={`chip ${energy === o.l ? o.s : ""}`} onClick={() => setEnergy(o.l)}>{o.l}</div>
           ))}
         </div>
+        <div className="smart-wrap">
+          <div className="smart-badge">推荐</div>
+          <div className={`smart ${smart ? "sel" : ""}`} onClick={() => { setSmart(!smart); setPart(null); }}>
+            <div style={{ fontSize: 24 }}>🤖</div>
+            <div><div className="sname">智能推荐</div><div className="ssub">根据你的状态自动选择最佳训练</div></div>
+          </div>
+        </div>
+        <div className="status-divider"><span>或者自己选</span></div>
         <div className="t-label">想练的部位</div>
         <div className="pgrid">
           {parts.map((p) => (
@@ -50,10 +58,6 @@ export function StatusInput({ onDone }: Props) {
               <div className="picon">{p.icon}</div><div className="pname">{p.name}</div><div className="pdesc">{p.desc}</div>
             </div>
           ))}
-        </div>
-        <div className={`smart ${smart ? "sel" : ""}`} onClick={() => { setSmart(!smart); setPart(null); }}>
-          <div style={{ fontSize: 24 }}>🤖</div>
-          <div><div className="sname">智能推荐</div><div className="ssub">根据你的状态自动选择最佳训练</div></div>
         </div>
         <button className="cta" onClick={onDone}>生成今日训练 →</button>
       </div>

@@ -116,11 +116,12 @@ export function Record({ onHome }: Props) {
       if (p && p.y === viewYear && p.m === viewMonth) trainedDays.add(p.d);
     }
 
+    // 最近一次：按 date(无则 completedAt) 新到旧排序后的第一条
     const latest = sorted[0];
     const lastLabel =
       latest && typeof latest.durationMinutes === "number" && Number.isFinite(latest.durationMinutes)
         ? `${latest.durationMinutes}′`
-        : "—";
+        : "--";
 
     const streak = computeStreak(sorted);
 

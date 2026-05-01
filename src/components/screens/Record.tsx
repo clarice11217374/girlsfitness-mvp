@@ -1,18 +1,71 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getTrainingRecords, type TrainingRecord } from "@/utils/trainingRecordStorage";
 
 type Props = { onHome: () => void };
 
-function formatWhen(iso: string): string {
-  try {
-    const d = new Date(iso);
-    if (Number.isNaN(d.getTime())) return iso;
-    return d.toLocaleString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
-  } catch {
-    return iso;
+const CHALLENGE_GOAL_HOURS = 100;
+
+function pad2(n: number): string {
+  return n < 10 ? `0${n}` : String(n);
+}
+
+function formatHoursValue(hours: number): string {
+  const rounded = Math.round(hours * 10) / 10;
+  return rounded.toFixed(1).replace(/\.0$/, "");
+}
+
+function localDayParts(iso: string): { y: number; m: number; d: number } | null {
+  const t = new Date(iso);
+  if (Number.isNaN(t.getTime())) return null;
+  return { y: t.getFullYear(), m: t.getMonth() + 1, d: t.getDate() };
+}
+
+function dayKey(d: Date): string {
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+}
+
+/** 从今天或昨天起向前数连续有训练的天数（今天未练则从昨天开始） */
+function computeStreak(records: TrainingRecord[]): number {
+  const dayKeys = new Set<string>();
+  for (const r of records) {
+    const p = localDayParts(r.completedAt);
+    if (!p) continue;
+    dayKeys.add(`${p.y}-${pad2(p.m)}-${pad2(p.d)}`);
   }
+  const anchor = new Date();
+  anchor.setHours(0, 0, 0, 0);
+  if (!dayKeys.has(dayKey(anchor))) anchor.setDate(anchor.getDate() - 1);
+  let streak = 0;
+  const cur = new Date(anchor);
+  for (let i = 0; i < 400; i++) {
+    if (dayKeys.has(dayKey(cur))) {
+      streak += 1;
+      cur.setDate(cur.getDate() - 1);
+    } else break;
+  }
+  return streak;
+}
+
+function feelingEmoji(feeling?: string): string {
+  if (feeling === "很好") return "💪";
+  if (feeling === "平稳") return "👌";
+  if (feeling === "有点累") return "😮‍💨";
+  return "💪";
+}
+
+const WEEK_LABELS = ["一", "二", "三", "四", "五", "六", "日"] as const;
+
+function buildCalendarCells(year: number, month: number): ({ day: number } | { pad: true })[] {
+  const first = new Date(year, month - 1, 1);
+  const lastDate = new Date(year, month, 0).getDate();
+  const mondayFirst = (first.getDay() + 6) % 7;
+  const cells: ({ day: number } | { pad: true })[] = [];
+  for (let i = 0; i < mondayFirst; i++) cells.push({ pad: true });
+  for (let d = 1; d <= lastDate; d++) cells.push({ day: d });
+  while (cells.length % 7 !== 0) cells.push({ pad: true });
+  return cells;
 }
 
 export function Record({ onHome }: Props) {
@@ -22,42 +75,175 @@ export function Record({ onHome }: Props) {
     setRecords(getTrainingRecords());
   }, []);
 
+  const now = useMemo(() => new Date(), []);
+  const viewYear = now.getFullYear();
+  const viewMonth = now.getMonth() + 1;
+
+  const derived = useMemo(() => {
+    const sorted = [...records].sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime());
+    const totalMinutes = sorted.reduce((acc, r) => {
+      const m = r.durationMinutes;
+      return acc + (typeof m === "number" && Number.isFinite(m) ? m : 0);
+    }, 0);
+    const totalHours = totalMinutes / 60;
+    const remainingHours = Math.max(0, CHALLENGE_GOAL_HOURS - totalHours);
+    const barPct = Math.min(100, (totalHours / CHALLENGE_GOAL_HOURS) * 100);
+
+    const monthCount = sorted.filter((r) => {
+      const p = localDayParts(r.completedAt);
+      return p && p.y === viewYear && p.m === viewMonth;
+    }).length;
+
+    const trainedDays = new Set<number>();
+    for (const r of sorted) {
+      const p = localDayParts(r.completedAt);
+      if (p && p.y === viewYear && p.m === viewMonth) trainedDays.add(p.d);
+    }
+
+    const latest = sorted[0];
+    const lastLabel =
+      latest && typeof latest.durationMinutes === "number" && Number.isFinite(latest.durationMinutes)
+        ? `${latest.durationMinutes}′`
+        : "—";
+
+    const streak = computeStreak(sorted);
+
+    return {
+      sorted,
+      totalHours,
+      hasProgress: totalMinutes > 0,
+      remainingHours,
+      barPct,
+      monthCount,
+      trainedDays,
+      lastLabel,
+      streak,
+    };
+  }, [records, viewYear, viewMonth]);
+
+  const calendarCells = useMemo(() => buildCalendarCells(viewYear, viewMonth), [viewYear, viewMonth]);
+
+  const isToday = (day: number) =>
+    now.getFullYear() === viewYear && now.getMonth() + 1 === viewMonth && now.getDate() === day;
+
   return (
     <div className="page record-screen">
       <div className="sbar">
         <span>9:41</span>
         <span>●●●</span>
       </div>
-      <div className="hdr">
-        <div>
-          <div style={{ fontSize: 13, color: "var(--gray)" }}>历史</div>
-          <div className="t-title" style={{ fontSize: 26 }}>
-            训练记录
-          </div>
-        </div>
-      </div>
-      <div className="record-list-wrap">
-        {records.length === 0 ? (
-          <p className="record-empty">暂无记录，完成一次训练后会出现在这里。</p>
-        ) : (
-          <ul className="record-list">
-            {records.map((r) => (
-              <li key={r.id} className="record-row">
-                <div className="record-row-title">{r.workoutTitle}</div>
-                <div className="record-row-meta">
-                  {r.durationMinutes} 分钟 · {r.totalSets} 组
-                  {r.feeling ? ` · ${r.feeling}` : ""}
-                </div>
-                <div className="record-row-when">{formatWhen(r.completedAt)}</div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <div className="record-actions">
-        <button type="button" className="comp-cta" onClick={onHome}>
-          返回首页
+
+      <div className="record-topbar">
+        <span className="record-topbar-spacer" aria-hidden />
+        <button type="button" className="record-back-link" onClick={onHome}>
+          返回
         </button>
+      </div>
+
+      <div className="record-scroll">
+        <div className="record-inner">
+          <header className="record-hero">
+            <p className="record-kicker">我的成长</p>
+            <h1 className="record-page-title">训练记录</h1>
+          </header>
+
+          <div className="record-stat-row">
+            <div className="record-stat-card">
+              <div className="record-stat-val">{derived.monthCount}</div>
+              <div className="record-stat-lbl">本月次数</div>
+            </div>
+            <div className="record-stat-card">
+              <div className="record-stat-val">{derived.lastLabel}</div>
+              <div className="record-stat-lbl">最近一次</div>
+            </div>
+            <div className="record-stat-card">
+              <div className="record-stat-val record-stat-val--fire">
+                {derived.streak}
+                <span className="record-stat-fire" aria-hidden>
+                  🔥
+                </span>
+              </div>
+              <div className="record-stat-lbl">连续天数</div>
+            </div>
+          </div>
+
+          <div className="mcard record-challenge">
+            <div className="mtop">
+              <div className="mlbl">🏆 百小时挑战</div>
+              <div className="mval">
+                {derived.hasProgress ? `${formatHoursValue(derived.totalHours)} / ${CHALLENGE_GOAL_HOURS}h` : `0 / ${CHALLENGE_GOAL_HOURS}h`}
+              </div>
+            </div>
+            <div className="ptrack">
+              <div className="pfill" style={{ width: `${derived.barPct}%` }} />
+            </div>
+            <div className="msub">
+              {derived.hasProgress
+                ? `再坚持 ${formatHoursValue(derived.remainingHours)} 小时解锁成就徽章`
+                : "完成第一次训练，开始累计你的百小时挑战"}
+            </div>
+          </div>
+
+          <div className="record-glass-card record-cal-card">
+            <div className="record-cal-title">
+              {viewMonth}月 打卡
+            </div>
+            <div className="record-cal-week">
+              {WEEK_LABELS.map((w) => (
+                <div key={w} className="record-cal-wd">
+                  {w}
+                </div>
+              ))}
+            </div>
+            <div className="record-cal-grid">
+              {calendarCells.map((cell, idx) => {
+                if ("pad" in cell) {
+                  return <div key={`p-${idx}`} className="record-cal-cell record-cal-cell--pad" aria-hidden />;
+                }
+                const { day } = cell;
+                const trained = derived.trainedDays.has(day);
+                const today = isToday(day);
+                return (
+                  <div
+                    key={day}
+                    className={`record-cal-cell${trained ? " record-cal-cell--done" : ""}${today ? " record-cal-cell--today" : ""}`}
+                  >
+                    {day}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <section className="record-recent">
+            <div className="record-recent-head">
+              <h2 className="record-recent-title">最近训练</h2>
+              <span className="record-recent-all" role="button" tabIndex={0}>
+                全部
+              </span>
+            </div>
+            {derived.sorted.length === 0 ? (
+              <p className="record-recent-empty">暂无记录，完成训练后会显示在这里。</p>
+            ) : (
+              <ul className="record-recent-list">
+                {derived.sorted.map((r) => (
+                  <li key={r.id} className="record-item">
+                    <div className="record-item-icon" aria-hidden>
+                      {feelingEmoji(r.feeling)}
+                    </div>
+                    <div className="record-item-body">
+                      <div className="record-item-name">{r.workoutTitle}</div>
+                      <div className="record-item-meta">
+                        {r.durationMinutes}分钟 · {r.totalSets}组{r.feeling ? ` · ${r.feeling}` : ""}
+                      </div>
+                    </div>
+                    <div className="record-item-dur">{r.durationMinutes}′</div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </div>
       </div>
     </div>
   );

@@ -3,9 +3,9 @@
 import { useCallback, useState } from "react";
 import { saveTrainingRecord } from "@/utils/trainingRecordStorage";
 
-type Props = { onHome: () => void; onSaved: () => void };
+type Props = { onSaved: () => void };
 
-export function Complete({ onHome, onSaved }: Props) {
+export function Complete({ onSaved }: Props) {
   const [feel, setFeel] = useState<string>("很好");
   const [hasSaved, setHasSaved] = useState(false);
   const feelOptions = [
@@ -30,11 +30,6 @@ export function Complete({ onHome, onSaved }: Props) {
   const handleSaveRecord = () => {
     persistRecord();
     onSaved();
-  };
-
-  const handleBackHome = () => {
-    persistRecord();
-    onHome();
   };
 
   return (
@@ -78,9 +73,6 @@ export function Complete({ onHome, onSaved }: Props) {
       <div className="complete-actions">
         <button type="button" className="comp-cta" onClick={handleSaveRecord}>
           保存记录 →
-        </button>
-        <button type="button" className="complete-cta-secondary" onClick={handleBackHome}>
-          返回首页
         </button>
       </div>
     </div>

@@ -39,9 +39,7 @@ export default function AppPage() {
         {page === "preview" && <Preview onBack={() => setPage("home")} onStart={() => setPage("exec")} />}
         {page === "exec" && <WorkoutExec onDone={() => setPage("complete")} />}
         {page === "records" && <Record onHome={() => setPage("home")} />}
-        {page === "complete" && (
-          <Complete onHome={() => setPage("home")} onSaved={() => setPage("records")} />
-        )}
+        {page === "complete" && <Complete onSaved={() => setPage("records")} />}
       </div>
 
       <div className="foot-note">点击各页面内的按钮可按流程跳转 · 顶部标签可直接切换</div>

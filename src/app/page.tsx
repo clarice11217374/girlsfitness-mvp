@@ -38,7 +38,7 @@ export default function AppPage() {
         {page === "training" && <Training onHome={() => setPage("home")} onOpenPreview={() => setPage("preview")} />}
         {page === "preview" && <Preview onBack={() => setPage("home")} onStart={() => setPage("exec")} />}
         {page === "exec" && <WorkoutExec onDone={() => setPage("complete")} />}
-        {page === "records" && <Record onHome={() => setPage("home")} />}
+        {page === "records" && <Record onHome={() => setPage("home")} onTraining={() => setPage("training")} />}
         {page === "complete" && <Complete onSaved={() => setPage("records")} />}
       </div>
 

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { getTrainingRecords, type TrainingRecord } from "@/utils/trainingRecordStorage";
 
-type Props = { onHome: () => void };
+type Props = { onHome: () => void; onTraining: () => void };
 
 const CHALLENGE_GOAL_HOURS = 100;
 type RecordView = TrainingRecord & { date?: string; workoutName?: string };
@@ -83,8 +83,9 @@ function buildCalendarCells(year: number, month: number): ({ day: number } | { p
   return cells;
 }
 
-export function Record({ onHome }: Props) {
+export function Record({ onHome, onTraining }: Props) {
   const [records, setRecords] = useState<RecordView[]>([]);
+  const [showAllRecent, setShowAllRecent] = useState(false);
 
   useEffect(() => {
     setRecords(getTrainingRecords());
@@ -143,18 +144,26 @@ export function Record({ onHome }: Props) {
   const isToday = (day: number) =>
     now.getFullYear() === viewYear && now.getMonth() + 1 === viewMonth && now.getDate() === day;
 
+  const recent30Days = useMemo(() => {
+    const cutoff = new Date(now);
+    cutoff.setHours(0, 0, 0, 0);
+    cutoff.setDate(cutoff.getDate() - 30);
+    return derived.sorted.filter((r) => new Date(getRecordDate(r)).getTime() >= cutoff.getTime());
+  }, [derived.sorted, now]);
+
+  const canExpandRecent = recent30Days.length > 5;
+  const visibleRecent = showAllRecent ? recent30Days : derived.sorted.slice(0, 5);
+
+  const toggleRecentList = () => {
+    if (!canExpandRecent) return;
+    setShowAllRecent((prev) => !prev);
+  };
+
   return (
     <div className="page record-screen">
       <div className="sbar">
         <span>9:41</span>
         <span>●●●</span>
-      </div>
-
-      <div className="record-topbar">
-        <span className="record-topbar-spacer" aria-hidden />
-        <button type="button" className="record-back-link" onClick={onHome}>
-          返回
-        </button>
       </div>
 
       <div className="record-scroll">
@@ -235,15 +244,15 @@ export function Record({ onHome }: Props) {
           <section className="record-recent">
             <div className="record-recent-head">
               <h2 className="record-recent-title">最近训练</h2>
-              <span className="record-recent-all" role="button" tabIndex={0}>
-                全部
-              </span>
+              <button type="button" className="record-recent-all" onClick={toggleRecentList}>
+                {showAllRecent ? "收起" : "全部"}
+              </button>
             </div>
-            {derived.sorted.length === 0 ? (
+            {visibleRecent.length === 0 ? (
               <p className="record-recent-empty">还没有训练记录</p>
             ) : (
               <ul className="record-recent-list">
-                {derived.sorted.map((r) => (
+                {visibleRecent.map((r) => (
                   <li key={r.id} className="record-item">
                     <div className="record-item-icon" aria-hidden>
                       {feelingEmoji(r.feeling)}
@@ -262,6 +271,19 @@ export function Record({ onHome }: Props) {
             )}
           </section>
         </div>
+      </div>
+
+      <div className="bnav">
+        {[
+          { icon: "🏠", lbl: "首页", click: onHome },
+          { icon: "📋", lbl: "训练", click: onTraining },
+          { icon: "📊", lbl: "记录", on: true },
+        ].map((n) => (
+          <div key={n.lbl} className={`ni ${n.on ? "on" : ""}`} onClick={n.click}>
+            <div className="nicon">{n.icon}</div>
+            <div className="nlbl">{n.lbl}</div>
+          </div>
+        ))}
       </div>
     </div>
   );

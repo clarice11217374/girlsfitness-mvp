@@ -6,6 +6,7 @@ import { getTrainingRecords, type TrainingRecord } from "@/utils/trainingRecordS
 type Props = { onHome: () => void };
 
 const CHALLENGE_GOAL_HOURS = 100;
+type RecordView = TrainingRecord & { date?: string; workoutName?: string };
 
 function pad2(n: number): string {
   return n < 10 ? `0${n}` : String(n);
@@ -22,15 +23,29 @@ function localDayParts(iso: string): { y: number; m: number; d: number } | null 
   return { y: t.getFullYear(), m: t.getMonth() + 1, d: t.getDate() };
 }
 
+function getRecordDate(record: RecordView): string {
+  return typeof record.date === "string" && record.date ? record.date : record.completedAt;
+}
+
+function getWorkoutName(record: RecordView): string {
+  return typeof record.workoutName === "string" && record.workoutName.trim() ? record.workoutName : record.workoutTitle;
+}
+
+function formatRecordTime(raw: string): string {
+  const t = new Date(raw);
+  if (Number.isNaN(t.getTime())) return "时间未知";
+  return `${t.getMonth() + 1}月${t.getDate()}日 ${pad2(t.getHours())}:${pad2(t.getMinutes())}`;
+}
+
 function dayKey(d: Date): string {
   return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
 }
 
 /** 从今天或昨天起向前数连续有训练的天数（今天未练则从昨天开始） */
-function computeStreak(records: TrainingRecord[]): number {
+function computeStreak(records: RecordView[]): number {
   const dayKeys = new Set<string>();
   for (const r of records) {
-    const p = localDayParts(r.completedAt);
+    const p = localDayParts(getRecordDate(r));
     if (!p) continue;
     dayKeys.add(`${p.y}-${pad2(p.m)}-${pad2(p.d)}`);
   }
@@ -69,7 +84,7 @@ function buildCalendarCells(year: number, month: number): ({ day: number } | { p
 }
 
 export function Record({ onHome }: Props) {
-  const [records, setRecords] = useState<TrainingRecord[]>([]);
+  const [records, setRecords] = useState<RecordView[]>([]);
 
   useEffect(() => {
     setRecords(getTrainingRecords());
@@ -80,7 +95,7 @@ export function Record({ onHome }: Props) {
   const viewMonth = now.getMonth() + 1;
 
   const derived = useMemo(() => {
-    const sorted = [...records].sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime());
+    const sorted = [...records].sort((a, b) => new Date(getRecordDate(b)).getTime() - new Date(getRecordDate(a)).getTime());
     const totalMinutes = sorted.reduce((acc, r) => {
       const m = r.durationMinutes;
       return acc + (typeof m === "number" && Number.isFinite(m) ? m : 0);
@@ -90,13 +105,13 @@ export function Record({ onHome }: Props) {
     const barPct = Math.min(100, (totalHours / CHALLENGE_GOAL_HOURS) * 100);
 
     const monthCount = sorted.filter((r) => {
-      const p = localDayParts(r.completedAt);
+      const p = localDayParts(getRecordDate(r));
       return p && p.y === viewYear && p.m === viewMonth;
     }).length;
 
     const trainedDays = new Set<number>();
     for (const r of sorted) {
-      const p = localDayParts(r.completedAt);
+      const p = localDayParts(getRecordDate(r));
       if (p && p.y === viewYear && p.m === viewMonth) trainedDays.add(p.d);
     }
 
@@ -223,7 +238,7 @@ export function Record({ onHome }: Props) {
               </span>
             </div>
             {derived.sorted.length === 0 ? (
-              <p className="record-recent-empty">暂无记录，完成训练后会显示在这里。</p>
+              <p className="record-recent-empty">还没有训练记录</p>
             ) : (
               <ul className="record-recent-list">
                 {derived.sorted.map((r) => (
@@ -232,10 +247,11 @@ export function Record({ onHome }: Props) {
                       {feelingEmoji(r.feeling)}
                     </div>
                     <div className="record-item-body">
-                      <div className="record-item-name">{r.workoutTitle}</div>
+                      <div className="record-item-name">{getWorkoutName(r)}</div>
                       <div className="record-item-meta">
                         {r.durationMinutes}分钟 · {r.totalSets}组{r.feeling ? ` · ${r.feeling}` : ""}
                       </div>
+                      <div className="record-item-time">{formatRecordTime(getRecordDate(r))}</div>
                     </div>
                     <div className="record-item-dur">{r.durationMinutes}′</div>
                   </li>

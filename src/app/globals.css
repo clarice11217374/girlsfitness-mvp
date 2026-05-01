@@ -733,6 +733,7 @@ body { background: var(--bg, #f7f5f2); font-family: var(--font-dm-sans), sans-se
 .record-screen .record-item-body { flex: 1; min-width: 0; }
 .record-screen .record-item-name { font-size: 15px; font-weight: 700; color: var(--black); margin-bottom: 4px; line-height: 1.25; }
 .record-screen .record-item-meta { font-size: 12px; color: var(--gray); line-height: 1.4; }
+.record-screen .record-item-time { font-size: 12px; color: #9b9b9b; line-height: 1.35; margin-top: 3px; }
 .record-screen .record-item-dur {
   font-family: var(--font-syne), sans-serif;
   font-size: 16px;

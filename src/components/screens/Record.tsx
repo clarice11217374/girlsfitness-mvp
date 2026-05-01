@@ -104,7 +104,8 @@ export function Record({ onHome }: Props) {
     const remainingHours = Math.max(0, CHALLENGE_GOAL_HOURS - totalHours);
     const barPct = Math.min(100, (totalHours / CHALLENGE_GOAL_HOURS) * 100);
 
-    const monthCount = sorted.filter((r) => {
+    // 本月次数按记录条数计算：同一天多次训练会累计多次
+    const monthCount = records.filter((r) => {
       const p = localDayParts(getRecordDate(r));
       return p && p.y === viewYear && p.m === viewMonth;
     }).length;

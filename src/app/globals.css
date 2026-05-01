@@ -429,6 +429,21 @@ body { background: var(--bg, #f7f5f2); font-family: var(--font-dm-sans), sans-se
 .nav-btns { position: absolute; bottom: 20px; left: 20px; right: 20px; display: flex; gap: 10px; justify-content: flex-end; }
 .nav-prev { flex: 1; padding: 15px; background: var(--card); border: 1.5px solid var(--light); border-radius: 100px; font-family: var(--font-syne), sans-serif; font-size: 14px; font-weight: 700; color: var(--gray); text-align: center; }
 .nav-next { flex: 2; padding: 15px; background: var(--black); border: none; border-radius: 100px; font-family: var(--font-syne), sans-serif; font-size: 14px; font-weight: 700; color: #fff; cursor: pointer; text-align: center; }
+.complete-screen {
+  background:
+    radial-gradient(92% 58% at 92% 8%, rgba(210, 236, 166, 0.42) 0%, rgba(210, 236, 166, 0) 64%),
+    radial-gradient(84% 58% at 22% 44%, rgba(246, 220, 198, 0.22) 0%, rgba(246, 220, 198, 0) 72%),
+    radial-gradient(86% 54% at 56% 92%, rgba(184, 221, 252, 0.2) 0%, rgba(184, 221, 252, 0) 74%),
+    radial-gradient(80% 48% at 70% 88%, rgba(210, 236, 166, 0.14) 0%, rgba(210, 236, 166, 0) 70%),
+    var(--bg);
+}
+.complete-screen .stat-box {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.035);
+}
 .comp-hero { background: var(--grad-complete); padding: 50px 28px 32px; text-align: center; }
 .comp-emoji { font-size: 64px; margin-bottom: 16px; }
 .comp-title { font-family: var(--font-syne), sans-serif; font-size: 30px; font-weight: 800; color: var(--black); margin-bottom: 6px; }

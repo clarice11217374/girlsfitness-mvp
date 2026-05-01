@@ -27,7 +27,7 @@ export function Complete({ onHome }: Props) {
   };
 
   return (
-    <div className="page">
+    <div className="page complete-screen">
       <div className="sbar" style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10 }}><span>9:41</span><span>●●●</span></div>
       <div className="comp-hero"><div className="comp-emoji">🎉</div><div className="comp-title">太棒了！</div><div className="comp-sub">上肢推 · 力量日 已完成</div></div>
       <div className="stat-grid">

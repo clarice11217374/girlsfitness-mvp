@@ -3,6 +3,7 @@
 type Props = {
   onHome: () => void;
   onOpenPreview: () => void;
+  onRecords: () => void;
 };
 
 const templates = [
@@ -32,7 +33,7 @@ const templates = [
   },
 ];
 
-export function Training({ onHome, onOpenPreview }: Props) {
+export function Training({ onHome, onOpenPreview, onRecords }: Props) {
   return (
     <div className="page">
       <div className="sbar"><span>9:41</span><span>●●●</span></div>
@@ -74,7 +75,7 @@ export function Training({ onHome, onOpenPreview }: Props) {
         {[
           { icon: "🏠", lbl: "首页", on: false, click: onHome },
           { icon: "📋", lbl: "训练", on: true },
-          { icon: "📊", lbl: "记录", on: false },
+          { icon: "📊", lbl: "记录", on: false, click: onRecords },
         ].map((n) => (
           <div key={n.lbl} className={`ni ${n.on ? "on" : ""}`} onClick={n.click}>
             <div className="nicon">{n.icon}</div>

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { workoutByPhase, workoutTemplateMeta } from "@/data/workoutData";
 import { getTrainingRecords } from "@/utils/trainingRecordStorage";
 
-type Props = { onStart: () => void; onTraining: () => void };
+type Props = { onStart: () => void; onTraining: () => void; onRecords: () => void };
 
 const CHALLENGE_GOAL_HOURS = 100;
 
@@ -14,7 +14,7 @@ function formatHoursValue(hours: number): string {
   return rounded.toFixed(1).replace(/\.0$/, "");
 }
 
-export function Home({ onStart, onTraining }: Props) {
+export function Home({ onStart, onTraining, onRecords }: Props) {
   const [totalMinutes, setTotalMinutes] = useState(0);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export function Home({ onStart, onTraining }: Props) {
         </div>
       </div>
       <div className="bnav">
-        {[{ icon: "🏠", lbl: "首页", on: true }, { icon: "📋", lbl: "训练", click: onTraining }, { icon: "📊", lbl: "记录" }].map((n) => (
+        {[{ icon: "🏠", lbl: "首页", on: true }, { icon: "📋", lbl: "训练", click: onTraining }, { icon: "📊", lbl: "记录", click: onRecords }].map((n) => (
           <div key={n.lbl} className={`ni ${n.on ? "on" : ""}`} onClick={n.click}><div className="nicon">{n.icon}</div><div className="nlbl">{n.lbl}</div></div>
         ))}
       </div>

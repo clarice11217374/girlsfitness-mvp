@@ -43,6 +43,7 @@ export function StatusInput({ onDone }: Props) {
             <div key={o.l} className={`chip ${energy === o.l ? o.s : ""}`} onClick={() => setEnergy(o.l)}>{o.l}</div>
           ))}
         </div>
+        <div className="t-label">训练选择</div>
         <div className="smart-wrap">
           <div className="smart-badge">推荐</div>
           <div className={`smart ${smart ? "sel" : ""}`} onClick={() => { setSmart(!smart); setPart(null); }}>
@@ -51,7 +52,6 @@ export function StatusInput({ onDone }: Props) {
           </div>
         </div>
         <div className="status-divider"><span>或者自己选</span></div>
-        <div className="t-label">想练的部位</div>
         <div className="pgrid">
           {parts.map((p) => (
             <div key={p.id} className={`pcard ${part === p.id ? "sel" : ""}`} onClick={() => { setPart(p.id); setSmart(false); }}>

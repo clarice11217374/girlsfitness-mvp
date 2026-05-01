@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Complete } from "@/components/screens/Complete";
+import { Record } from "@/components/screens/Record";
 import { Home } from "@/components/screens/Home";
 import { Preview } from "@/components/screens/Preview";
 import { StatusInput } from "@/components/screens/StatusInput";
@@ -23,6 +24,7 @@ export default function AppPage() {
           { id: "preview", lbl: "预览页" },
           { id: "exec", lbl: "训练执行" },
           { id: "complete", lbl: "完成页" },
+          { id: "records", lbl: "记录页" },
         ].map((t) => (
           <div key={t.id} className={`stab ${page === t.id ? "on" : ""}`} onClick={() => setPage(t.id)}>
             {t.lbl}
@@ -36,7 +38,10 @@ export default function AppPage() {
         {page === "training" && <Training onHome={() => setPage("home")} onOpenPreview={() => setPage("preview")} />}
         {page === "preview" && <Preview onBack={() => setPage("home")} onStart={() => setPage("exec")} />}
         {page === "exec" && <WorkoutExec onDone={() => setPage("complete")} />}
-        {page === "complete" && <Complete onHome={() => setPage("home")} />}
+        {page === "records" && <Record onHome={() => setPage("home")} />}
+        {page === "complete" && (
+          <Complete onHome={() => setPage("home")} onSaved={() => setPage("records")} />
+        )}
       </div>
 
       <div className="foot-note">点击各页面内的按钮可按流程跳转 · 顶部标签可直接切换</div>

@@ -35,7 +35,7 @@ const templates = [
 
 export function Training({ onHome, onOpenPreview, onRecords }: Props) {
   return (
-    <div className="page">
+    <div className="page training-screen">
       <div className="sbar"><span>9:41</span><span>●●●</span></div>
       <div className="hdr">
         <div>
@@ -44,31 +44,33 @@ export function Training({ onHome, onOpenPreview, onRecords }: Props) {
         </div>
       </div>
 
-      <div className="template-list">
-        {templates.map((item) => (
-          <button
-            type="button"
-            key={item.title}
-            className={`template-card ${item.available ? "" : "disabled"}`}
-            onClick={item.available ? onOpenPreview : undefined}
-          >
-            <div className={`template-cover template-cover--${item.cover}`}>
-              <div className="template-time">{item.duration}</div>
-            </div>
-            <div className="template-body">
-              <div className="template-head">
-                <div className="template-title">{item.title}</div>
-                {!item.available && <div className="template-badge">即将支持</div>}
+      <div className="training-scroll">
+        <div className="template-list">
+          {templates.map((item) => (
+            <button
+              type="button"
+              key={item.title}
+              className={`template-card ${item.available ? "" : "disabled"}`}
+              onClick={item.available ? onOpenPreview : undefined}
+            >
+              <div className={`template-cover template-cover--${item.cover}`}>
+                <div className="template-time">{item.duration}</div>
               </div>
-              <div className="template-meta">{item.meta}</div>
-              <div className="template-tags">
-                {item.tags.map((tag) => (
-                  <span key={tag} className="template-tag">{tag}</span>
-                ))}
+              <div className="template-body">
+                <div className="template-head">
+                  <div className="template-title">{item.title}</div>
+                  {!item.available && <div className="template-badge">即将支持</div>}
+                </div>
+                <div className="template-meta">{item.meta}</div>
+                <div className="template-tags">
+                  {item.tags.map((tag) => (
+                    <span key={tag} className="template-tag">{tag}</span>
+                  ))}
+                </div>
               </div>
-            </div>
-          </button>
-        ))}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="bnav">

@@ -26,7 +26,7 @@ export function StatusInput({ onDone }: Props) {
   return (
     <div className="page status-screen">
       <div className="sbar"><span>9:41</span><span>●●●</span></div>
-      <div className="scrollable" style={{ padding: "0 28px" }}>
+      <div className="status-scroll">
         <div style={{ paddingTop: 24, marginBottom: 28 }}>
           <div className="t-title">告诉我你<br />今天的状态 ✨</div>
           <div className="t-sub">我会为你定制最适合的训练计划</div>

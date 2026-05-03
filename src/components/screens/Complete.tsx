@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { saveTrainingRecord } from "@/utils/trainingRecordStorage";
+import { clearWorkoutExecSummary, readWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
 
 type Props = { onSaved: () => void };
 
@@ -16,14 +17,18 @@ export function Complete({ onSaved }: Props) {
 
   const persistRecord = useCallback(() => {
     if (hasSaved) return;
+    const summary = readWorkoutExecSummary();
     saveTrainingRecord({
-      workoutTitle: "上肢推 · 力量日",
-      totalExercises: 9,
-      totalSets: 13,
-      durationMinutes: 45,
+      workoutTitle: summary?.workoutTitle ?? "上肢推 · 力量日",
+      totalExercises: summary?.totalExercises ?? 9,
+      totalSets: summary?.totalSets ?? 13,
+      durationMinutes: summary?.durationMinutes ?? 45,
       feeling: feel,
-      notes: "workoutId:upper-push-strength",
+      notes: summary?.templateId ? `templateId:${summary.templateId}` : "workoutId:upper-push-strength",
+      templateId: summary?.templateId,
+      targetArea: summary?.targetArea,
     });
+    clearWorkoutExecSummary();
     setHasSaved(true);
   }, [hasSaved, feel]);
 

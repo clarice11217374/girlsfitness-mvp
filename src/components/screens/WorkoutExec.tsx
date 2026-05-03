@@ -1,13 +1,119 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { getOrderedExercises, getPhasePlanForExec, type WorkoutExercise } from "@/data/workoutData";
+import {
+  getOrderedExercises as getStaticOrderedExercises,
+  getPhasePlanForExec as getStaticPhasePlanForExec,
+  type ActionGuide,
+  type EquipmentGuide,
+  workoutTemplateMeta,
+} from "@/data/workoutData";
+import {
+  getOrderedExercises as getTemplateOrderedExercises,
+  getPhasePlanForExec as getTemplatePhasePlanRaw,
+  getWorkoutTemplateById,
+  type WorkoutExercise as TemplateWorkoutExercise,
+} from "@/data/workoutTemplates";
+import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
+import { writeWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
 
 type Props = { onDone: () => void };
 
+type ExecExercise = {
+  id: string;
+  name: string;
+  sets: number;
+  reps: string;
+  visualPlaceholder: string;
+  equipmentGuide: EquipmentGuide;
+  actionGuide: ActionGuide;
+  commonMistakesDisplay: string;
+  alternative: string;
+};
+
+type PhasePlanRow = { label: string; exerciseIndexes: number[] };
+
+function toExecFromTemplate(ex: TemplateWorkoutExercise): ExecExercise {
+  return {
+    id: ex.id,
+    name: ex.name,
+    sets: ex.sets,
+    reps: ex.reps,
+    visualPlaceholder: ex.visualPlaceholder,
+    equipmentGuide: ex.equipmentGuide,
+    actionGuide: ex.actionGuide,
+    commonMistakesDisplay: ex.commonMistakes.join("、"),
+    alternative: ex.alternative,
+  };
+}
+
+function toExecFromStatic(ex: {
+  id: string;
+  name: string;
+  sets: number;
+  reps: string;
+  visualPlaceholder: string;
+  equipmentGuide: EquipmentGuide;
+  actionGuide: ActionGuide;
+  commonMistakes: string;
+  alternative: string;
+}): ExecExercise {
+  return {
+    id: ex.id,
+    name: ex.name,
+    sets: ex.sets,
+    reps: ex.reps,
+    visualPlaceholder: ex.visualPlaceholder,
+    equipmentGuide: ex.equipmentGuide,
+    actionGuide: ex.actionGuide,
+    commonMistakesDisplay: ex.commonMistakes,
+    alternative: ex.alternative,
+  };
+}
+
+function buildStaticPhasePlan(): PhasePlanRow[] {
+  return getStaticPhasePlanForExec();
+}
+
+function buildTemplatePhasePlanForExec(templateId: string): PhasePlanRow[] {
+  const raw = getTemplatePhasePlanRaw(templateId);
+  let cursor = 0;
+  return raw.map((p) => {
+    const exerciseIndexes = p.exercises.map((_, i) => cursor + i);
+    cursor += p.exercises.length;
+    return { label: p.title, exerciseIndexes };
+  });
+}
+
+function initialStaticPayload(): { exercises: ExecExercise[]; phasePlan: PhasePlanRow[] } {
+  const raw = getStaticOrderedExercises();
+  return {
+    exercises: raw.map(toExecFromStatic),
+    phasePlan: buildStaticPhasePlan(),
+  };
+}
+
+function writeSummaryForExercises(exercises: ExecExercise[], meta: {
+  title: string;
+  templateId: string;
+  targetArea: string;
+  estimatedMinutes: number;
+}): void {
+  writeWorkoutExecSummary({
+    workoutTitle: meta.title,
+    templateId: meta.templateId,
+    targetArea: meta.targetArea,
+    totalExercises: exercises.length,
+    totalSets: exercises.reduce((acc, e) => acc + e.sets, 0),
+    durationMinutes: meta.estimatedMinutes,
+  });
+}
+
 export function WorkoutExec({ onDone }: Props) {
-  const exercises = getOrderedExercises();
-  const phasePlan = getPhasePlanForExec();
+  const initial = initialStaticPayload();
+  const [exercises, setExercises] = useState<ExecExercise[]>(initial.exercises);
+  const [phasePlan, setPhasePlan] = useState<PhasePlanRow[]>(initial.phasePlan);
+
   const [exIdx, setExIdx] = useState(0);
   const [currentSet, setCurrentSet] = useState(0);
   const [completedSets, setCompletedSets] = useState<number[]>([]);
@@ -16,7 +122,45 @@ export function WorkoutExec({ onDone }: Props) {
   const [ticking, setTicking] = useState(false);
   const [equipmentOpen, setEquipmentOpen] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const currentExercise: WorkoutExercise = exercises[exIdx];
+
+  useEffect(() => {
+    const staticPayload = initialStaticPayload();
+    const selection = loadCurrentWorkoutSelection();
+
+    if (selection?.matchedTemplateId) {
+      const templateId = selection.matchedTemplateId;
+      const raw = getTemplateOrderedExercises(templateId);
+      const phases = buildTemplatePhasePlanForExec(templateId);
+      const mapped = raw.map(toExecFromTemplate);
+      const template = getWorkoutTemplateById(templateId);
+      setExercises(mapped);
+      setPhasePlan(phases);
+      writeSummaryForExercises(mapped, {
+        title: template.meta.title,
+        templateId: template.meta.id,
+        targetArea: template.meta.targetArea,
+        estimatedMinutes: template.meta.estimatedMinutes,
+      });
+    } else {
+      setExercises(staticPayload.exercises);
+      setPhasePlan(staticPayload.phasePlan);
+      writeSummaryForExercises(staticPayload.exercises, {
+        title: workoutTemplateMeta.title,
+        templateId: "upper-push-strength-day",
+        targetArea: "upper_push",
+        estimatedMinutes: workoutTemplateMeta.estimatedMinutes,
+      });
+    }
+
+    setExIdx(0);
+    setCurrentSet(0);
+    setCompletedSets([]);
+    setTicking(false);
+    setRestSec(0);
+    setEquipmentOpen(false);
+  }, []);
+
+  const currentExercise = exercises[exIdx];
   const restMap: Record<string, number> = { "30s": 30, "1min": 60, "3min": 180 };
 
   const finalizeCurrentSet = useCallback(() => {
@@ -26,9 +170,10 @@ export function WorkoutExec({ onDone }: Props) {
     }
     setTicking(false);
     setRestSec(0);
-  }, [currentSet, currentExercise.sets]);
+  }, [currentSet, currentExercise?.sets]);
 
   function startRest() {
+    if (!currentExercise) return;
     if (ticking || currentSet >= currentExercise.sets || completedSets.length >= currentExercise.sets) return;
     setRestSec(restMap[restSel]);
     setTicking(true);
@@ -48,10 +193,13 @@ export function WorkoutExec({ onDone }: Props) {
         setRestSec((s) => Math.max(0, s - 1));
       }
     }, 1000);
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
   }, [ticking, restSec, finalizeCurrentSet]);
 
   function nextEx() {
+    if (!currentExercise) return;
     if (completedSets.length < currentExercise.sets) return;
     if (exIdx < exercises.length - 1) {
       setExIdx((i) => i + 1);
@@ -65,8 +213,12 @@ export function WorkoutExec({ onDone }: Props) {
     }
   }
 
-  const phaseIdx = Math.max(0, phasePlan.findIndex((phase) => phase.exerciseIndexes.includes(exIdx)));
-  const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+  const phaseIdx = Math.max(
+    0,
+    phasePlan.findIndex((phase) => phase.exerciseIndexes.includes(exIdx)),
+  );
+  const fmt = (s: number) =>
+    `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
   const getPhaseFill = (index: number) => {
     if (index < phaseIdx) return 100;
     if (index > phaseIdx) return 0;
@@ -77,14 +229,30 @@ export function WorkoutExec({ onDone }: Props) {
     return Math.round((localProgress / total) * 100);
   };
 
+  if (!currentExercise) {
+    return (
+      <div className="page exec-page" style={{ padding: 24 }}>
+        <p>暂无可执行动作</p>
+      </div>
+    );
+  }
+
   return (
     <div className="page exec-page" style={{ paddingBottom: 0 }}>
       <div className="exec-top">
-        <div className="sbar" style={{ padding: "0 0 10px" }}><span>9:41</span><span>●●●</span></div>
-        <button className="exec-back" type="button" aria-label="返回">←</button>
+        <div className="sbar" style={{ padding: "0 0 10px" }}>
+          <span>9:41</span>
+          <span>●●●</span>
+        </div>
+        <button className="exec-back" type="button" aria-label="返回">
+          ←
+        </button>
         <div className="phase-track">
           {phasePlan.map((phase, i) => (
-            <div key={phase.label} className={`phase-mini ${i < phaseIdx ? "done" : i === phaseIdx ? "active" : "todo"}`}>
+            <div
+              key={phase.label}
+              className={`phase-mini ${i < phaseIdx ? "done" : i === phaseIdx ? "active" : "todo"}`}
+            >
               <span className="phase-mini-lbl">{phase.label}</span>
               <span className="phase-mini-bar">
                 <span className="phase-mini-fill" style={{ width: `${getPhaseFill(i)}%` }} />
@@ -117,13 +285,21 @@ export function WorkoutExec({ onDone }: Props) {
             <div className="rest-top">
               <div className="rest-lbl">组间休息</div>
               <div className="rest-timer">{fmt(restSec)}</div>
-              <button className={`rest-go ${ticking ? "skip" : "start"}`} onClick={ticking ? skipRest : startRest} disabled={!ticking && completedSets.length >= currentExercise.sets}>
+              <button
+                className={`rest-go ${ticking ? "skip" : "start"}`}
+                onClick={ticking ? skipRest : startRest}
+                disabled={!ticking && completedSets.length >= currentExercise.sets}
+              >
                 {ticking ? "跳过" : "开始"}
               </button>
             </div>
             <div className="rest-opts">
               {["30s", "1min", "3min"].map((o) => (
-                <div key={o} className={`rest-opt ${restSel === o ? "sel" : ""}`} onClick={() => !ticking && setRestSel(o)}>
+                <div
+                  key={o}
+                  className={`rest-opt ${restSel === o ? "sel" : ""}`}
+                  onClick={() => !ticking && setRestSel(o)}
+                >
                   {o}
                 </div>
               ))}
@@ -139,26 +315,70 @@ export function WorkoutExec({ onDone }: Props) {
           </button>
           {equipmentOpen && (
             <div className="equip-setup">
-              <div className="equip-row"><strong>认机器：</strong>{currentExercise.equipmentGuide.machineIntro}</div>
-              <div className="equip-row"><strong>调座椅 / 站位：</strong>{currentExercise.equipmentGuide.seatSetup}</div>
-              <div className="equip-row"><strong>姿态：</strong>{currentExercise.equipmentGuide.postureSetup}</div>
-              <div className="equip-row"><strong>握法：</strong>{currentExercise.equipmentGuide.gripSetup}</div>
-              <div className="equip-row"><strong>重量：</strong>{currentExercise.equipmentGuide.weightTip}</div>
+              <div className="equip-row">
+                <strong>认机器：</strong>
+                {currentExercise.equipmentGuide.machineIntro}
+              </div>
+              <div className="equip-row">
+                <strong>调座椅 / 站位：</strong>
+                {currentExercise.equipmentGuide.seatSetup}
+              </div>
+              <div className="equip-row">
+                <strong>姿态：</strong>
+                {currentExercise.equipmentGuide.postureSetup}
+              </div>
+              <div className="equip-row">
+                <strong>握法：</strong>
+                {currentExercise.equipmentGuide.gripSetup}
+              </div>
+              <div className="equip-row">
+                <strong>重量：</strong>
+                {currentExercise.equipmentGuide.weightTip}
+              </div>
             </div>
           )}
         </div>
         <div className="guide-card">
           <div className="guide-title">动作指引</div>
-          <div className="guide-item"><div className="guide-text"><strong>1.</strong> {currentExercise.actionGuide.step1}</div></div>
-          <div className="guide-item"><div className="guide-text"><strong>2.</strong> {currentExercise.actionGuide.step2}</div></div>
-          <div className="guide-item"><div className="guide-text"><strong>3.</strong> {currentExercise.actionGuide.step3}</div></div>
-          <div className="guide-item"><div className="guide-text"><strong>呼吸：</strong>{currentExercise.actionGuide.breathing}</div></div>
-          <div className="guide-item"><div className="guide-text"><strong>常见错误：</strong>{currentExercise.commonMistakes}</div></div>
-          <div className="guide-item"><div className="guide-text"><strong>平替：</strong>{currentExercise.alternative}</div></div>
+          <div className="guide-item">
+            <div className="guide-text">
+              <strong>1.</strong> {currentExercise.actionGuide.step1}
+            </div>
+          </div>
+          <div className="guide-item">
+            <div className="guide-text">
+              <strong>2.</strong> {currentExercise.actionGuide.step2}
+            </div>
+          </div>
+          <div className="guide-item">
+            <div className="guide-text">
+              <strong>3.</strong> {currentExercise.actionGuide.step3}
+            </div>
+          </div>
+          <div className="guide-item">
+            <div className="guide-text">
+              <strong>呼吸：</strong>
+              {currentExercise.actionGuide.breathing}
+            </div>
+          </div>
+          <div className="guide-item">
+            <div className="guide-text">
+              <strong>常见错误：</strong>
+              {currentExercise.commonMistakesDisplay}
+            </div>
+          </div>
+          <div className="guide-item">
+            <div className="guide-text">
+              <strong>平替：</strong>
+              {currentExercise.alternative}
+            </div>
+          </div>
         </div>
       </div>
       <div className="nav-btns">
-        <div className="nav-prev" style={{ opacity: 0.4, cursor: "default" }}>上一个</div>
+        <div className="nav-prev" style={{ opacity: 0.4, cursor: "default" }}>
+          上一个
+        </div>
         {completedSets.length >= currentExercise.sets && (
           <div className="nav-next" onClick={nextEx}>
             {exIdx < exercises.length - 1 ? "进入下一个动作 →" : "完成训练 🎉"}

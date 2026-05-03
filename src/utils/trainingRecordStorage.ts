@@ -10,6 +10,10 @@ export type TrainingRecord = {
   durationMinutes: number;
   feeling?: string;
   notes?: string;
+  /** 来自 workoutTemplates / 当前匹配的模板 id */
+  templateId?: string;
+  /** 模板 meta.targetArea */
+  targetArea?: string;
 };
 
 function canUseLocalStorage(): boolean {
@@ -24,16 +28,23 @@ function safeParseRecords(raw: string | null): TrainingRecord[] {
     if (!Array.isArray(parsed)) return [];
 
     return parsed.filter((item): item is TrainingRecord => {
-      return (
-        typeof item === "object" &&
-        item !== null &&
-        typeof item.id === "string" &&
-        typeof item.completedAt === "string" &&
-        typeof item.workoutTitle === "string" &&
-        typeof item.totalExercises === "number" &&
-        typeof item.totalSets === "number" &&
-        typeof item.durationMinutes === "number"
-      );
+      if (
+        typeof item !== "object" ||
+        item === null ||
+        typeof item.id !== "string" ||
+        typeof item.completedAt !== "string" ||
+        typeof item.workoutTitle !== "string" ||
+        typeof item.totalExercises !== "number" ||
+        typeof item.totalSets !== "number" ||
+        typeof item.durationMinutes !== "number"
+      ) {
+        return false;
+      }
+      const rec = item as Record<string, unknown>;
+      const templateOk =
+        rec.templateId === undefined || typeof rec.templateId === "string";
+      const areaOk = rec.targetArea === undefined || typeof rec.targetArea === "string";
+      return templateOk && areaOk;
     });
   } catch {
     return [];

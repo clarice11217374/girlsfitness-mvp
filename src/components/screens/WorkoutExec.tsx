@@ -17,7 +17,7 @@ import {
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
 import { writeWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
 
-type Props = { onDone: () => void; templateId?: string | null };
+type Props = { onDone: () => void; templateId?: string | null; onBack?: () => void };
 
 type ExecExercise = {
   id: string;
@@ -109,7 +109,7 @@ function writeSummaryForExercises(exercises: ExecExercise[], meta: {
   });
 }
 
-export function WorkoutExec({ onDone, templateId = null }: Props) {
+export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   const initial = initialStaticPayload();
   const [exercises, setExercises] = useState<ExecExercise[]>(initial.exercises);
   const [phasePlan, setPhasePlan] = useState<PhasePlanRow[]>(initial.phasePlan);
@@ -243,9 +243,8 @@ export function WorkoutExec({ onDone, templateId = null }: Props) {
       <div className="exec-top">
         <div className="sbar" style={{ padding: "0 0 10px" }}>
           <span>9:41</span>
-          <span>●●●</span>
         </div>
-        <button className="exec-back" type="button" aria-label="返回">
+        <button className="exec-back" type="button" aria-label="返回" onClick={() => onBack?.()}>
           ←
         </button>
         <div className="phase-track">

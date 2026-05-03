@@ -24,7 +24,6 @@ export function Training({ onHome, onPickTemplate, onRecords }: Props) {
     <div className="page training-screen">
       <div className="sbar">
         <span>9:41</span>
-        <span>●●●</span>
       </div>
       <div className="hdr">
         <div>

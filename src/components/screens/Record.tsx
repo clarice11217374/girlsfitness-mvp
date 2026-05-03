@@ -163,7 +163,6 @@ export function Record({ onHome, onTraining }: Props) {
     <div className="page record-screen">
       <div className="sbar">
         <span>9:41</span>
-        <span>●●●</span>
       </div>
 
       <div className="record-scroll">

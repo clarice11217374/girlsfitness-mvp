@@ -74,6 +74,7 @@ export default function AppPage() {
         {page === "exec" && (
           <WorkoutExec
             templateId={execTemplateId}
+            onBack={() => setPage("preview")}
             onDone={() => {
               setExecTemplateId(null);
               setPage("complete");

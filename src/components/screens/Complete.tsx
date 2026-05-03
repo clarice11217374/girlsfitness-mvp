@@ -39,7 +39,9 @@ export function Complete({ onSaved }: Props) {
 
   return (
     <div className="page complete-screen">
-      <div className="sbar" style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10 }}><span>9:41</span><span>●●●</span></div>
+      <div className="sbar" style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10 }}>
+        <span>9:41</span>
+      </div>
 
       <div className="complete-top">
         <p className="complete-eyebrow">训练完成</p>

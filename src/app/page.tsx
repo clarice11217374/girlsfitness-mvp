@@ -12,6 +12,8 @@ import { createThemeCssVars } from "@/theme";
 
 export default function AppPage() {
   const [page, setPage] = useState("status");
+  const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
+  const [execTemplateId, setExecTemplateId] = useState<string | null>(null);
   const cssVars = createThemeCssVars() as React.CSSProperties;
 
   return (
@@ -36,17 +38,48 @@ export default function AppPage() {
         {page === "status" && <StatusInput onDone={() => setPage("home")} />}
         {page === "home" && (
           <Home
-            onStart={() => setPage("preview")}
+            onStart={() => {
+              setPreviewTemplateId(null);
+              setPage("preview");
+            }}
             onTraining={() => setPage("training")}
             onRecords={() => setPage("records")}
             onReSelect={() => setPage("status")}
           />
         )}
         {page === "training" && (
-          <Training onHome={() => setPage("home")} onOpenPreview={() => setPage("preview")} onRecords={() => setPage("records")} />
+          <Training
+            onHome={() => setPage("home")}
+            onPickTemplate={(id) => {
+              setPreviewTemplateId(id);
+              setPage("preview");
+            }}
+            onRecords={() => setPage("records")}
+          />
         )}
-        {page === "preview" && <Preview onBack={() => setPage("home")} onStart={() => setPage("exec")} />}
-        {page === "exec" && <WorkoutExec onDone={() => setPage("complete")} />}
+        {page === "preview" && (
+          <Preview
+            templateId={previewTemplateId}
+            onBack={() => {
+              setPreviewTemplateId(null);
+              setPage("home");
+            }}
+            onStart={() => setPage("exec")}
+            onStartWorkout={(id) => {
+              setExecTemplateId(id);
+              setPage("exec");
+            }}
+          />
+        )}
+        {page === "exec" && (
+          <WorkoutExec
+            templateId={execTemplateId}
+            onDone={() => {
+              setExecTemplateId(null);
+              setPage("complete");
+            }}
+          />
+        )}
         {page === "records" && <Record onHome={() => setPage("home")} onTraining={() => setPage("training")} />}
         {page === "complete" && <Complete onSaved={() => setPage("records")} />}
       </div>

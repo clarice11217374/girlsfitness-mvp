@@ -17,7 +17,7 @@ import {
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
 import { writeWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
 
-type Props = { onDone: () => void };
+type Props = { onDone: () => void; templateId?: string | null };
 
 type ExecExercise = {
   id: string;
@@ -109,7 +109,7 @@ function writeSummaryForExercises(exercises: ExecExercise[], meta: {
   });
 }
 
-export function WorkoutExec({ onDone }: Props) {
+export function WorkoutExec({ onDone, templateId = null }: Props) {
   const initial = initialStaticPayload();
   const [exercises, setExercises] = useState<ExecExercise[]>(initial.exercises);
   const [phasePlan, setPhasePlan] = useState<PhasePlanRow[]>(initial.phasePlan);
@@ -125,14 +125,15 @@ export function WorkoutExec({ onDone }: Props) {
 
   useEffect(() => {
     const staticPayload = initialStaticPayload();
-    const selection = loadCurrentWorkoutSelection();
+    const propId = typeof templateId === "string" && templateId.length > 0 ? templateId : null;
+    const selectionId = loadCurrentWorkoutSelection()?.matchedTemplateId ?? null;
+    const resolvedId = propId ?? selectionId;
 
-    if (selection?.matchedTemplateId) {
-      const templateId = selection.matchedTemplateId;
-      const raw = getTemplateOrderedExercises(templateId);
-      const phases = buildTemplatePhasePlanForExec(templateId);
+    if (resolvedId) {
+      const raw = getTemplateOrderedExercises(resolvedId);
+      const phases = buildTemplatePhasePlanForExec(resolvedId);
       const mapped = raw.map(toExecFromTemplate);
-      const template = getWorkoutTemplateById(templateId);
+      const template = getWorkoutTemplateById(resolvedId);
       setExercises(mapped);
       setPhasePlan(phases);
       writeSummaryForExercises(mapped, {
@@ -158,7 +159,7 @@ export function WorkoutExec({ onDone }: Props) {
     setTicking(false);
     setRestSec(0);
     setEquipmentOpen(false);
-  }, []);
+  }, [templateId]);
 
   const currentExercise = exercises[exIdx];
   const restMap: Record<string, number> = { "30s": 30, "1min": 60, "3min": 180 };

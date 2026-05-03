@@ -5,7 +5,12 @@ import { workoutByPhase, workoutTemplateMeta } from "@/data/workoutData";
 import { getWorkoutTemplateById, type WorkoutPhase, type WorkoutTemplate } from "@/data/workoutTemplates";
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
 
-type Props = { onBack: () => void; onStart: () => void };
+type Props = {
+  onBack: () => void;
+  onStart: () => void;
+  templateId?: string | null;
+  onStartWorkout?: (templateId: string | null) => void;
+};
 
 type MoveRow = { id: string; name: string; sets: number; reps: string };
 
@@ -71,18 +76,32 @@ function templatePreviewModel(template: WorkoutTemplate): PreviewModel {
   return { source: "template", template, phases };
 }
 
-export function Preview({ onBack, onStart }: Props) {
+export function Preview({ onBack, onStart, templateId = null, onStartWorkout }: Props) {
   const [model, setModel] = useState<PreviewModel>(() => staticPreviewModel());
+  const [activeTemplateId, setActiveTemplateId] = useState<string | null>(null);
 
   useEffect(() => {
+    const propId = typeof templateId === "string" && templateId.length > 0 ? templateId : null;
+
+    if (propId) {
+      const template = getWorkoutTemplateById(propId);
+      setModel(templatePreviewModel(template));
+      setActiveTemplateId(propId);
+      return;
+    }
+
     const selection = loadCurrentWorkoutSelection();
     if (selection?.matchedTemplateId) {
-      const template = getWorkoutTemplateById(selection.matchedTemplateId);
+      const tid = selection.matchedTemplateId;
+      const template = getWorkoutTemplateById(tid);
       setModel(templatePreviewModel(template));
-    } else {
-      setModel(staticPreviewModel());
+      setActiveTemplateId(tid);
+      return;
     }
-  }, []);
+
+    setModel(staticPreviewModel());
+    setActiveTemplateId(null);
+  }, [templateId]);
 
   const title = model.source === "static" ? model.title : model.template.meta.title;
   const description = model.source === "static" ? model.description : model.template.meta.description;
@@ -97,6 +116,14 @@ export function Preview({ onBack, onStart }: Props) {
 
   const titleDisplay = title.replace(" · ", "\n");
   const phaseSummary = model.phases;
+
+  const handleStart = () => {
+    if (onStartWorkout) {
+      onStartWorkout(activeTemplateId);
+    } else {
+      onStart();
+    }
+  };
 
   return (
     <div className="page preview-page">
@@ -143,7 +170,7 @@ export function Preview({ onBack, onStart }: Props) {
         </div>
       </div>
       <div className="preview-sticky-cta">
-        <button className="cta" onClick={onStart}>
+        <button className="cta" type="button" onClick={handleStart}>
           开始训练 →
         </button>
       </div>

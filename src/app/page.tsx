@@ -35,7 +35,12 @@ export default function AppPage() {
       <div className="shell">
         {page === "status" && <StatusInput onDone={() => setPage("home")} />}
         {page === "home" && (
-          <Home onStart={() => setPage("preview")} onTraining={() => setPage("training")} onRecords={() => setPage("records")} />
+          <Home
+            onStart={() => setPage("preview")}
+            onTraining={() => setPage("training")}
+            onRecords={() => setPage("records")}
+            onReSelect={() => setPage("status")}
+          />
         )}
         {page === "training" && (
           <Training onHome={() => setPage("home")} onOpenPreview={() => setPage("preview")} onRecords={() => setPage("records")} />

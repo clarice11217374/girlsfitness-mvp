@@ -13,32 +13,18 @@ import { createThemeCssVars } from "@/theme";
 export default function AppPage() {
   const [page, setPage] = useState("status");
   const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
+  const [previewReturnTo, setPreviewReturnTo] = useState<"home" | "training">("home");
   const [execTemplateId, setExecTemplateId] = useState<string | null>(null);
   const cssVars = createThemeCssVars() as React.CSSProperties;
 
   return (
     <div className="app-root" style={cssVars}>
-      <div className="switcher">
-        {[
-          { id: "status", lbl: "状态输入" },
-          { id: "home", lbl: "首页" },
-          { id: "training", lbl: "训练页" },
-          { id: "preview", lbl: "预览页" },
-          { id: "exec", lbl: "训练执行" },
-          { id: "complete", lbl: "完成页" },
-          { id: "records", lbl: "记录页" },
-        ].map((t) => (
-          <div key={t.id} className={`stab ${page === t.id ? "on" : ""}`} onClick={() => setPage(t.id)}>
-            {t.lbl}
-          </div>
-        ))}
-      </div>
-
       <div className="shell">
         {page === "status" && <StatusInput onDone={() => setPage("home")} />}
         {page === "home" && (
           <Home
             onStart={() => {
+              setPreviewReturnTo("home");
               setPreviewTemplateId(null);
               setPage("preview");
             }}
@@ -51,6 +37,7 @@ export default function AppPage() {
           <Training
             onHome={() => setPage("home")}
             onPickTemplate={(id) => {
+              setPreviewReturnTo("training");
               setPreviewTemplateId(id);
               setPage("preview");
             }}
@@ -61,8 +48,7 @@ export default function AppPage() {
           <Preview
             templateId={previewTemplateId}
             onBack={() => {
-              setPreviewTemplateId(null);
-              setPage("home");
+              setPage(previewReturnTo === "training" ? "training" : "home");
             }}
             onStart={() => setPage("exec")}
             onStartWorkout={(id) => {
@@ -84,8 +70,6 @@ export default function AppPage() {
         {page === "records" && <Record onHome={() => setPage("home")} onTraining={() => setPage("training")} />}
         {page === "complete" && <Complete onSaved={() => setPage("records")} />}
       </div>
-
-      <div className="foot-note">点击各页面内的按钮可按流程跳转 · 顶部标签可直接切换</div>
     </div>
   );
 }

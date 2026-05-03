@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { workoutByPhase, workoutTemplateMeta } from "@/data/workoutData";
 import {
   getWorkoutTemplateById,
@@ -34,19 +34,60 @@ function countTemplateExercises(t: WorkoutTemplate): number {
   return warmup.length + strength.length + cardio.length + stretch.length;
 }
 
-function selectionStatusLine(sel: CurrentWorkoutSelectionV1): string {
-  const cycleLabel: Record<CycleStatus, string> = {
-    period: "经期中",
+function cycleChipText(status: CycleStatus): string {
+  const map: Record<CycleStatus, string> = {
     not_period: "不在经期",
+    period: "经期中",
     uncertain: "不确定",
   };
-  const energyLabel: Record<EnergyLevel, string> = {
-    low: "有点累",
-    normal: "精力不错",
-    high: "精力充沛",
-  };
-  return `${cycleLabel[sel.cycleStatus]} · ${energyLabel[sel.energyLevel]}`;
+  return map[status];
 }
+
+function energyChipText(level: EnergyLevel): string {
+  const map: Record<EnergyLevel, string> = {
+    high: "精力不错",
+    normal: "状态一般",
+    low: "有点累",
+  };
+  return map[level];
+}
+
+const statusBarShellStyle: CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: 10,
+  background: "rgba(255, 255, 255, 0.58)",
+  border: "1px solid rgba(255, 255, 255, 0.62)",
+  borderRadius: 20,
+  padding: "7px 12px",
+  boxShadow: "0 6px 16px rgba(0, 0, 0, 0.035)",
+  backdropFilter: "blur(10px)",
+  WebkitBackdropFilter: "blur(10px)",
+};
+
+/** 与本周计划 `.dnum.today`（var(--lime)）同一绿色体系，低饱和、偏柔和 */
+const chipDotStyle: CSSProperties = {
+  width: 5,
+  height: 5,
+  borderRadius: "50%",
+  background: "var(--lime)",
+  flexShrink: 0,
+};
+
+const chipBaseStyle: CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 5,
+  padding: "3px 9px",
+  borderRadius: 999,
+  background: "rgba(200, 241, 53, 0.18)",
+  border: "1px solid rgba(200, 241, 53, 0.42)",
+  color: "rgba(55, 62, 32, 0.9)",
+  fontSize: 12,
+  fontWeight: 500,
+  lineHeight: 1.25,
+};
 
 export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
   const [totalMinutes, setTotalMinutes] = useState(0);
@@ -102,43 +143,74 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
       <div className="hdr">
         <div>
           <div style={{ fontSize: 13, color: "var(--gray)" }}>欢迎回来 👋</div>
-          <div className="t-title" style={{ fontSize: 26 }}>
+          <div
+            className="t-title"
+            style={{ fontSize: 26, ...(selection ? { marginBottom: 14 } : {}) }}
+          >
             今日训练
           </div>
         </div>
         <div className="av">🌸</div>
       </div>
       {selection && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 12,
-            padding: "0 28px 12px",
-            fontSize: 13,
-            color: "var(--gray)",
-          }}
-        >
-          <span style={{ lineHeight: 1.45 }}>{selectionStatusLine(selection)}</span>
-          <button
-            type="button"
-            onClick={onReSelect}
-            style={{
-              flexShrink: 0,
-              border: "1px solid var(--line)",
-              background: "var(--card)",
-              color: "var(--ink)",
-              borderRadius: 999,
-              padding: "6px 12px",
-              fontSize: 12,
-              cursor: "pointer",
-            }}
-          >
-            重新选择
-          </button>
+        <div style={{ padding: "0 28px 8px" }}>
+          <div style={statusBarShellStyle}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                flexWrap: "wrap",
+                gap: 6,
+                flex: 1,
+                minWidth: 0,
+              }}
+            >
+              <span style={chipBaseStyle}>
+                <span style={chipDotStyle} aria-hidden />
+                {cycleChipText(selection.cycleStatus)}
+              </span>
+              <span style={chipBaseStyle}>
+                <span style={chipDotStyle} aria-hidden />
+                {energyChipText(selection.energyLevel)}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={onReSelect}
+              style={{
+                flexShrink: 0,
+                border: "none",
+                background: "transparent",
+                color: "var(--gray)",
+                borderRadius: 10,
+                padding: "4px 8px",
+                fontSize: 12,
+                cursor: "pointer",
+                fontWeight: 500,
+              }}
+            >
+              重新选择
+            </button>
+          </div>
         </div>
       )}
+      <div
+        className="wcard"
+        style={{
+          paddingTop: 26,
+          paddingBottom: 28,
+          minHeight: 248,
+        }}
+      >
+        <div className="wtag">{selection ? planBadge : "⚡ 今日计划"}</div>
+        <div className="wname">{planTitle}</div>
+        <div className="wmeta">{`${planMinutes}分钟 · ${planIntensity} · ${planExerciseCount}个动作`}</div>
+        <button className="wbtn" onClick={onStart}>
+          开始训练
+        </button>
+        <div className="wbig">{`${planMinutes}’`}</div>
+      </div>
       <div className="sec-row">
         <div className="t-sec">本周计划</div>
         <div className="see-all">查看全部</div>
@@ -151,15 +223,6 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
             {d.dot && <div className="ddot" />}
           </div>
         ))}
-      </div>
-      <div className="wcard">
-        <div className="wtag">{selection ? planBadge : "⚡ 今日计划"}</div>
-        <div className="wname">{planTitle}</div>
-        <div className="wmeta">{`${planMinutes}分钟 · ${planIntensity} · ${planExerciseCount}个动作`}</div>
-        <button className="wbtn" onClick={onStart}>
-          开始训练
-        </button>
-        <div className="wbig">{`${planMinutes}’`}</div>
       </div>
       <div className="mcard">
         <div className="mtop">

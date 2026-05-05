@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
+import { Home as HomeIcon, ClipboardList, BarChart3 } from "lucide-react";
 import { workoutByPhase, workoutTemplateMeta } from "@/data/workoutData";
 import {
   getWorkoutTemplateById,
@@ -244,12 +245,17 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
       </div>
       <div className="bnav">
         {[
-          { icon: "🏠", lbl: "首页", on: true },
-          { icon: "📋", lbl: "训练", click: onTraining },
-          { icon: "📊", lbl: "记录", click: onRecords },
+          { icon: HomeIcon, lbl: "首页", on: true },
+          { icon: ClipboardList, lbl: "训练", click: onTraining },
+          { icon: BarChart3, lbl: "记录", click: onRecords },
         ].map((n) => (
           <div key={n.lbl} className={`ni ${n.on ? "on" : ""}`} onClick={n.click}>
-            <div className="nicon">{n.icon}</div>
+            <div className="nicon">
+              {(() => {
+                const Icon = n.icon;
+                return <Icon className="w-5 h-5" />;
+              })()}
+            </div>
             <div className="nlbl">{n.lbl}</div>
           </div>
         ))}

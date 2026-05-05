@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import React from "react";
+import { Home, ClipboardList, BarChart3, Dumbbell, ThumbsUp, Wind } from "lucide-react";
 import { getTrainingRecords, type TrainingRecord } from "@/utils/trainingRecordStorage";
 
 type Props = { onHome: () => void; onTraining: () => void };
@@ -63,11 +65,11 @@ function computeStreak(records: RecordView[]): number {
   return streak;
 }
 
-function feelingEmoji(feeling?: string): string {
-  if (feeling === "很好") return "💪";
-  if (feeling === "平稳") return "👌";
-  if (feeling === "有点累") return "😮‍💨";
-  return "💪";
+function feelingIcon(feeling?: string): React.ComponentType<{ className?: string }> {
+  if (feeling === "很好") return Dumbbell;
+  if (feeling === "平稳") return ThumbsUp;
+  if (feeling === "有点累") return Wind;
+  return Dumbbell;
 }
 
 const WEEK_LABELS = ["一", "二", "三", "四", "五", "六", "日"] as const;
@@ -254,7 +256,10 @@ export function Record({ onHome, onTraining }: Props) {
                 {visibleRecent.map((r) => (
                   <li key={r.id} className="record-item">
                     <div className="record-item-icon" aria-hidden>
-                      {feelingEmoji(r.feeling)}
+                      {(() => {
+                        const Icon = feelingIcon(r.feeling);
+                        return <Icon className="w-5 h-5" />;
+                      })()}
                     </div>
                     <div className="record-item-body">
                       <div className="record-item-name">{getWorkoutName(r)}</div>
@@ -274,12 +279,17 @@ export function Record({ onHome, onTraining }: Props) {
 
       <div className="bnav">
         {[
-          { icon: "🏠", lbl: "首页", click: onHome },
-          { icon: "📋", lbl: "训练", click: onTraining },
-          { icon: "📊", lbl: "记录", on: true },
+          { icon: Home, lbl: "首页", click: onHome },
+          { icon: ClipboardList, lbl: "训练", click: onTraining },
+          { icon: BarChart3, lbl: "记录", on: true },
         ].map((n) => (
           <div key={n.lbl} className={`ni ${n.on ? "on" : ""}`} onClick={n.click}>
-            <div className="nicon">{n.icon}</div>
+            <div className="nicon">
+              {(() => {
+                const Icon = n.icon;
+                return <Icon className="w-5 h-5" />;
+              })()}
+            </div>
             <div className="nlbl">{n.lbl}</div>
           </div>
         ))}

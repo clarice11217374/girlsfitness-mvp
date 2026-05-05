@@ -1,6 +1,7 @@
 "use client";
 
 import { workoutTemplates } from "@/data/workoutTemplates";
+import { Home, ClipboardList, BarChart3 } from "lucide-react";
 
 type Props = {
   onHome: () => void;
@@ -71,12 +72,17 @@ export function Training({ onHome, onPickTemplate, onRecords }: Props) {
 
       <div className="bnav">
         {[
-          { icon: "🏠", lbl: "首页", on: false, click: onHome },
-          { icon: "📋", lbl: "训练", on: true },
-          { icon: "📊", lbl: "记录", on: false, click: onRecords },
+          { icon: Home, lbl: "首页", on: false, click: onHome },
+          { icon: ClipboardList, lbl: "训练", on: true },
+          { icon: BarChart3, lbl: "记录", on: false, click: onRecords },
         ].map((n) => (
           <div key={n.lbl} className={`ni ${n.on ? "on" : ""}`} onClick={n.click}>
-            <div className="nicon">{n.icon}</div>
+            <div className="nicon">
+              {(() => {
+                const Icon = n.icon;
+                return <Icon className="w-5 h-5" />;
+              })()}
+            </div>
             <div className="nlbl">{n.lbl}</div>
           </div>
         ))}

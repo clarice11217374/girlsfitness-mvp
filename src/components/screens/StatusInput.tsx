@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Dumbbell, Link, Footprints, Zap } from "lucide-react";
 import type { CycleStatus, EnergyLevel } from "@/data/workoutTemplates";
 import {
   getLastTargetAreaFromRecords,
@@ -52,10 +53,10 @@ export function StatusInput({ onDone }: Props) {
     { l: "有点累", s: "sl" },
   ];
   const parts = [
-    { id: "push", icon: "💪", name: "上肢推", desc: "胸 · 肩 · 三头" },
-    { id: "pull", icon: "🔗", name: "上肢拉", desc: "背 · 二头 · 肩后" },
-    { id: "legs", icon: "🦵", name: "臀腿核心", desc: "臀 · 大腿 · 核心" },
-    { id: "full", icon: "⚡", name: "全身燃脂", desc: "全身 · 有氧结合" },
+    { id: "push", icon: Dumbbell, name: "上肢推", desc: "胸 · 肩 · 三头" },
+    { id: "pull", icon: Link, name: "上肢拉", desc: "背 · 二头 · 肩后" },
+    { id: "legs", icon: Footprints, name: "臀腿核心", desc: "臀 · 大腿 · 核心" },
+    { id: "full", icon: Zap, name: "全身燃脂", desc: "全身 · 有氧结合" },
   ];
 
   const canSubmit = Boolean(period && energy && (smart || part));
@@ -150,7 +151,12 @@ export function StatusInput({ onDone }: Props) {
                 setSmart(false);
               }}
             >
-              <div className="picon">{p.icon}</div>
+              <div className="picon">
+                {(() => {
+                  const Icon = p.icon;
+                  return <Icon className="w-5 h-5" />;
+                })()}
+              </div>
               <div className="pname">{p.name}</div>
               <div className="pdesc">{p.desc}</div>
             </div>

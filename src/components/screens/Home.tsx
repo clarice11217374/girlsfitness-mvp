@@ -58,13 +58,11 @@ const statusBarShellStyle: CSSProperties = {
   alignItems: "center",
   justifyContent: "space-between",
   gap: 10,
-  background: "rgba(255, 255, 255, 0.58)",
-  border: "1px solid rgba(255, 255, 255, 0.62)",
-  borderRadius: 20,
+  background: "#ffffff",
+  border: "1px solid rgba(228, 224, 238, 0.86)",
+  borderRadius: 16,
   padding: "7px 12px",
-  boxShadow: "0 6px 16px rgba(0, 0, 0, 0.035)",
-  backdropFilter: "blur(10px)",
-  WebkitBackdropFilter: "blur(10px)",
+  boxShadow: "0 2px 12px rgba(74, 63, 92, 0.07)",
 };
 
 /** 与本周计划 `.dnum.today`（var(--lime)）同一绿色体系，低饱和、偏柔和 */
@@ -72,7 +70,7 @@ const chipDotStyle: CSSProperties = {
   width: 5,
   height: 5,
   borderRadius: "50%",
-  background: "var(--lime)",
+  background: "var(--plum)",
   flexShrink: 0,
 };
 
@@ -82,9 +80,9 @@ const chipBaseStyle: CSSProperties = {
   gap: 5,
   padding: "3px 9px",
   borderRadius: 999,
-  background: "rgba(200, 241, 53, 0.18)",
-  border: "1px solid rgba(200, 241, 53, 0.42)",
-  color: "rgba(55, 62, 32, 0.9)",
+  background: "var(--blush)",
+  border: "1px solid #e8d0dc",
+  color: "var(--plum)",
   fontSize: 12,
   fontWeight: 500,
   lineHeight: 1.25,

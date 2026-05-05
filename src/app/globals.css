@@ -83,6 +83,14 @@ body {
   min-height: 844px;
   overflow: hidden;
 }
+.page.home-screen,
+.page.training-screen,
+.page.record-screen {
+  position: static;
+}
+.page.status-screen {
+  position: relative;
+}
 .status-screen .status-scroll {
   flex: 1;
   min-height: 0;
@@ -271,7 +279,7 @@ body {
 .ptrack { height: 4px; background: var(--border); border: none; border-radius: 4px; overflow: hidden; }
 .pfill { height: 100%; background: var(--plum); border-radius: 4px; transition: width .6s ease; }
 .msub { font-size: 12px; color: var(--gray); margin-top: 6px; }
-.bnav { position: absolute; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: 1px solid rgba(74,63,92,0.08); border-radius: 0; padding: 13px 28px calc(12px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -4px 20px rgba(74,63,92,0.06); }
+.bnav { position: absolute; bottom: 0; left: 0; right: 0; background: #ffffff; border-top: none; border-radius: 0; padding: 13px 28px calc(12px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-around; align-items: center; box-shadow: none; }
 .ni { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; opacity: 1; color: var(--muted); transition: color .15s; }
 .ni.on { opacity: 1; }
 .nicon { font-size: 20px; }

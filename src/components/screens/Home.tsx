@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
-import { Home as HomeIcon, ClipboardList, BarChart3 } from "lucide-react";
+import { Home as HomeIcon, ClipboardList, BarChart3, Flower2, Hand, Medal, Sparkles, Trophy, Zap } from "lucide-react";
 import { workoutByPhase, workoutTemplateMeta } from "@/data/workoutData";
 import {
   getWorkoutTemplateById,
@@ -14,6 +14,7 @@ import {
   type CurrentWorkoutSelectionV1,
 } from "@/utils/currentWorkoutSelectionStorage";
 import { getTrainingRecords } from "@/utils/trainingRecordStorage";
+import { StatusBar } from "@/components/StatusBar";
 
 type Props = {
   onStart: () => void;
@@ -131,17 +132,20 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
     selection && activeTemplate ? activeTemplate.meta.intensity : workoutTemplateMeta.intensity;
   const planExerciseCount =
     selection && activeTemplate ? countTemplateExercises(activeTemplate) : staticExerciseCount;
-  const planBadge =
-    selection?.selectedTraining === "smart" ? "✨ 智能匹配 · 今日推荐" : "⚡ 今日计划";
+  const planBadge = selection?.selectedTraining === "smart" ? "智能匹配 · 今日推荐" : "今日计划";
+  const PlanBadgeIcon = selection?.selectedTraining === "smart" ? Sparkles : Zap;
 
   return (
     <div className="page home-screen">
-      <div className="sbar">
-        <span>9:41</span>
-      </div>
+      <StatusBar />
       <div className="hdr">
         <div>
-          <div style={{ fontSize: 13, color: "var(--gray)" }}>欢迎回来 👋</div>
+          <div className="home-greeting">
+            欢迎回来
+            <span className="inline-icon-badge" aria-hidden>
+              <Hand className="w-3.5 h-3.5" />
+            </span>
+          </div>
           <div
             className="t-title"
             style={{ fontSize: 26, ...(selection ? { marginBottom: 14 } : {}) }}
@@ -149,7 +153,9 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
             今日训练
           </div>
         </div>
-        <div className="av">🌸</div>
+        <div className="av">
+          <Flower2 className="w-5 h-5" />
+        </div>
       </div>
       {selection && (
         <div style={{ padding: "0 28px 8px" }}>
@@ -202,7 +208,10 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
           minHeight: 248,
         }}
       >
-        <div className="wtag">{selection ? planBadge : "⚡ 今日计划"}</div>
+        <div className="wtag">
+          <PlanBadgeIcon className="w-3.5 h-3.5" />
+          {selection ? planBadge : "今日计划"}
+        </div>
         <div className="wname">{planTitle}</div>
         <div className="wmeta">{`${planMinutes}分钟 · ${planIntensity} · ${planExerciseCount}个动作`}</div>
         <button className="wbtn" onClick={onStart}>
@@ -225,7 +234,10 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
       </div>
       <div className="mcard">
         <div className="mtop">
-          <div className="mlbl">🏆 百小时挑战</div>
+          <div className="mlbl icon-label">
+            <Trophy className="w-4 h-4" />
+            百小时挑战
+          </div>
           <div className="mval">
             {hasProgress
               ? `${formatHoursValue(totalHours)}h / ${CHALLENGE_GOAL_HOURS}h`
@@ -237,7 +249,12 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
         </div>
         <div className="msub">
           {hasProgress
-            ? `再坚持 ${formatHoursValue(remainingHours)} 小时，解锁成就徽章 🏅`
+            ? (
+                <>
+                  再坚持 {formatHoursValue(remainingHours)} 小时，解锁成就徽章
+                  <Medal className="inline-lucide-icon" aria-hidden />
+                </>
+              )
             : "完成第一次训练，开始累计你的百小时挑战"}
         </div>
       </div>

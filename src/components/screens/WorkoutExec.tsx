@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { PartyPopper } from "lucide-react";
+import { StatusBar } from "@/components/StatusBar";
 import {
   getOrderedExercises as getStaticOrderedExercises,
   getPhasePlanForExec as getStaticPhasePlanForExec,
@@ -241,9 +243,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   return (
     <div className="page exec-page" style={{ paddingBottom: 0 }}>
       <div className="exec-top">
-        <div className="sbar" style={{ padding: "0 0 10px" }}>
-          <span>9:41</span>
-        </div>
+        <StatusBar style={{ padding: "0 0 10px" }} />
         <button className="exec-back" type="button" aria-label="返回" onClick={() => onBack?.()}>
           ←
         </button>
@@ -381,7 +381,14 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
         </div>
         {completedSets.length >= currentExercise.sets && (
           <div className="nav-next" onClick={nextEx}>
-            {exIdx < exercises.length - 1 ? "进入下一个动作 →" : "完成训练 🎉"}
+            {exIdx < exercises.length - 1 ? (
+              "进入下一个动作 →"
+            ) : (
+              <span className="button-icon-label">
+                完成训练
+                <PartyPopper className="w-4 h-4" />
+              </span>
+            )}
           </div>
         )}
       </div>

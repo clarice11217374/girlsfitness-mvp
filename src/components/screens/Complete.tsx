@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Dumbbell, ThumbsUp, Wind } from "lucide-react";
 import { saveTrainingRecord } from "@/utils/trainingRecordStorage";
 import { clearWorkoutExecSummary, readWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
+import { StatusBar } from "@/components/StatusBar";
 
 type Props = { onSaved: () => void };
 
@@ -57,9 +58,7 @@ export function Complete({ onSaved }: Props) {
 
   return (
     <div className="page complete-screen">
-      <div className="sbar" style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10 }}>
-        <span>9:41</span>
-      </div>
+      <StatusBar style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10 }} />
 
       <div className="complete-top">
         <p className="complete-eyebrow">训练完成</p>

@@ -2,6 +2,7 @@
 
 import { workoutTemplates } from "@/data/workoutTemplates";
 import { Home, ClipboardList, BarChart3 } from "lucide-react";
+import { StatusBar } from "@/components/StatusBar";
 
 type Props = {
   onHome: () => void;
@@ -23,9 +24,7 @@ function coverVariant(id: string): "push" | "recover" | "legs" {
 export function Training({ onHome, onPickTemplate, onRecords }: Props) {
   return (
     <div className="page training-screen">
-      <div className="sbar">
-        <span>9:41</span>
-      </div>
+      <StatusBar />
       <div className="hdr">
         <div>
           <div style={{ fontSize: 13, color: "var(--gray)" }}>训练选择</div>

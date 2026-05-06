@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import React from "react";
-import { Home, ClipboardList, BarChart3, Dumbbell, ThumbsUp, Wind } from "lucide-react";
+import { Home, ClipboardList, BarChart3, Dumbbell, Flame, ThumbsUp, Trophy, Wind } from "lucide-react";
 import { getTrainingRecords, type TrainingRecord } from "@/utils/trainingRecordStorage";
+import { StatusBar } from "@/components/StatusBar";
 
 type Props = { onHome: () => void; onTraining: () => void };
 
@@ -163,9 +164,7 @@ export function Record({ onHome, onTraining }: Props) {
 
   return (
     <div className="page record-screen">
-      <div className="sbar">
-        <span>9:41</span>
-      </div>
+      <StatusBar />
 
       <div className="record-scroll">
         <div className="record-inner">
@@ -186,9 +185,7 @@ export function Record({ onHome, onTraining }: Props) {
             <div className="record-stat-card">
               <div className="record-stat-val record-stat-val--fire">
                 {derived.streak}
-                <span className="record-stat-fire" aria-hidden>
-                  🔥
-                </span>
+                <Flame className="record-stat-fire" aria-hidden />
               </div>
               <div className="record-stat-lbl">连续天数</div>
             </div>
@@ -196,7 +193,10 @@ export function Record({ onHome, onTraining }: Props) {
 
           <div className="mcard record-challenge">
             <div className="mtop">
-              <div className="mlbl">🏆 百小时挑战</div>
+              <div className="mlbl icon-label">
+                <Trophy className="w-4 h-4" />
+                百小时挑战
+              </div>
               <div className="mval">
                 {derived.hasProgress ? `${formatHoursValue(derived.totalHours)} / ${CHALLENGE_GOAL_HOURS}h` : `0 / ${CHALLENGE_GOAL_HOURS}h`}
               </div>

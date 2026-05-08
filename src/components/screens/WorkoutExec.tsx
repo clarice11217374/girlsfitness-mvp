@@ -16,6 +16,7 @@ import {
   getWorkoutTemplateById,
   type WorkoutExercise as TemplateWorkoutExercise,
 } from "@/data/workoutTemplates";
+import type { ExerciseMedia } from "@/types/exerciseMedia";
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
 import { writeWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
 
@@ -24,6 +25,9 @@ type Props = { onDone: () => void; templateId?: string | null; onBack?: () => vo
 type ExecExercise = {
   id: string;
   name: string;
+  mediaSearchQuery?: string;
+  englishName?: string;
+  slug?: string;
   sets: number;
   reps: string;
   visualPlaceholder: string;
@@ -35,10 +39,84 @@ type ExecExercise = {
 
 type PhasePlanRow = { label: string; exerciseIndexes: number[] };
 
+type ExerciseMediaState =
+  | { status: "idle" | "loading"; data: null }
+  | { status: "ready"; data: ExerciseMedia | null }
+  | { status: "error"; data: null };
+
+const exerciseMediaSearchQueries: Record<string, string> = {
+  "warmup-shoulder-circle": "shoulder circles",
+  "warmup-scap-activation": "scapular activation",
+  "strength-machine-chest-press": "machine chest press",
+  "strength-dumbbell-shoulder-press": "dumbbell shoulder press",
+  "strength-cable-pushdown": "cable triceps pushdown",
+  "strength-incline-pushup": "incline push up",
+  "cardio-elliptical": "elliptical trainer",
+  "stretch-chest": "chest stretch",
+  "stretch-front-delt": "front shoulder stretch",
+  "up-push-wu-shoulder-circles": "shoulder circles",
+  "up-push-wu-scapula-activation": "scapular activation",
+  "up-push-st-machine-chest-press": "machine chest press",
+  "up-push-st-dumbbell-shoulder-press": "dumbbell shoulder press",
+  "up-push-st-cable-triceps-pushdown": "cable triceps pushdown",
+  "up-push-st-incline-push-up": "incline push up",
+  "up-push-ca-elliptical-easy": "elliptical trainer",
+  "up-push-st-chest-stretch": "chest stretch",
+  "up-push-st-front-shoulder-stretch": "front shoulder stretch",
+  "up-pull-wu-band-pull-apart": "band pull apart",
+  "up-pull-wu-dead-hang-light": "dead hang",
+  "up-pull-st-lat-pulldown": "lat pulldown",
+  "up-pull-st-seated-cable-row": "seated cable row",
+  "up-pull-st-face-pull": "face pull",
+  "up-pull-st-dumbbell-curl": "dumbbell biceps curl",
+  "up-pull-ca-rower-easy": "rowing machine",
+  "up-pull-st-lat-stretch": "lat stretch",
+  "up-pull-st-biceps-stretch": "biceps stretch",
+  "lower-wu-hip-circle": "hip circles",
+  "lower-wu-bodyweight-squat": "bodyweight squat",
+  "lower-st-leg-press": "leg press",
+  "lower-st-hip-abduction": "hip abduction",
+  "lower-st-leg-curl": "leg curl",
+  "lower-st-dead-bug": "dead bug",
+  "lower-ca-elliptical-recovery": "elliptical trainer",
+  "lower-st-quad-stretch": "quadriceps stretch",
+  "lower-st-glute-pigeon-lite": "pigeon pose",
+  "full-wu-arm-leg-swing": "standing arm leg swing",
+  "full-wu-goblet-hold-squat": "goblet squat",
+  "full-st-db-rdl": "dumbbell romanian deadlift",
+  "full-st-db-squat-to-press": "dumbbell squat to press",
+  "full-st-mountain-climber-slow": "mountain climber",
+  "full-st-low-impact-jack": "low impact jumping jack",
+  "full-ca-elliptical-steady": "elliptical trainer",
+  "full-st-hamstring-stretch": "hamstring stretch",
+  "full-st-thoracic-open": "thoracic open book",
+  "period-wu-cat-cow": "cat cow stretch",
+  "period-wu-easy-walk": "walking",
+  "period-st-wall-sit-shallow": "wall sit",
+  "period-st-clamshell": "clamshell exercise",
+  "period-st-pelvic-tilt-supine": "supine pelvic tilt",
+  "period-ca-walk-talk-test": "walking",
+  "period-st-child-pose": "child pose",
+  "period-st-supine-spinal-twist": "supine spinal twist",
+};
+
+function getMediaSearchQuery(exercise: ExecExercise): string {
+  return (
+    exercise.mediaSearchQuery?.trim() ||
+    exercise.englishName?.trim() ||
+    exercise.slug?.trim() ||
+    exerciseMediaSearchQueries[exercise.id] ||
+    exercise.name
+  );
+}
+
 function toExecFromTemplate(ex: TemplateWorkoutExercise): ExecExercise {
   return {
     id: ex.id,
     name: ex.name,
+    mediaSearchQuery: ex.mediaSearchQuery,
+    englishName: ex.englishName,
+    slug: ex.slug,
     sets: ex.sets,
     reps: ex.reps,
     visualPlaceholder: ex.visualPlaceholder,
@@ -52,6 +130,9 @@ function toExecFromTemplate(ex: TemplateWorkoutExercise): ExecExercise {
 function toExecFromStatic(ex: {
   id: string;
   name: string;
+  mediaSearchQuery?: string;
+  englishName?: string;
+  slug?: string;
   sets: number;
   reps: string;
   visualPlaceholder: string;
@@ -63,6 +144,9 @@ function toExecFromStatic(ex: {
   return {
     id: ex.id,
     name: ex.name,
+    mediaSearchQuery: ex.mediaSearchQuery,
+    englishName: ex.englishName,
+    slug: ex.slug,
     sets: ex.sets,
     reps: ex.reps,
     visualPlaceholder: ex.visualPlaceholder,
@@ -123,7 +207,10 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   const [restSec, setRestSec] = useState(0);
   const [ticking, setTicking] = useState(false);
   const [equipmentOpen, setEquipmentOpen] = useState(false);
+  const [mediaByQuery, setMediaByQuery] = useState<Record<string, ExerciseMediaState>>({});
+  const [mediaAssetFailed, setMediaAssetFailed] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const requestedMediaQueriesRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     const staticPayload = initialStaticPayload();
@@ -164,7 +251,59 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   }, [templateId]);
 
   const currentExercise = exercises[exIdx];
+  const currentMediaQuery = currentExercise ? getMediaSearchQuery(currentExercise).trim() : "";
+  const currentMediaState: ExerciseMediaState =
+    currentMediaQuery && mediaByQuery[currentMediaQuery]
+      ? mediaByQuery[currentMediaQuery]
+      : { status: "idle", data: null };
+  const currentMedia =
+    currentMediaState.status === "ready" && !mediaAssetFailed ? currentMediaState.data : null;
   const restMap: Record<string, number> = { "30s": 30, "1min": 60, "3min": 180 };
+
+  useEffect(() => {
+    setMediaAssetFailed(false);
+    if (!currentMediaQuery) return;
+
+    if (requestedMediaQueriesRef.current.has(currentMediaQuery)) return;
+    requestedMediaQueriesRef.current.add(currentMediaQuery);
+
+    const controller = new AbortController();
+    setMediaByQuery((prev) => ({
+      ...prev,
+      [currentMediaQuery]: { status: "loading", data: null },
+    }));
+
+    async function loadMedia() {
+      try {
+        const response = await fetch(
+          `/api/exercises/media?name=${encodeURIComponent(currentMediaQuery)}`,
+          { signal: controller.signal },
+        );
+        const payload = (await response.json()) as {
+          success?: boolean;
+          data?: ExerciseMedia | null;
+        };
+
+        if (!response.ok || payload.success === false) {
+          throw new Error("Exercise media request failed");
+        }
+
+        setMediaByQuery((prev) => ({
+          ...prev,
+          [currentMediaQuery]: { status: "ready", data: payload.data ?? null },
+        }));
+      } catch {
+        if (controller.signal.aborted) return;
+        setMediaByQuery((prev) => ({
+          ...prev,
+          [currentMediaQuery]: { status: "error", data: null },
+        }));
+      }
+    }
+
+    loadMedia();
+    return () => controller.abort();
+  }, [currentMediaQuery]);
 
   const finalizeCurrentSet = useCallback(() => {
     setCompletedSets((prev) => (prev.includes(currentSet) ? prev : [...prev, currentSet]));
@@ -265,8 +404,38 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
         <div className="exec-main">
           <div className="ex-name">{currentExercise.name}</div>
           <div className="ex-reps">{`${currentExercise.reps} · 共${currentExercise.sets}组`}</div>
-          <div className="ex-anim">
-            <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
+          <div
+            className={`ex-anim ${
+              currentMediaState.status === "loading" ? "is-loading" : currentMedia ? "has-media" : ""
+            }`}
+          >
+            {currentMediaState.status === "loading" && (
+              <div className="exercise-media-skeleton" aria-label="动作媒体加载中" />
+            )}
+            {currentMedia?.videoUrl && (
+              <video
+                className="exercise-media"
+                src={currentMedia.videoUrl}
+                poster={currentMedia.imageUrl}
+                controls
+                muted
+                playsInline
+                preload="metadata"
+                onError={() => setMediaAssetFailed(true)}
+              />
+            )}
+            {!currentMedia?.videoUrl && currentMedia?.imageUrl && (
+              <img
+                className="exercise-media"
+                src={currentMedia.imageUrl}
+                alt={`${currentExercise.name} 动作示意`}
+                loading="lazy"
+                onError={() => setMediaAssetFailed(true)}
+              />
+            )}
+            {currentMediaState.status !== "loading" && !currentMedia && (
+              <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
+            )}
           </div>
           <div className="set-progress-title">组数进度</div>
           <div className="sets-row">

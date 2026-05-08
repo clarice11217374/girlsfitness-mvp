@@ -586,6 +586,24 @@ body {
   justify-content: center;
   border: none;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.44);
+  overflow: hidden;
+  position: relative;
+}
+.ex-anim.has-media { background: #f5f3fa; box-shadow: 0 10px 24px rgba(74,63,92,.08); }
+.exercise-media { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+.exercise-media-skeleton {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.62) 42%, rgba(255,255,255,.16) 84%),
+    linear-gradient(135deg, #f5f3fa 0%, #f5e8ef 100%);
+  background-size: 180% 100%, 100% 100%;
+  animation: exercise-media-shimmer 1.25s ease-in-out infinite;
+}
+@keyframes exercise-media-shimmer {
+  0% { background-position: 120% 0, 0 0; }
+  100% { background-position: -120% 0, 0 0; }
 }
 .exercise-placeholder-text { font-size: 13px; color: rgba(26,26,26,.28); font-weight: 500; letter-spacing: .01em; text-align: center; line-height: 1.45; padding: 0 16px; max-width: 100%; }
 .set-progress-title {

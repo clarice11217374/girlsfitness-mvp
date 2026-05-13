@@ -174,6 +174,212 @@ const EXEC_PREMIUM_CSS = `
 }
 .exec-premium .ex-reps { font-size: 13px; font-weight: 600; opacity: 0.5; margin-bottom: 16px; }
 
+.exec-premium .move-info-card {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", system-ui, sans-serif;
+  margin-bottom: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 20px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 8px 28px rgba(15, 23, 42, 0.06);
+}
+.exec-premium .move-info-card-inner {
+  padding: 20px 20px 16px;
+}
+.exec-premium .move-info-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5b5568;
+  margin-bottom: 14px;
+}
+.exec-premium .move-info-tips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.exec-premium .move-info-tips li {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(42, 31, 56, 0.78);
+  padding-left: 15px;
+  position: relative;
+}
+.exec-premium .move-info-tips li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(0.775em - 2.5px);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(75, 50, 107, 0.35);
+}
+.exec-premium .move-info-tips li.move-info-tip-breath {
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(91, 85, 104, 0.88);
+  padding-top: 0;
+}
+.exec-premium .move-info-tips li.move-info-tip-breath::before {
+  top: calc(0.775em - 2.5px);
+  background: rgba(91, 85, 104, 0.25);
+}
+.exec-premium .move-info-divider {
+  height: 1px;
+  margin: 20px 0 4px;
+  background: rgba(15, 23, 42, 0.05);
+}
+.exec-premium .move-info-equip-row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 12px 4px;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 12px;
+  transition: background 0.18s ease;
+}
+.exec-premium .move-info-equip-row:hover {
+  background: rgba(15, 23, 42, 0.03);
+}
+.exec-premium .move-info-equip-row:active {
+  background: rgba(75, 50, 107, 0.06);
+}
+.exec-premium .move-info-equip-row:focus-visible {
+  outline: 2px solid rgba(75, 50, 107, 0.35);
+  outline-offset: 2px;
+}
+.exec-premium .move-info-equip-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(111, 76, 255, 0.08);
+  color: #4b326b;
+}
+.exec-premium .move-info-equip-icon-svg {
+  width: 22px;
+  height: 22px;
+}
+.exec-premium .move-info-equip-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.exec-premium .move-info-equip-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #2a1f38;
+  line-height: 1.35;
+}
+.exec-premium .move-info-equip-sub {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: rgba(91, 85, 104, 0.72);
+}
+.exec-premium .move-info-equip-chevron {
+  flex-shrink: 0;
+  margin-left: auto;
+  font-size: 18px;
+  font-weight: 500;
+  color: rgba(91, 85, 104, 0.38);
+  line-height: 1;
+  transition: transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1), color 0.2s ease;
+}
+.exec-premium .move-info-equip-row[aria-expanded="true"] .move-info-equip-chevron {
+  transform: rotate(90deg);
+  color: rgba(75, 50, 107, 0.45);
+}
+.exec-premium .move-info-equip-detail {
+  display: block;
+  overflow: hidden;
+  max-height: none;
+  opacity: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  pointer-events: auto;
+}
+.exec-premium .move-info-equip-detail-inner {
+  margin-top: 10px;
+  padding: 10px 0 18px;
+  border-top: 1px solid rgba(15, 23, 42, 0.07);
+}
+.exec-premium .move-info-equip-detail .equip-setup {
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(42, 31, 56, 0.72);
+}
+.exec-premium .move-info-equip-detail .equip-row {
+  margin-bottom: 12px;
+}
+.exec-premium .move-info-equip-detail .equip-row:last-child {
+  margin-bottom: 0;
+}
+.exec-premium .move-info-equip-detail strong {
+  font-weight: 600;
+  color: rgba(42, 31, 56, 0.88);
+}
+
+.exec-premium .exec-reminder-card {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", system-ui, sans-serif;
+  margin-bottom: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 20px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 8px 28px rgba(15, 23, 42, 0.06);
+  padding: 20px 20px 18px;
+}
+.exec-premium .exec-reminder-card .guide-title {
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5b5568;
+  margin-bottom: 14px;
+}
+.exec-premium .exec-reminder-card .guide-item {
+  margin-bottom: 12px;
+}
+.exec-premium .exec-reminder-card .guide-item:last-child {
+  margin-bottom: 0;
+}
+.exec-premium .exec-reminder-card .guide-text {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: rgba(42, 31, 56, 0.78);
+}
+.exec-premium .exec-reminder-card .guide-text strong {
+  font-weight: 600;
+  color: rgba(42, 31, 56, 0.9);
+}
+
 .exec-premium .exec-floating-dock {
   position: absolute;
   left: 14px;
@@ -711,66 +917,93 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
             <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
           </div>
 
-          <div className="guide-card">
-            <div className="guide-title">动作指引</div>
-            <div className="guide-item">
-              <div className="guide-text">
-                <strong>1.</strong> {currentExercise.actionGuide.step1}
-              </div>
-            </div>
-            <div className="guide-item">
-              <div className="guide-text">
-                <strong>2.</strong> {currentExercise.actionGuide.step2}
-              </div>
-            </div>
-            <div className="guide-item">
-              <div className="guide-text">
-                <strong>3.</strong> {currentExercise.actionGuide.step3}
-              </div>
-            </div>
-            <div className="guide-item">
-              <div className="guide-text">
-                <strong>呼吸：</strong>
-                {currentExercise.actionGuide.breathing}
-              </div>
+          <div className="move-info-card">
+            <div className="move-info-card-inner">
+              <section className="move-info-guide" aria-labelledby="move-info-guide-title">
+                <div id="move-info-guide-title" className="move-info-section-title">
+                  动作指引
+                </div>
+                <ul className="move-info-tips">
+                  <li>{currentExercise.actionGuide.step1}</li>
+                  <li>{currentExercise.actionGuide.step2}</li>
+                  <li>{currentExercise.actionGuide.step3}</li>
+                  <li className="move-info-tip-breath">呼吸：{currentExercise.actionGuide.breathing}</li>
+                </ul>
+              </section>
+
+              <div className="move-info-divider" role="presentation" />
+
+              <button
+                type="button"
+                className="move-info-equip-row"
+                aria-expanded={equipmentOpen}
+                onClick={() => setEquipmentOpen((v) => !v)}
+              >
+                <div className="move-info-equip-icon" aria-hidden>
+                  <svg
+                    className="move-info-equip-icon-svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12h2.5M16.5 12H19"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                    <rect
+                      x="7.5"
+                      y="9"
+                      width="9"
+                      height="6"
+                      rx="1.5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                </div>
+                <div className="move-info-equip-text">
+                  <div className="move-info-equip-title">器械介绍</div>
+                  <div className="move-info-equip-sub">查看座椅、握法和重量设置</div>
+                </div>
+                <span className="move-info-equip-chevron" aria-hidden>
+                  ›
+                </span>
+              </button>
+
+              {equipmentOpen && (
+                <div className="move-info-equip-detail is-open">
+                  <div className="move-info-equip-detail-inner">
+                    <div className="equip-setup">
+                      <div className="equip-row">
+                        <strong>认机器：</strong>
+                        {currentExercise.equipmentGuide.machineIntro}
+                      </div>
+                      <div className="equip-row">
+                        <strong>调座椅 / 站位：</strong>
+                        {currentExercise.equipmentGuide.seatSetup}
+                      </div>
+                      <div className="equip-row">
+                        <strong>姿态：</strong>
+                        {currentExercise.equipmentGuide.postureSetup}
+                      </div>
+                      <div className="equip-row">
+                        <strong>握法：</strong>
+                        {currentExercise.equipmentGuide.gripSetup}
+                      </div>
+                      <div className="equip-row">
+                        <strong>重量：</strong>
+                        {currentExercise.equipmentGuide.weightTip}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className={`equip-panel ${equipmentOpen ? "open" : ""}`}>
-            <button className="equip-toggle" type="button" onClick={() => setEquipmentOpen((v) => !v)}>
-              <span>
-                <span className="equip-hint-lbl">器械不会用？查看座椅、握法和重量设置</span>
-              </span>
-              <span className="equip-hint-arrow">{equipmentOpen ? "▾" : "▸"}</span>
-            </button>
-
-            {equipmentOpen && (
-              <div className="equip-setup">
-                <div className="equip-row">
-                  <strong>认机器：</strong>
-                  {currentExercise.equipmentGuide.machineIntro}
-                </div>
-                <div className="equip-row">
-                  <strong>调座椅 / 站位：</strong>
-                  {currentExercise.equipmentGuide.seatSetup}
-                </div>
-                <div className="equip-row">
-                  <strong>姿态：</strong>
-                  {currentExercise.equipmentGuide.postureSetup}
-                </div>
-                <div className="equip-row">
-                  <strong>握法：</strong>
-                  {currentExercise.equipmentGuide.gripSetup}
-                </div>
-                <div className="equip-row">
-                  <strong>重量：</strong>
-                  {currentExercise.equipmentGuide.weightTip}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="guide-card">
+          <div className="guide-card exec-reminder-card">
             <div className="guide-title">训练提醒</div>
             <div className="guide-item">
               <div className="guide-text">

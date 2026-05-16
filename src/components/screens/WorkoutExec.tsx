@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { StatusBar } from "@/components/StatusBar";
@@ -45,7 +45,7 @@ type ExerciseMediaState =
   | { status: "error"; data: null };
 
 const exerciseMediaSearchQueries: Record<string, string> = {
-  // 保留 UI-syh 里面这一整大段 mapping
+  // 淇濈暀 UI-syh 閲岄潰杩欎竴鏁村ぇ娈?mapping
 };
 
 function getMediaSearchQuery(exercise: ExecExercise): string {
@@ -167,7 +167,7 @@ function fmt(s: number): string {
   return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 }
 
-/** UI-only：执行页高端风格，勿改选择器前缀 `.exec-premium` */
+/** UI-only锛氭墽琛岄〉楂樼椋庢牸锛屽嬁鏀归€夋嫨鍣ㄥ墠缂€ `.exec-premium` */
 const EXEC_PREMIUM_CSS = `
 .exec-premium.exec-page {
   position: relative;
@@ -799,7 +799,6 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   }, [templateId]);
 
   const currentExercise = exercises[exIdx];
-  const currentExercise = exercises[exIdx];
 
   const currentMediaQuery = currentExercise ? getMediaSearchQuery(currentExercise).trim() : "";
   const currentMediaState: ExerciseMediaState =
@@ -860,7 +859,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   );
 
   const currentPhaseLabel = phasePlan[phaseIdx]?.label ?? "";
-  const isStrengthPhase = currentPhaseLabel === "力量";
+  const isStrengthPhase = currentPhaseLabel === "鍔涢噺";
 
   const shouldUseWeight =
     !!currentExercise &&
@@ -976,8 +975,8 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
 
       <div className="exec-top">
         <StatusBar style={{ padding: "0 0 10px" }} />
-        <button className="exec-back" type="button" aria-label="返回" onClick={() => onBack?.()}>
-          ←
+        <button className="exec-back" type="button" aria-label="杩斿洖" onClick={() => onBack?.()}>
+          鈫?
         </button>
 
         <div className="phase-track">
@@ -1006,7 +1005,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
             }`}
           >
             {currentMediaState.status === "loading" && (
-              <div className="exercise-media-skeleton" aria-label="动作媒体加载中" />
+              <div className="exercise-media-skeleton" aria-label="Loading exercise media" />
             )}
             {currentMedia?.videoUrl && (
               <video
@@ -1033,13 +1032,12 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
               <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
             )}
           </div>
-          </div>
 
           <div className="move-info-card">
             <div className="move-info-card-inner">
               <section className="move-info-guide" aria-labelledby="move-info-guide-title">
                 <div id="move-info-guide-title" className="move-info-section-title">
-                  动作指引
+                  鍔ㄤ綔鎸囧紩
                 </div>
                 <ul className="move-info-tips">
                   <li>{currentExercise.actionGuide.step1}</li>
@@ -1086,7 +1084,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
                   <div className="move-info-equip-sub">查看座椅、握法和重量设置</div>
                 </div>
                 <span className="move-info-equip-chevron" aria-hidden>
-                  ›
+                  鈥?
                 </span>
               </button>
 
@@ -1095,7 +1093,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
                   <div className="move-info-equip-detail-inner">
                     <div className="equip-setup">
                       <div className="equip-row">
-                        <strong>认机器：</strong>
+                        <strong>认识器械：</strong>
                         {currentExercise.equipmentGuide.machineIntro}
                       </div>
                       <div className="equip-row">
@@ -1131,7 +1129,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
             </div>
             <div className="guide-item">
               <div className="guide-text">
-                <strong>平替：</strong>
+                <strong>替代：</strong>
                 {currentExercise.alternative}
               </div>
             </div>
@@ -1195,7 +1193,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
         <div className="exec-rest-row">
           <div className="rest-timer-card" onClick={() => !ticking && setRestPickerOpen((v) => !v)}>
             <div className="rest-timer-icon-wrap" aria-hidden>
-              <span className="rest-timer-icon">⏱</span>
+              <span className="rest-timer-icon">铃</span>
             </div>
             <div className="rest-timer-text">
               <div className="rest-display-label">{ticking ? "休息中" : "休息闹钟"}</div>

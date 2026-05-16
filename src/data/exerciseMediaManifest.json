@@ -1,0 +1,370 @@
+{
+  "warmup-shoulder-circle": {
+    "source": "free-exercise-db",
+    "searchQuery": "shoulder circles",
+    "matchedName": "Shoulder Circles",
+    "mediaType": "image",
+    "imageUrl": "/exercises/warmup-shoulder-circle.jpg"
+  },
+  "warmup-scap-activation": {
+    "source": "free-exercise-db",
+    "searchQuery": "scapular activation",
+    "matchedName": "Scapular Pull-Up",
+    "mediaType": "image",
+    "imageUrl": "/exercises/warmup-scap-activation.jpg"
+  },
+  "strength-machine-chest-press": {
+    "source": "free-exercise-db",
+    "searchQuery": "machine chest press",
+    "matchedName": "Cable Chest Press",
+    "mediaType": "image",
+    "imageUrl": "/exercises/strength-machine-chest-press.jpg"
+  },
+  "strength-dumbbell-shoulder-press": {
+    "source": "free-exercise-db",
+    "searchQuery": "dumbbell shoulder press",
+    "matchedName": "Dumbbell One-Arm Shoulder Press",
+    "mediaType": "image",
+    "imageUrl": "/exercises/strength-dumbbell-shoulder-press.jpg"
+  },
+  "strength-cable-pushdown": {
+    "source": "free-exercise-db",
+    "searchQuery": "cable triceps pushdown",
+    "matchedName": "Cable Incline Pushdown",
+    "mediaType": "image",
+    "imageUrl": "/exercises/strength-cable-pushdown.jpg"
+  },
+  "strength-incline-pushup": {
+    "source": "free-exercise-db",
+    "searchQuery": "incline push up",
+    "matchedName": "Incline Push-Up",
+    "mediaType": "image",
+    "imageUrl": "/exercises/strength-incline-pushup.jpg"
+  },
+  "cardio-elliptical": {
+    "source": "free-exercise-db",
+    "searchQuery": "elliptical trainer",
+    "matchedName": "Elliptical Trainer",
+    "mediaType": "image",
+    "imageUrl": "/exercises/cardio-elliptical.jpg"
+  },
+  "stretch-chest": {
+    "source": "free-exercise-db",
+    "searchQuery": "chest stretch",
+    "matchedName": "Behind Head Chest Stretch",
+    "mediaType": "image",
+    "imageUrl": "/exercises/stretch-chest.jpg"
+  },
+  "stretch-front-delt": {
+    "source": "free-exercise-db",
+    "searchQuery": "front shoulder stretch",
+    "matchedName": "Chest And Front Of Shoulder Stretch",
+    "mediaType": "image",
+    "imageUrl": "/exercises/stretch-front-delt.jpg"
+  },
+  "up-push-wu-shoulder-circles": {
+    "source": "free-exercise-db",
+    "searchQuery": "shoulder circles",
+    "matchedName": "Shoulder Circles",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-push-wu-shoulder-circles.jpg"
+  },
+  "up-push-wu-scapula-activation": {
+    "source": "free-exercise-db",
+    "searchQuery": "scapular activation",
+    "matchedName": "Scapular Pull-Up",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-push-wu-scapula-activation.jpg"
+  },
+  "up-push-st-machine-chest-press": {
+    "source": "free-exercise-db",
+    "searchQuery": "machine chest press",
+    "matchedName": "Cable Chest Press",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-push-st-machine-chest-press.jpg"
+  },
+  "up-push-st-dumbbell-shoulder-press": {
+    "source": "free-exercise-db",
+    "searchQuery": "dumbbell shoulder press",
+    "matchedName": "Dumbbell One-Arm Shoulder Press",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-push-st-dumbbell-shoulder-press.jpg"
+  },
+  "up-push-st-cable-triceps-pushdown": {
+    "source": "free-exercise-db",
+    "searchQuery": "cable triceps pushdown",
+    "matchedName": "Cable Incline Pushdown",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-push-st-cable-triceps-pushdown.jpg"
+  },
+  "up-push-st-incline-push-up": {
+    "source": "free-exercise-db",
+    "searchQuery": "incline push up",
+    "matchedName": "Incline Push-Up",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-push-st-incline-push-up.jpg"
+  },
+  "up-push-ca-elliptical-easy": {
+    "source": "free-exercise-db",
+    "searchQuery": "elliptical trainer",
+    "matchedName": "Elliptical Trainer",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-push-ca-elliptical-easy.jpg"
+  },
+  "up-push-st-chest-stretch": {
+    "source": "free-exercise-db",
+    "searchQuery": "chest stretch",
+    "matchedName": "Behind Head Chest Stretch",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-push-st-chest-stretch.jpg"
+  },
+  "up-push-st-front-shoulder-stretch": {
+    "source": "free-exercise-db",
+    "searchQuery": "front shoulder stretch",
+    "matchedName": "Chest And Front Of Shoulder Stretch",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-push-st-front-shoulder-stretch.jpg"
+  },
+  "up-pull-wu-band-pull-apart": {
+    "source": "free-exercise-db",
+    "searchQuery": "band pull apart",
+    "matchedName": "Band Pull Apart",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-pull-wu-band-pull-apart.jpg"
+  },
+  "up-pull-wu-dead-hang-light": {
+    "source": "free-exercise-db",
+    "searchQuery": "dead hang",
+    "matchedName": "Alternating Hang Clean",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-pull-wu-dead-hang-light.jpg"
+  },
+  "up-pull-st-lat-pulldown": {
+    "source": "free-exercise-db",
+    "searchQuery": "lat pulldown",
+    "matchedName": "Close-Grip Front Lat Pulldown",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-pull-st-lat-pulldown.jpg"
+  },
+  "up-pull-st-seated-cable-row": {
+    "source": "free-exercise-db",
+    "searchQuery": "seated cable row",
+    "matchedName": "Cable Seated Crunch",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-pull-st-seated-cable-row.jpg"
+  },
+  "up-pull-st-face-pull": {
+    "source": "free-exercise-db",
+    "searchQuery": "face pull",
+    "matchedName": "Face Pull",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-pull-st-face-pull.jpg"
+  },
+  "up-pull-st-dumbbell-curl": {
+    "source": "free-exercise-db",
+    "searchQuery": "dumbbell biceps curl",
+    "matchedName": "Seated Dumbbell Inner Biceps Curl",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-pull-st-dumbbell-curl.jpg"
+  },
+  "up-pull-ca-rower-easy": {
+    "source": "free-exercise-db",
+    "searchQuery": "rowing machine",
+    "matchedName": "Ab Crunch Machine",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-pull-ca-rower-easy.jpg"
+  },
+  "up-pull-st-lat-stretch": {
+    "source": "free-exercise-db",
+    "searchQuery": "lat stretch",
+    "matchedName": "All Fours Quad Stretch",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-pull-st-lat-stretch.jpg"
+  },
+  "up-pull-st-biceps-stretch": {
+    "source": "free-exercise-db",
+    "searchQuery": "biceps stretch",
+    "matchedName": "Standing Biceps Stretch",
+    "mediaType": "image",
+    "imageUrl": "/exercises/up-pull-st-biceps-stretch.jpg"
+  },
+  "lower-wu-hip-circle": {
+    "source": "free-exercise-db",
+    "searchQuery": "hip circles",
+    "matchedName": "Hip Circles (prone)",
+    "mediaType": "image",
+    "imageUrl": "/exercises/lower-wu-hip-circle.jpg"
+  },
+  "lower-wu-bodyweight-squat": {
+    "source": "free-exercise-db",
+    "searchQuery": "bodyweight squat",
+    "matchedName": "Bodyweight Squat",
+    "mediaType": "image",
+    "imageUrl": "/exercises/lower-wu-bodyweight-squat.jpg"
+  },
+  "lower-st-leg-press": {
+    "source": "free-exercise-db",
+    "searchQuery": "leg press",
+    "matchedName": "Calf Press On The Leg Press Machine",
+    "mediaType": "image",
+    "imageUrl": "/exercises/lower-st-leg-press.jpg"
+  },
+  "lower-st-hip-abduction": {
+    "source": "free-exercise-db",
+    "searchQuery": "hip abduction",
+    "matchedName": "Band Hip Adductions",
+    "mediaType": "image",
+    "imageUrl": "/exercises/lower-st-hip-abduction.jpg"
+  },
+  "lower-st-leg-curl": {
+    "source": "free-exercise-db",
+    "searchQuery": "leg curl",
+    "matchedName": "Ball Leg Curl",
+    "mediaType": "image",
+    "imageUrl": "/exercises/lower-st-leg-curl.jpg"
+  },
+  "lower-st-dead-bug": {
+    "source": "free-exercise-db",
+    "searchQuery": "dead bug",
+    "matchedName": "Dead Bug",
+    "mediaType": "image",
+    "imageUrl": "/exercises/lower-st-dead-bug.jpg"
+  },
+  "lower-ca-elliptical-recovery": {
+    "source": "free-exercise-db",
+    "searchQuery": "elliptical trainer",
+    "matchedName": "Elliptical Trainer",
+    "mediaType": "image",
+    "imageUrl": "/exercises/lower-ca-elliptical-recovery.jpg"
+  },
+  "lower-st-quad-stretch": {
+    "source": "free-exercise-db",
+    "searchQuery": "quadriceps stretch",
+    "matchedName": "All Fours Quad Stretch",
+    "mediaType": "image",
+    "imageUrl": "/exercises/lower-st-quad-stretch.jpg"
+  },
+  "lower-st-glute-pigeon-lite": {
+    "source": "free-exercise-db",
+    "searchQuery": "pigeon pose",
+    "matchedName": "Child's Pose",
+    "mediaType": "image",
+    "imageUrl": "/exercises/lower-st-glute-pigeon-lite.jpg"
+  },
+  "full-wu-arm-leg-swing": {
+    "source": "free-exercise-db",
+    "searchQuery": "standing arm leg swing",
+    "matchedName": "Standing Bent-Over One-Arm Dumbbell Triceps Extension",
+    "mediaType": "image",
+    "imageUrl": "/exercises/full-wu-arm-leg-swing.jpg"
+  },
+  "full-wu-goblet-hold-squat": {
+    "source": "free-exercise-db",
+    "searchQuery": "goblet squat",
+    "matchedName": "Goblet Squat",
+    "mediaType": "image",
+    "imageUrl": "/exercises/full-wu-goblet-hold-squat.jpg"
+  },
+  "full-st-db-rdl": {
+    "source": "free-exercise-db",
+    "searchQuery": "dumbbell romanian deadlift",
+    "matchedName": "Romanian Deadlift",
+    "mediaType": "image",
+    "imageUrl": "/exercises/full-st-db-rdl.jpg"
+  },
+  "full-st-db-squat-to-press": {
+    "source": "free-exercise-db",
+    "searchQuery": "dumbbell squat to press",
+    "matchedName": "Dumbbell Squat To A Bench",
+    "mediaType": "image",
+    "imageUrl": "/exercises/full-st-db-squat-to-press.jpg"
+  },
+  "full-st-mountain-climber-slow": {
+    "source": "free-exercise-db",
+    "searchQuery": "mountain climber",
+    "matchedName": "Mountain Climbers",
+    "mediaType": "image",
+    "imageUrl": "/exercises/full-st-mountain-climber-slow.jpg"
+  },
+  "full-st-low-impact-jack": {
+    "imageUrl": "/gallery/6.png",
+    "searchQuery": "low impact jumping jack",
+    "mediaType": "image",
+    "source": "gallery-fallback"
+  },
+  "full-ca-elliptical-steady": {
+    "source": "free-exercise-db",
+    "searchQuery": "elliptical trainer",
+    "matchedName": "Elliptical Trainer",
+    "mediaType": "image",
+    "imageUrl": "/exercises/full-ca-elliptical-steady.jpg"
+  },
+  "full-st-hamstring-stretch": {
+    "source": "free-exercise-db",
+    "searchQuery": "hamstring stretch",
+    "matchedName": "Hamstring Stretch",
+    "mediaType": "image",
+    "imageUrl": "/exercises/full-st-hamstring-stretch.jpg"
+  },
+  "full-st-thoracic-open": {
+    "imageUrl": "/gallery/2.png",
+    "searchQuery": "thoracic open book",
+    "mediaType": "image",
+    "source": "gallery-fallback"
+  },
+  "period-wu-cat-cow": {
+    "source": "free-exercise-db",
+    "searchQuery": "cat cow stretch",
+    "matchedName": "Cat Stretch",
+    "mediaType": "image",
+    "imageUrl": "/exercises/period-wu-cat-cow.jpg"
+  },
+  "period-wu-easy-walk": {
+    "source": "free-exercise-db",
+    "searchQuery": "walking",
+    "matchedName": "Barbell Walking Lunge",
+    "mediaType": "image",
+    "imageUrl": "/exercises/period-wu-easy-walk.jpg"
+  },
+  "period-st-wall-sit-shallow": {
+    "source": "free-exercise-db",
+    "searchQuery": "wall sit",
+    "matchedName": "3/4 Sit-Up",
+    "mediaType": "image",
+    "imageUrl": "/exercises/period-st-wall-sit-shallow.jpg"
+  },
+  "period-st-clamshell": {
+    "source": "free-exercise-db",
+    "searchQuery": "clamshell exercise",
+    "matchedName": "Crunch - Legs On Exercise Ball",
+    "mediaType": "image",
+    "imageUrl": "/exercises/period-st-clamshell.jpg"
+  },
+  "period-st-pelvic-tilt-supine": {
+    "source": "free-exercise-db",
+    "searchQuery": "supine pelvic tilt",
+    "matchedName": "Pelvic Tilt Into Bridge",
+    "mediaType": "image",
+    "imageUrl": "/exercises/period-st-pelvic-tilt-supine.jpg"
+  },
+  "period-ca-walk-talk-test": {
+    "source": "free-exercise-db",
+    "searchQuery": "walking",
+    "matchedName": "Barbell Walking Lunge",
+    "mediaType": "image",
+    "imageUrl": "/exercises/period-ca-walk-talk-test.jpg"
+  },
+  "period-st-child-pose": {
+    "source": "free-exercise-db",
+    "searchQuery": "child pose",
+    "matchedName": "Child's Pose",
+    "mediaType": "image",
+    "imageUrl": "/exercises/period-st-child-pose.jpg"
+  },
+  "period-st-supine-spinal-twist": {
+    "imageUrl": "/gallery/7.png",
+    "searchQuery": "supine spinal twist",
+    "mediaType": "image",
+    "source": "gallery-fallback"
+  }
+}

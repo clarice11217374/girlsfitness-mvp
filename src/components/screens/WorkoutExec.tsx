@@ -15,7 +15,7 @@ import {
   getWorkoutTemplateById,
   type WorkoutExercise as TemplateWorkoutExercise,
 } from "@/data/workoutTemplates";
-import type { ExerciseMedia } from "@/types/exerciseMedia";
+import type { ExerciseMediaType } from "@/data/exerciseMediaManifest";
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
 import { writeWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
 
@@ -24,9 +24,9 @@ type Props = { onDone: () => void; templateId?: string | null; onBack?: () => vo
 type ExecExercise = {
   id: string;
   name: string;
-  mediaSearchQuery?: string;
-  englishName?: string;
-  slug?: string;
+  imageUrl?: string;
+  videoUrl?: string;
+  mediaType?: ExerciseMediaType;
   sets: number;
   reps: string;
   visualPlaceholder: string;
@@ -38,25 +38,6 @@ type ExecExercise = {
 };
 
 type PhasePlanRow = { label: string; exerciseIndexes: number[] };
-
-type ExerciseMediaState =
-  | { status: "idle" | "loading"; data: null }
-  | { status: "ready"; data: ExerciseMedia | null }
-  | { status: "error"; data: null };
-
-const exerciseMediaSearchQueries: Record<string, string> = {
-  // 淇濈暀 UI-syh 閲岄潰杩欎竴鏁村ぇ娈?mapping
-};
-
-function getMediaSearchQuery(exercise: ExecExercise): string {
-  return (
-    exercise.mediaSearchQuery?.trim() ||
-    exercise.englishName?.trim() ||
-    exercise.slug?.trim() ||
-    exerciseMediaSearchQueries[exercise.id] ||
-    exercise.name
-  );
-}
 
 const restOptions = [
   { label: "45s", seconds: 45 },
@@ -71,9 +52,9 @@ function toExecFromTemplate(ex: TemplateWorkoutExercise): ExecExercise {
   return {
     id: ex.id,
     name: ex.name,
-    mediaSearchQuery: ex.mediaSearchQuery,
-    englishName: ex.englishName,
-    slug: ex.slug,
+    imageUrl: ex.imageUrl,
+    videoUrl: ex.videoUrl,
+    mediaType: ex.mediaType,
     sets: ex.sets,
     reps: ex.reps,
     visualPlaceholder: ex.visualPlaceholder,
@@ -88,9 +69,9 @@ function toExecFromTemplate(ex: TemplateWorkoutExercise): ExecExercise {
 function toExecFromStatic(ex: {
   id: string;
   name: string;
-  mediaSearchQuery?: string;
-  englishName?: string;
-  slug?: string;
+  imageUrl?: string;
+  videoUrl?: string;
+  mediaType?: ExerciseMediaType;
   sets: number;
   reps: string;
   visualPlaceholder: string;
@@ -103,9 +84,9 @@ function toExecFromStatic(ex: {
   return {
     id: ex.id,
     name: ex.name,
-    mediaSearchQuery: ex.mediaSearchQuery,
-    englishName: ex.englishName,
-    slug: ex.slug,
+    imageUrl: ex.imageUrl,
+    videoUrl: ex.videoUrl,
+    mediaType: ex.mediaType,
     sets: ex.sets,
     reps: ex.reps,
     visualPlaceholder: ex.visualPlaceholder,
@@ -167,7 +148,7 @@ function fmt(s: number): string {
   return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 }
 
-/** UI-only锛氭墽琛岄〉楂樼椋庢牸锛屽嬁鏀归€夋嫨鍣ㄥ墠缂€ `.exec-premium` */
+/** UI-only: premium exec layout; keep selector prefix `.exec-premium`. */
 const EXEC_PREMIUM_CSS = `
 .exec-premium.exec-page {
   position: relative;
@@ -175,9 +156,9 @@ const EXEC_PREMIUM_CSS = `
   flex-direction: column;
   width: 100%;
   max-width: 430px;
-  height: 100dvh;
-  min-height: 100dvh;
-  max-height: 100dvh;
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
   margin: 0 auto;
   padding-bottom: 0;
   overflow: hidden;
@@ -194,7 +175,7 @@ const EXEC_PREMIUM_CSS = `
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 8px 20px 210px;
+  padding: 8px 20px calc(220px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
 }
 .exec-premium .exec-main { padding: 18px 12px 14px; border-radius: 26px; }
@@ -417,7 +398,7 @@ const EXEC_PREMIUM_CSS = `
   position: absolute;
   left: 14px;
   right: 14px;
-  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
   z-index: 20;
   max-width: 100%;
   box-sizing: border-box;
@@ -751,10 +732,8 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   const [ticking, setTicking] = useState(false);
   const [restPickerOpen, setRestPickerOpen] = useState(false);
   const [equipmentOpen, setEquipmentOpen] = useState(false);
-  const [mediaByQuery, setMediaByQuery] = useState<Record<string, ExerciseMediaState>>({});
   const [mediaAssetFailed, setMediaAssetFailed] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const requestedMediaQueriesRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     const staticPayload = initialStaticPayload();
@@ -800,58 +779,12 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
 
   const currentExercise = exercises[exIdx];
 
-  const currentMediaQuery = currentExercise ? getMediaSearchQuery(currentExercise).trim() : "";
-  const currentMediaState: ExerciseMediaState =
-    currentMediaQuery && mediaByQuery[currentMediaQuery]
-      ? mediaByQuery[currentMediaQuery]
-      : { status: "idle", data: null };
-  const currentMedia =
-    currentMediaState.status === "ready" && !mediaAssetFailed ? currentMediaState.data : null;
-
   useEffect(() => {
     setMediaAssetFailed(false);
-    if (!currentMediaQuery) return;
+  }, [exIdx, currentExercise?.id]);
 
-    if (requestedMediaQueriesRef.current.has(currentMediaQuery)) return;
-    requestedMediaQueriesRef.current.add(currentMediaQuery);
-
-    const controller = new AbortController();
-    setMediaByQuery((prev) => ({
-      ...prev,
-      [currentMediaQuery]: { status: "loading", data: null },
-    }));
-
-    async function loadMedia() {
-      try {
-        const response = await fetch(
-          `/api/exercises/media?name=${encodeURIComponent(currentMediaQuery)}`,
-          { signal: controller.signal },
-        );
-        const payload = (await response.json()) as {
-          success?: boolean;
-          data?: ExerciseMedia | null;
-        };
-
-        if (!response.ok || payload.success === false) {
-          throw new Error("Exercise media request failed");
-        }
-
-        setMediaByQuery((prev) => ({
-          ...prev,
-          [currentMediaQuery]: { status: "ready", data: payload.data ?? null },
-        }));
-      } catch {
-        if (controller.signal.aborted) return;
-        setMediaByQuery((prev) => ({
-          ...prev,
-          [currentMediaQuery]: { status: "error", data: null },
-        }));
-      }
-    }
-
-    loadMedia();
-    return () => controller.abort();
-  }, [currentMediaQuery]);
+  const showVideo = !!currentExercise?.videoUrl && !mediaAssetFailed;
+  const showImage = !showVideo && !!currentExercise?.imageUrl && !mediaAssetFailed;
 
   const phaseIdx = Math.max(
     0,
@@ -859,7 +792,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   );
 
   const currentPhaseLabel = phasePlan[phaseIdx]?.label ?? "";
-  const isStrengthPhase = currentPhaseLabel === "鍔涢噺";
+  const isStrengthPhase = currentPhaseLabel === "力量";
 
   const shouldUseWeight =
     !!currentExercise &&
@@ -975,8 +908,8 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
 
       <div className="exec-top">
         <StatusBar style={{ padding: "0 0 10px" }} />
-        <button className="exec-back" type="button" aria-label="杩斿洖" onClick={() => onBack?.()}>
-          鈫?
+        <button className="exec-back" type="button" aria-label="返回" onClick={() => onBack?.()}>
+          ←
         </button>
 
         <div className="phase-track">
@@ -1000,35 +933,31 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
           <div className="ex-reps">{subtitle}</div>
 
           <div
-            className={`ex-anim ${
-              currentMediaState.status === "loading" ? "is-loading" : currentMedia ? "has-media" : ""
-            }`}
+            className={`ex-anim ${showVideo || showImage ? "has-media" : ""}`}
           >
-            {currentMediaState.status === "loading" && (
-              <div className="exercise-media-skeleton" aria-label="Loading exercise media" />
-            )}
-            {currentMedia?.videoUrl && (
+            {showVideo && (
               <video
                 className="exercise-media"
-                src={currentMedia.videoUrl}
-                poster={currentMedia.imageUrl}
-                controls
+                src={currentExercise.videoUrl}
+                poster={currentExercise.imageUrl}
+                autoPlay
+                loop
                 muted
                 playsInline
                 preload="metadata"
                 onError={() => setMediaAssetFailed(true)}
               />
             )}
-            {!currentMedia?.videoUrl && currentMedia?.imageUrl && (
+            {showImage && (
               <img
                 className="exercise-media"
-                src={currentMedia.imageUrl}
-                alt={`${currentExercise.name} 动作示意`}
+                src={currentExercise.imageUrl}
+                alt={currentExercise.name}
                 loading="lazy"
                 onError={() => setMediaAssetFailed(true)}
               />
             )}
-            {currentMediaState.status !== "loading" && !currentMedia && (
+            {!showVideo && !showImage && (
               <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
             )}
           </div>
@@ -1037,7 +966,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
             <div className="move-info-card-inner">
               <section className="move-info-guide" aria-labelledby="move-info-guide-title">
                 <div id="move-info-guide-title" className="move-info-section-title">
-                  鍔ㄤ綔鎸囧紩
+                  动作要点
                 </div>
                 <ul className="move-info-tips">
                   <li>{currentExercise.actionGuide.step1}</li>
@@ -1084,7 +1013,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
                   <div className="move-info-equip-sub">查看座椅、握法和重量设置</div>
                 </div>
                 <span className="move-info-equip-chevron" aria-hidden>
-                  鈥?
+                  ›
                 </span>
               </button>
 

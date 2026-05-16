@@ -1,3 +1,5 @@
+import { withManifestMedia } from "@/data/exerciseMediaManifest";
+
 export type WorkoutPhase = "warmup" | "strength" | "cardio" | "stretch";
 
 export type CycleStatus = "period" | "not_period" | "uncertain";
@@ -31,6 +33,9 @@ export type WorkoutExercise = {
   mediaSearchQuery?: string;
   englishName?: string;
   slug?: string;
+  imageUrl?: string;
+  videoUrl?: string;
+  mediaType?: "image" | "gif" | "video";
   phase: WorkoutPhase;
   sets: number;
   reps: string;
@@ -1302,7 +1307,7 @@ export function getOrderedExercises(templateId = "upper-push-strength-day"): Wor
   const template =
     workoutTemplates.find((item) => item.meta.id === templateId) ?? workoutTemplates[0];
 
-  return phaseOrder.flatMap((phase) => template.workoutByPhase[phase]);
+  return phaseOrder.flatMap((phase) => template.workoutByPhase[phase]).map(withManifestMedia);
 }
 
 export function getPhasePlanForExec(templateId = "upper-push-strength-day") {

@@ -1,0 +1,1401 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/b46obf",
+    "id": "b46obf",
+    "slide": 7,
+    "layoutId": "1d00c54b-499a-4deb-a0f3-6455d5399ea5",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "2e48efcc-a62e-4993-86df-66703f3c901d",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Georgia",
+      "Microsoft YaHei UI"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "1d00c54b-499a-4deb-a0f3-6455d5399ea5",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "2e48efcc-a62e-4993-86df-66703f3c901d",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "2e48efcc-a62e-4993-86df-66703f3c901d",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t83itgfm",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#F8F1EA",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mhk3q5o7",
+      "id": "2",
+      "name": "kicker-07-marker",
+      "bbox": [
+        58,
+        54,
+        8,
+        8
+      ],
+      "geometry": "rect",
+      "fillColor": "#514462",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b2hwfyxo",
+      "id": "3",
+      "name": "kicker-07-label",
+      "bbox": [
+        78,
+        46,
+        320,
+        26
+      ],
+      "geometry": "rect",
+      "text": "ADAPTATION LOGIC",
+      "textPreview": "ADAPTATION LOGIC",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "ADAPTATION LOGIC"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "ADAPTATION LOGIC",
+          "runs": [
+            {
+              "index": 1,
+              "text": "ADAPTATION LOGIC",
+              "fontSize": 10,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4byhgn29",
+      "id": "4",
+      "bbox": [
+        58,
+        78,
+        1120,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#D9CDC5",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/twra5gbq",
+      "id": "5",
+      "bbox": [
+        58,
+        106,
+        850,
+        88
+      ],
+      "geometry": "rect",
+      "text": "经期适配让推荐不再是通用模板，而是“今天适合我”。",
+      "textPreview": "经期适配让推荐不再是通用模板，而是“今天适合我”。",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "经期适配让推荐不再是通用模板，而是“今天适合我”。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "经期适配让推荐不再是通用模板，而是“今天适合我”。",
+          "runs": [
+            {
+              "index": 1,
+              "text": "经期适配让推荐不再是通用模板，而是“今天适合我”。",
+              "fontSize": 34,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m58z25kb",
+      "id": "6",
+      "bbox": [
+        78,
+        246,
+        250,
+        24
+      ],
+      "geometry": "rect",
+      "text": "状态输入",
+      "textPreview": "状态输入",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "状态输入"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "状态输入",
+          "runs": [
+            {
+              "index": 1,
+              "text": "状态输入",
+              "fontSize": 15,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bq1oryts",
+      "id": "7",
+      "bbox": [
+        78,
+        278,
+        250,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#514462",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/47y1kre1",
+      "id": "8",
+      "bbox": [
+        435,
+        246,
+        250,
+        24
+      ],
+      "geometry": "rect",
+      "text": "推荐策略",
+      "textPreview": "推荐策略",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "推荐策略"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "推荐策略",
+          "runs": [
+            {
+              "index": 1,
+              "text": "推荐策略",
+              "fontSize": 15,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tsvu9kni",
+      "id": "9",
+      "bbox": [
+        435,
+        278,
+        250,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#514462",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/90je9cvi",
+      "id": "10",
+      "bbox": [
+        790,
+        246,
+        250,
+        24
+      ],
+      "geometry": "rect",
+      "text": "训练表达",
+      "textPreview": "训练表达",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "训练表达"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "训练表达",
+          "runs": [
+            {
+              "index": 1,
+              "text": "训练表达",
+              "fontSize": 15,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gfmlkjm1",
+      "id": "11",
+      "bbox": [
+        790,
+        278,
+        250,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#514462",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rytsvu9k",
+      "id": "12",
+      "bbox": [
+        64,
+        300,
+        1060,
+        66
+      ],
+      "geometry": "rect",
+      "fillColor": "#F6E9EC",
+      "lineColor": "#D9CDC5",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yd0z6103",
+      "id": "13",
+      "bbox": [
+        78,
+        314,
+        250,
+        34
+      ],
+      "geometry": "rect",
+      "text": "经期中 + 精力一般",
+      "textPreview": "经期中 + 精力一般",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "经期中 + 精力一般"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "经期中 + 精力一般",
+          "runs": [
+            {
+              "index": 1,
+              "text": "经期中 + 精力一般",
+              "fontSize": 16,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9s36hcrm",
+      "id": "14",
+      "bbox": [
+        435,
+        314,
+        250,
+        34
+      ],
+      "geometry": "rect",
+      "text": "降强度，优先稳定核心和拉伸",
+      "textPreview": "降强度，优先稳定核心和拉伸",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "降强度，优先稳定核心和拉伸"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "降强度，优先稳定核心和拉伸",
+          "runs": [
+            {
+              "index": 1,
+              "text": "降强度，优先稳定核心和拉伸",
+              "fontSize": 14,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g7adsji5",
+      "id": "15",
+      "bbox": [
+        790,
+        314,
+        250,
+        34
+      ],
+      "geometry": "rect",
+      "text": "温和热身 → 轻力量 → 舒缓拉伸",
+      "textPreview": "温和热身 → 轻力量 → 舒缓拉伸",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "温和热身 → 轻力量 → 舒缓拉伸"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "温和热身 → 轻力量 → 舒缓拉伸",
+          "runs": [
+            {
+              "index": 1,
+              "text": "温和热身 → 轻力量 → 舒缓拉伸",
+              "fontSize": 14,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rmhk3q5o",
+      "id": "16",
+      "bbox": [
+        370,
+        317,
+        34,
+        22
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y1kre1w7",
+      "id": "17",
+      "bbox": [
+        725,
+        317,
+        34,
+        22
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o7qpg3e",
+      "id": "18",
+      "bbox": [
+        64,
+        388,
+        1060,
+        66
+      ],
+      "geometry": "rect",
+      "fillColor": "#FFF9F2",
+      "lineColor": "#D9CDC5",
+      "lineWidth": 1
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g3ex0nux",
+      "id": "19",
+      "bbox": [
+        78,
+        402,
+        250,
+        34
+      ],
+      "geometry": "rect",
+      "text": "不在经期 + 状态正常",
+      "textPreview": "不在经期 + 状态正常",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "不在经期 + 状态正常"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "不在经期 + 状态正常",
+          "runs": [
+            {
+              "index": 1,
+              "text": "不在经期 + 状态正常",
+              "fontSize": 16,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cfa9w3m9",
+      "id": "20",
+      "bbox": [
+        435,
+        402,
+        250,
+        34
+      ],
+      "geometry": "rect",
+      "text": "标准入门强度，保护动作质量",
+      "textPreview": "标准入门强度，保护动作质量",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "标准入门强度，保护动作质量"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "标准入门强度，保护动作质量",
+          "runs": [
+            {
+              "index": 1,
+              "text": "标准入门强度，保护动作质量",
+              "fontSize": 14,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1032lszq",
+      "id": "21",
+      "bbox": [
+        790,
+        402,
+        250,
+        34
+      ],
+      "geometry": "rect",
+      "text": "热身 → 器械教学 → 有氧 → 拉伸",
+      "textPreview": "热身 → 器械教学 → 有氧 → 拉伸",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "热身 → 器械教学 → 有氧 → 拉伸"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "热身 → 器械教学 → 有氧 → 拉伸",
+          "runs": [
+            {
+              "index": 1,
+              "text": "热身 → 器械教学 → 有氧 → 拉伸",
+              "fontSize": 14,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9knih4b",
+      "id": "22",
+      "bbox": [
+        370,
+        405,
+        34,
+        22
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/judg7ads",
+      "id": "23",
+      "bbox": [
+        725,
+        405,
+        34,
+        22
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c7u54zid",
+      "id": "24",
+      "bbox": [
+        64,
+        476,
+        1060,
+        66
+      ],
+      "geometry": "rect",
+      "fillColor": "#F6E9EC",
+      "lineColor": "#D9CDC5",
+      "lineWidth": 1
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1orytsvu",
+      "id": "25",
+      "bbox": [
+        78,
+        490,
+        250,
+        34
+      ],
+      "geometry": "rect",
+      "text": "不确定 + 有点累",
+      "textPreview": "不确定 + 有点累",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "不确定 + 有点累"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "不确定 + 有点累",
+          "runs": [
+            {
+              "index": 1,
+              "text": "不确定 + 有点累",
+              "fontSize": 16,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u18jqh0f",
+      "id": "26",
+      "bbox": [
+        435,
+        490,
+        250,
+        34
+      ],
+      "geometry": "rect",
+      "text": "减少决策负担，给保守方案",
+      "textPreview": "减少决策负担，给保守方案",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "减少决策负担，给保守方案"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "减少决策负担，给保守方案",
+          "runs": [
+            {
+              "index": 1,
+              "text": "减少决策负担，给保守方案",
+              "fontSize": 14,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jm1cfa9w",
+      "id": "27",
+      "bbox": [
+        790,
+        490,
+        250,
+        34
+      ],
+      "geometry": "rect",
+      "text": "短流程 → 少器械 → 明确完成感",
+      "textPreview": "短流程 → 少器械 → 明确完成感",
+      "resolvedFontSize": 14,
+      "resolvedTextStyle": {
+        "fontSize": 14,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "短流程 → 少器械 → 明确完成感"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "短流程 → 少器械 → 明确完成感",
+          "runs": [
+            {
+              "index": 1,
+              "text": "短流程 → 少器械 → 明确完成感",
+              "fontSize": 14,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cvixczed",
+      "id": "28",
+      "bbox": [
+        370,
+        493,
+        34,
+        22
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gbq1ory",
+      "id": "29",
+      "bbox": [
+        725,
+        493,
+        34,
+        22
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/val87ed8",
+      "id": "30",
+      "bbox": [
+        64,
+        594,
+        1060,
+        44
+      ],
+      "geometry": "rect",
+      "fillColor": "#211A29",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6psfil0r",
+      "id": "31",
+      "bbox": [
+        92,
+        607,
+        1000,
+        20
+      ],
+      "geometry": "rect",
+      "text": "MVP 里最值得守住的能力：把“身体状态”转译成“下一步训练”，而不是只展示训练库。",
+      "textPreview": "MVP 里最值得守住的能力：把“身体状态”转译成“下一步训练”，而不是只展示训练库。",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MVP 里最值得守住的能力：把“身体状态”转译成“下一步训练”，而不是只展示训练库。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MVP 里最值得守住的能力：把“身体状态”转译成“下一步训练”，而不是只展示训练库。",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MVP 里最值得守住的能力：把“身体状态”转译成“下一步训练”，而不是只展示训练库。",
+              "fontSize": 16,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dcbulwva",
+      "id": "32",
+      "bbox": [
+        58,
+        674,
+        1120,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#D9CDC5",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kre1w7mp",
+      "id": "33",
+      "bbox": [
+        58,
+        688,
+        820,
+        18
+      ],
+      "geometry": "rect",
+      "text": "GirlsFitness source: product plan + demo video",
+      "textPreview": "GirlsFitness source: product plan + demo video",
+      "resolvedFontSize": 8.51,
+      "resolvedTextStyle": {
+        "fontSize": 8.51,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GirlsFitness source: product plan + demo video"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GirlsFitness source: product plan + demo video",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GirlsFitness source: product plan + demo video",
+              "fontSize": 8.51,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vixczed8",
+      "id": "34",
+      "bbox": [
+        1138,
+        684,
+        40,
+        22
+      ],
+      "geometry": "rect",
+      "text": "07",
+      "textPreview": "07",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "right"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "07"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "07",
+          "runs": [
+            {
+              "index": 1,
+              "text": "07",
+              "fontSize": 13,
+              "typeface": "Georgia",
+              "color": "#514462",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

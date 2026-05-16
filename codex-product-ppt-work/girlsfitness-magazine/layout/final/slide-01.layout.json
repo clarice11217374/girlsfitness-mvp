@@ -1,0 +1,841 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/swe6mf",
+    "id": "swe6mf",
+    "slide": 1,
+    "layoutId": "1d00c54b-499a-4deb-a0f3-6455d5399ea5",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "2e48efcc-a62e-4993-86df-66703f3c901d",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Georgia",
+      "Microsoft YaHei UI"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "1d00c54b-499a-4deb-a0f3-6455d5399ea5",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "2e48efcc-a62e-4993-86df-66703f3c901d",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "2e48efcc-a62e-4993-86df-66703f3c901d",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/crmhk3q5",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#F8F1EA",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j6tovaho",
+      "id": "2",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#F8F1EA",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ulwval87",
+      "id": "3",
+      "bbox": [
+        760,
+        0,
+        520,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#211A29",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/sji5snel",
+      "id": "4",
+      "bbox": [
+        834,
+        74,
+        318,
+        572
+      ],
+      "alt": "Demo screen showing today's training plan",
+      "contentType": "image/png",
+      "asset": {
+        "assetId": "5e0f4b49-33b5-46c3-b52a-271192f8f689",
+        "contentType": "image/png",
+        "byteLength": 145570
+      }
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c3ylc7u5",
+      "id": "5",
+      "bbox": [
+        798,
+        44,
+        390,
+        632
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "#7E708C",
+      "lineWidth": 2
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ji5snelo",
+      "id": "6",
+      "bbox": [
+        58,
+        54,
+        360,
+        34
+      ],
+      "geometry": "rect",
+      "text": "GirlsFitness",
+      "textPreview": "GirlsFitness",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GirlsFitness"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GirlsFitness",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GirlsFitness",
+              "fontSize": 22,
+              "typeface": "Georgia",
+              "color": "#514462",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/uxc3ylc7",
+      "id": "7",
+      "bbox": [
+        58,
+        92,
+        470,
+        24
+      ],
+      "geometry": "rect",
+      "text": "女性新手健身辅助应用 · 产品演讲稿",
+      "textPreview": "女性新手健身辅助应用 · 产品演讲稿",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "女性新手健身辅助应用 · 产品演讲稿"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "女性新手健身辅助应用 · 产品演讲稿",
+          "runs": [
+            {
+              "index": 1,
+              "text": "女性新手健身辅助应用 · 产品演讲稿",
+              "fontSize": 13,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1w7mp0bi",
+      "id": "8",
+      "bbox": [
+        58,
+        178,
+        650,
+        166
+      ],
+      "geometry": "rect",
+      "text": "把第一次走进健身房，变成一条被照顾的路线。",
+      "textPreview": "把第一次走进健身房，变成一条被照顾的路线。",
+      "resolvedFontSize": 44,
+      "resolvedTextStyle": {
+        "fontSize": 44,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "把第一次走进健身房，变成一条"
+          },
+          {
+            "index": 2,
+            "text": "被照顾的路线。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "把第一次走进健身房，变成一条被照顾的路线。",
+          "runs": [
+            {
+              "index": 1,
+              "text": "把第一次走进健身房，变成一条被照顾的路线。",
+              "fontSize": 44,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8bat47y1",
+      "id": "9",
+      "bbox": [
+        62,
+        374,
+        590,
+        66
+      ],
+      "geometry": "rect",
+      "text": "GirlsFitness 不是把更多动作塞给用户，而是把经期状态、当天体感、器械说明和训练反馈连成一个更温柔的入门闭环。",
+      "textPreview": "GirlsFitness 不是把更多动作塞给用户，而是把经期状态、当天体感、器械说明和训练反馈连成一个更温柔的入门闭环。",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GirlsFitness"
+          },
+          {
+            "index": 2,
+            "text": "不是把更多动作塞给用户，而是把经期状态、当天体感、器械说明和训练"
+          },
+          {
+            "index": 3,
+            "text": "反馈连成一个更温柔的入门闭环。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GirlsFitness 不是把更多动作塞给用户，而是把经期状态、当天体感、器械说明和训练反馈连成一个更温柔的入门闭环。",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GirlsFitness 不是把更多动作塞给用户，而是把经期状态、当天体感、器械说明和训练反馈连成一个更温柔的入门闭环。",
+              "fontSize": 18,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#241E2A"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ytsvu9kn",
+      "id": "10",
+      "bbox": [
+        62,
+        518,
+        150,
+        3
+      ],
+      "geometry": "rect",
+      "fillColor": "#514462",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/neloj2t8",
+      "id": "11",
+      "bbox": [
+        62,
+        538,
+        150,
+        34
+      ],
+      "geometry": "rect",
+      "text": "20-35",
+      "textPreview": "20-35",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "20-35"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "20-35",
+          "runs": [
+            {
+              "index": 1,
+              "text": "20-35",
+              "fontSize": 30,
+              "typeface": "Georgia",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/czed8v6p",
+      "id": "12",
+      "bbox": [
+        62,
+        578,
+        160,
+        22
+      ],
+      "geometry": "rect",
+      "text": "目标年龄段",
+      "textPreview": "目标年龄段",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "目标年龄段"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "目标年龄段",
+          "runs": [
+            {
+              "index": 1,
+              "text": "目标年龄段",
+              "fontSize": 11,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5kb6xkf6",
+      "id": "13",
+      "bbox": [
+        267,
+        518,
+        150,
+        3
+      ],
+      "geometry": "rect",
+      "fillColor": "#A9B8A3",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u54zidon",
+      "id": "14",
+      "bbox": [
+        267,
+        538,
+        150,
+        34
+      ],
+      "geometry": "rect",
+      "text": "4 步",
+      "textPreview": "4 步",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "4 步"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "4 步",
+          "runs": [
+            {
+              "index": 1,
+              "text": "4 步",
+              "fontSize": 30,
+              "typeface": "Georgia",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nqxs72x4",
+      "id": "15",
+      "bbox": [
+        267,
+        578,
+        160,
+        22
+      ],
+      "geometry": "rect",
+      "text": "热身 / 力量 / 有氧 / 拉伸",
+      "textPreview": "热身 / 力量 / 有氧 / 拉伸",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "热身 / 力量 / 有氧 / 拉伸"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "热身 / 力量 / 有氧 / 拉伸",
+          "runs": [
+            {
+              "index": 1,
+              "text": "热身 / 力量 / 有氧 / 拉伸",
+              "fontSize": 11,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cbulwval",
+      "id": "16",
+      "bbox": [
+        472,
+        518,
+        150,
+        3
+      ],
+      "geometry": "rect",
+      "fillColor": "#EFDDE4",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5sneloj2",
+      "id": "17",
+      "bbox": [
+        472,
+        538,
+        150,
+        34
+      ],
+      "geometry": "rect",
+      "text": "MVP",
+      "textPreview": "MVP",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MVP"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MVP",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MVP",
+              "fontSize": 30,
+              "typeface": "Georgia",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y90je9cv",
+      "id": "18",
+      "bbox": [
+        472,
+        578,
+        160,
+        22
+      ],
+      "geometry": "rect",
+      "text": "网页版先跑通计划生成",
+      "textPreview": "网页版先跑通计划生成",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "网页版先跑通计划生成"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "网页版先跑通计划生成",
+          "runs": [
+            {
+              "index": 1,
+              "text": "网页版先跑通计划生成",
+              "fontSize": 11,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nuxc3ylc",
+      "id": "19",
+      "bbox": [
+        58,
+        674,
+        1120,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#D9CDC5",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fmlkjm1c",
+      "id": "20",
+      "bbox": [
+        58,
+        688,
+        820,
+        18
+      ],
+      "geometry": "rect",
+      "text": "GirlsFitness source: product plan + demo video",
+      "textPreview": "GirlsFitness source: product plan + demo video",
+      "resolvedFontSize": 8.51,
+      "resolvedTextStyle": {
+        "fontSize": 8.51,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GirlsFitness source: product plan + demo video"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GirlsFitness source: product plan + demo video",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GirlsFitness source: product plan + demo video",
+              "fontSize": 8.51,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q1orytsv",
+      "id": "21",
+      "bbox": [
+        1138,
+        684,
+        40,
+        22
+      ],
+      "geometry": "rect",
+      "text": "01",
+      "textPreview": "01",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "right"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "01"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "01",
+          "runs": [
+            {
+              "index": 1,
+              "text": "01",
+              "fontSize": 13,
+              "typeface": "Georgia",
+              "color": "#514462",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

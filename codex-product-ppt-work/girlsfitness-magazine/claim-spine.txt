@@ -1,0 +1,14 @@
+﻿Thesis: GirlsFitness lowers the first-gym threshold for women by turning physical state, cycle phase, guided training, and feedback into one supportive loop.
+Audience: Coding Girls demo / product presentation audience, mentors, peers.
+Arc: Start with the emotional barrier, show the product loop, prove it with demo screens, then land the MVP roadmap and support ask.
+Slide 01: GirlsFitness reframes beginner fitness as a guided first step. Proof: product screenshot + thesis rail.
+Slide 02: The barrier is emotional and procedural, not only motivational. Proof: problem map.
+Slide 03: The target user needs safety, clarity, and progress cues. Proof: audience segmentation.
+Slide 04: The product loop converts body context into a concrete plan. Proof: workflow diagram.
+Slide 05: The demo already shows the loop working end-to-end. Proof: video screenshots.
+Slide 06: Storyboard: from hesitation to completion. Proof: generated four-panel image.
+Slide 07: Period-aware planning gives the recommendation engine a reason. Proof: adaptation matrix.
+Slide 08: MVP scope should protect the loop before expanding. Proof: system map.
+Slide 09: The next 8 weeks move from validation to working demo. Proof: roadmap timeline.
+Slide 10: The ask is focused: backend, data feedback, and user research. Proof: support stack.
+Omission notes: no invented metrics; use qualitative claims only because source doc has no sample sizes or outcomes.

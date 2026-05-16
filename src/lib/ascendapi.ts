@@ -35,6 +35,18 @@ function pickImageUrl(exercise: UnknownRecord): string | undefined {
   );
 }
 
+function pickGifUrl(exercise: UnknownRecord): string | undefined {
+  return firstString(
+    exercise.gifUrl,
+    exercise.gif_url,
+    exercise.gif,
+    exercise.animatedGif,
+    exercise.animated_gif,
+    firstStringInArray(exercise.gifs),
+    firstStringInArray(exercise.gifUrls),
+  );
+}
+
 function pickVideoUrl(exercise: UnknownRecord): string | undefined {
   return firstString(
     exercise.videoUrl,
@@ -72,19 +84,29 @@ function pickResults(payload: unknown): unknown[] {
   return [];
 }
 
+function normalizeStringArray(value: unknown): string[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const strings = value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+  return strings.length > 0 ? strings : undefined;
+}
+
 function toExerciseMedia(value: unknown): ExerciseMedia | null {
   if (!isRecord(value)) return null;
 
   const imageUrl = pickImageUrl(value);
+  const gifUrl = pickGifUrl(value);
   const videoUrl = pickVideoUrl(value);
-  if (!imageUrl && !videoUrl) return null;
+  if (!imageUrl && !gifUrl && !videoUrl) return null;
 
   return {
-    source: "ascendapi",
-    externalExerciseId: firstString(value.id, value.exerciseId, value.exercise_id, value.uuid),
-    matchedName: firstString(value.name, value.title, value.exerciseName, value.exercise_name),
+    exerciseId: firstString(value.id, value.exerciseId, value.exercise_id, value.uuid),
+    name: firstString(value.name, value.title, value.exerciseName, value.exercise_name),
     imageUrl,
+    gifUrl,
     videoUrl,
+    targetMuscles: normalizeStringArray(value.targetMuscles ?? value.target_muscles ?? value.target),
+    bodyParts: normalizeStringArray(value.bodyParts ?? value.body_parts ?? value.bodyPart),
+    equipments: normalizeStringArray(value.equipments ?? value.equipment),
   };
 }
 
@@ -93,7 +115,7 @@ export async function getExerciseMediaByName(name: string): Promise<ExerciseMedi
   if (!search) return null;
 
   const apiKey = process.env.RAPIDAPI_KEY;
-  const apiHost = process.env.RAPIDAPI_HOST;
+  const apiHost = process.env.ASCENDAPI_HOST ?? process.env.RAPIDAPI_HOST;
   if (!apiKey || !apiHost) return null;
 
   try {

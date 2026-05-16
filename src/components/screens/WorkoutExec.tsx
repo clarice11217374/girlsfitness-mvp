@@ -15,11 +15,10 @@ import {
   getWorkoutTemplateById,
   type WorkoutExercise as TemplateWorkoutExercise,
 } from "@/data/workoutTemplates";
-import {
-  getExerciseMediaFromManifest,
-  type ExerciseMediaManifestEntry,
-  type ExerciseMediaType,
-} from "@/data/exerciseMediaManifest";
+import { exerciseMediaRegistry } from "@/data/exerciseMediaRegistry";
+import { localExerciseMediaMap } from "@/data/localExerciseMediaMap";
+import type { ExerciseMedia } from "@/types/exerciseMedia";
+import { getExerciseMediaQuery } from "@/utils/getExerciseMediaQuery";
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
 import {
   getExercisePerformance,
@@ -30,49 +29,12 @@ import { writeWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
 
 type Props = { onDone: () => void; templateId?: string | null; onBack?: () => void };
 
-type ManifestExecEntry = ExerciseMediaManifestEntry & { execDisplayApproved?: boolean };
-
-/** Show real media only when manifest marks illustration / UI-approved assets. */
-function isExecMediaDisplayApproved(exerciseId: string): boolean {
-  const entry = getExerciseMediaFromManifest(exerciseId) as ManifestExecEntry | undefined;
-  if (!entry) return false;
-  if (entry.execDisplayApproved === true) return true;
-  const source = (entry.source ?? "").toLowerCase();
-  return source.includes("opentraining") || source.includes("illustration");
-}
-
-function ExerciseMediaPendingPlaceholder() {
-  return (
-    <div className="ex-anim-pending-inner" role="img" aria-label="动作示意图待补充">
-      <svg
-        className="ex-anim-pending-icon"
-        viewBox="0 0 48 48"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden
-      >
-        <rect x="6" y="8" width="36" height="28" rx="6" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="17" cy="19" r="2.5" fill="currentColor" opacity="0.55" />
-        <path
-          d="M10 32l9-8 6 5 7-9 6 12"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          opacity="0.7"
-        />
-      </svg>
-      <span className="ex-anim-pending-label">动作示意图待补充</span>
-    </div>
-  );
-}
-
 type ExecExercise = {
   id: string;
   name: string;
-  imageUrl?: string;
-  videoUrl?: string;
-  mediaType?: ExerciseMediaType;
+  mediaSearchQuery?: string;
+  englishName?: string;
+  slug?: string;
   sets: number;
   reps: string;
   visualPlaceholder: string;
@@ -84,6 +46,10 @@ type ExecExercise = {
 };
 
 type PhasePlanRow = { label: string; exerciseIndexes: number[] };
+type ExerciseMediaState =
+  | { status: "idle" | "loading"; data: null }
+  | { status: "ready"; data: ExerciseMedia | null }
+  | { status: "error"; data: null };
 
 const restOptions = [
   { label: "45s", seconds: 45 },
@@ -98,9 +64,9 @@ function toExecFromTemplate(ex: TemplateWorkoutExercise): ExecExercise {
   return {
     id: ex.id,
     name: ex.name,
-    imageUrl: ex.imageUrl,
-    videoUrl: ex.videoUrl,
-    mediaType: ex.mediaType,
+    mediaSearchQuery: ex.mediaSearchQuery,
+    englishName: ex.englishName,
+    slug: ex.slug,
     sets: ex.sets,
     reps: ex.reps,
     visualPlaceholder: ex.visualPlaceholder,
@@ -115,9 +81,9 @@ function toExecFromTemplate(ex: TemplateWorkoutExercise): ExecExercise {
 function toExecFromStatic(ex: {
   id: string;
   name: string;
-  imageUrl?: string;
-  videoUrl?: string;
-  mediaType?: ExerciseMediaType;
+  mediaSearchQuery?: string;
+  englishName?: string;
+  slug?: string;
   sets: number;
   reps: string;
   visualPlaceholder: string;
@@ -130,9 +96,9 @@ function toExecFromStatic(ex: {
   return {
     id: ex.id,
     name: ex.name,
-    imageUrl: ex.imageUrl,
-    videoUrl: ex.videoUrl,
-    mediaType: ex.mediaType,
+    mediaSearchQuery: ex.mediaSearchQuery,
+    englishName: ex.englishName,
+    slug: ex.slug,
     sets: ex.sets,
     reps: ex.reps,
     visualPlaceholder: ex.visualPlaceholder,
@@ -814,10 +780,12 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   const [ticking, setTicking] = useState(false);
   const [restPickerOpen, setRestPickerOpen] = useState(false);
   const [equipmentOpen, setEquipmentOpen] = useState(false);
-  const [mediaAssetFailed, setMediaAssetFailed] = useState(false);
+  const [mediaByQuery, setMediaByQuery] = useState<Record<string, ExerciseMediaState>>({});
+  const [failedMediaKeys, setFailedMediaKeys] = useState<Record<string, true>>({});
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const sessionStartedAtRef = useRef<number | null>(null);
   const workoutMetaRef = useRef<WorkoutExecMeta | null>(null);
+  const requestedMediaQueriesRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     const staticPayload = initialStaticPayload();
@@ -864,22 +832,96 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   }, [templateId]);
 
   const currentExercise = exercises[exIdx];
+  const currentMediaQuery = currentExercise ? getExerciseMediaQuery(currentExercise).trim() : "";
+  const registryMedia = currentExercise ? exerciseMediaRegistry[currentExercise.id] : undefined;
+  const localMedia = currentExercise ? localExerciseMediaMap[currentExercise.id] : undefined;
+  const currentMediaState: ExerciseMediaState =
+    currentMediaQuery && mediaByQuery[currentMediaQuery]
+      ? mediaByQuery[currentMediaQuery]
+      : { status: "idle", data: null };
+  const currentMedia =
+    currentMediaState.status === "ready" && currentMediaState.data ? currentMediaState.data : null;
+  const displayMedia =
+    localMedia?.videoUrl && failedMediaKeys[localMedia.videoUrl] !== true
+      ? {
+          kind: "video" as const,
+          src: localMedia.videoUrl,
+          poster: localMedia.imageUrl ?? localMedia.gifUrl,
+        }
+      : localMedia?.gifUrl && failedMediaKeys[localMedia.gifUrl] !== true
+        ? { kind: "gif" as const, src: localMedia.gifUrl }
+        : localMedia?.imageUrl && failedMediaKeys[localMedia.imageUrl] !== true
+          ? { kind: "image" as const, src: localMedia.imageUrl }
+          : currentMedia?.videoUrl && failedMediaKeys[currentMedia.videoUrl] !== true
+            ? {
+                kind: "video" as const,
+                src: currentMedia.videoUrl,
+                poster: currentMedia.imageUrl ?? currentMedia.gifUrl,
+              }
+            : currentMedia?.gifUrl && failedMediaKeys[currentMedia.gifUrl] !== true
+              ? { kind: "gif" as const, src: currentMedia.gifUrl }
+              : currentMedia?.imageUrl && failedMediaKeys[currentMedia.imageUrl] !== true
+                ? { kind: "image" as const, src: currentMedia.imageUrl }
+                : null;
+  const showVideo = displayMedia?.kind === "video";
+  const showGif = displayMedia?.kind === "gif";
+  const showImage = displayMedia?.kind === "image";
 
   useEffect(() => {
-    setMediaAssetFailed(false);
-  }, [exIdx, currentExercise?.id]);
+    if (!currentMediaQuery || requestedMediaQueriesRef.current.has(currentMediaQuery)) return;
+    requestedMediaQueriesRef.current.add(currentMediaQuery);
 
-  const mediaDisplayApproved = currentExercise
-    ? isExecMediaDisplayApproved(currentExercise.id)
-    : false;
-  const showVideo =
-    mediaDisplayApproved && !!currentExercise?.videoUrl && !mediaAssetFailed;
-  const showImage =
-    mediaDisplayApproved &&
-    !showVideo &&
-    !!currentExercise?.imageUrl &&
-    !mediaAssetFailed;
-  const showMediaPending = !showVideo && !showImage;
+    const controller = new AbortController();
+
+    async function loadMedia() {
+      setMediaByQuery((prev) => ({
+        ...prev,
+        [currentMediaQuery]: { status: "loading", data: null },
+      }));
+
+      try {
+        const params = new URLSearchParams({ name: currentMediaQuery });
+        if (registryMedia?.preferredMatch) {
+          params.set("preferred", registryMedia.preferredMatch);
+        }
+        const response = await fetch(`/api/exercises/media?${params.toString()}`, {
+          signal: controller.signal,
+        });
+        const payload = (await response.json()) as { success?: boolean; data?: ExerciseMedia | null };
+
+        if (!response.ok || payload.success === false) {
+          throw new Error("Exercise media request failed");
+        }
+
+        setMediaByQuery((prev) => ({
+          ...prev,
+          [currentMediaQuery]: { status: "ready", data: payload.data ?? null },
+        }));
+        if (process.env.NODE_ENV === "development") {
+          console.warn("[WorkoutExec] exercise media loaded", {
+            query: currentMediaQuery,
+            preferred: registryMedia?.preferredMatch,
+            data: payload.data ?? null,
+          });
+        }
+      } catch {
+        if (controller.signal.aborted) return;
+        setMediaByQuery((prev) => ({
+          ...prev,
+          [currentMediaQuery]: { status: "error", data: null },
+        }));
+        if (process.env.NODE_ENV === "development") {
+          console.warn("[WorkoutExec] exercise media request failed", {
+            query: currentMediaQuery,
+            preferred: registryMedia?.preferredMatch,
+          });
+        }
+      }
+    }
+
+    void loadMedia();
+    return () => controller.abort();
+  }, [currentMediaQuery, registryMedia?.preferredMatch]);
 
   const phaseIdx = Math.max(
     0,
@@ -1088,31 +1130,49 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
           ) : null}
 
           <div
-            className={`ex-anim ${showVideo || showImage ? "has-media" : ""}`}
+            className={`ex-anim ${
+              currentMediaState.status === "loading" ? "is-loading" : showVideo || showGif || showImage ? "has-media" : ""
+            }`}
           >
+            {currentMediaState.status === "loading" && (
+              <div className="exercise-media-skeleton" aria-label="Loading exercise media" />
+            )}
             {showVideo && (
               <video
                 className="exercise-media"
-                src={currentExercise.videoUrl}
-                poster={currentExercise.imageUrl}
+                src={displayMedia.src}
+                poster={displayMedia.poster}
                 autoPlay
                 loop
                 muted
                 playsInline
                 preload="metadata"
-                onError={() => setMediaAssetFailed(true)}
+                onError={() =>
+                  setFailedMediaKeys((prev) => ({ ...prev, [displayMedia.src]: true }))
+                }
+              />
+            )}
+            {showGif && (
+              <img
+                className="exercise-media"
+                src={displayMedia.src}
+                alt={`${currentExercise.name} exercise animation`}
+                loading="lazy"
+                onError={() => setFailedMediaKeys((prev) => ({ ...prev, [displayMedia.src]: true }))}
               />
             )}
             {showImage && (
               <img
                 className="exercise-media"
-                src={currentExercise.imageUrl}
-                alt={currentExercise.name}
+                src={displayMedia.src}
+                alt={`${currentExercise.name} exercise reference`}
                 loading="lazy"
-                onError={() => setMediaAssetFailed(true)}
+                onError={() => setFailedMediaKeys((prev) => ({ ...prev, [displayMedia.src]: true }))}
               />
             )}
-            {showMediaPending && <ExerciseMediaPendingPlaceholder />}
+            {currentMediaState.status !== "loading" && !showVideo && !showGif && !showImage && (
+              <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
+            )}
           </div>
 
           <div className="move-info-card">

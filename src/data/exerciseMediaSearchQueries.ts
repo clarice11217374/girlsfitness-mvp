@@ -9,10 +9,12 @@ export function getExerciseMediaSearchQuery(
   fallbackName: string,
   mediaSearchQuery?: string,
   englishName?: string,
+  slug?: string,
 ): string {
   return (
     mediaSearchQuery?.trim() ||
     englishName?.trim() ||
+    slug?.trim() ||
     exerciseMediaSearchQueries[id] ||
     fallbackName
   );

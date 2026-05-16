@@ -101,6 +101,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
           duration: "30秒",
           equipment: "无需器械",
           visualPlaceholder: "shoulder-circles-placeholder",
+          mediaSearchQuery: "shoulder circles",
           equipmentGuide: {
             machineIntro: "这是徒手热身动作，不需要器械。",
             seatSetup: "无需座椅。",
@@ -178,6 +179,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
           duration: "7分钟",
           equipment: "哑铃",
           visualPlaceholder: "dumbbell-shoulder-press-placeholder",
+          mediaSearchQuery: "dumbbell shoulder press",
           equipmentGuide: {
             machineIntro: "哑铃肩推主要训练肩部。",
             seatSetup: "建议坐在有靠背的训练凳上。",
@@ -429,6 +431,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
           duration: "7分钟",
           equipment: "坐姿划船机 / 低位拉力器",
           visualPlaceholder: "seated-row-placeholder",
+          mediaSearchQuery: "seated cable row",
           equipmentGuide: {
             machineIntro: "坐姿划船练中背部与肩胛稳定，适合久坐人群。",
             seatSetup: "胸贴靠垫或坐稳后脚蹬踏板，膝微屈。",
@@ -603,6 +606,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
           duration: "1分钟",
           equipment: "墙面",
           visualPlaceholder: "hip-circle-warmup-placeholder",
+          mediaSearchQuery: "hip circles",
           equipmentGuide: {
             machineIntro: "徒手髋关节活动，帮助深蹲与腿举前关节润滑。",
             seatSetup: "无需座椅，单手扶墙保持平衡。",

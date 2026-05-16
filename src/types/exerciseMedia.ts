@@ -7,4 +7,6 @@ export type ExerciseMedia = {
   targetMuscles?: string[];
   bodyParts?: string[];
   equipments?: string[];
+  secondaryMuscles?: string[];
+  instructions?: string[];
 };

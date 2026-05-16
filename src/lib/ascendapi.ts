@@ -1,7 +1,6 @@
 import type { ExerciseMedia } from "@/types/exerciseMedia";
 
-const ASCENDAPI_BASE_URL =
-  "https://edb-with-videos-and-images-by-ascendapi.p.rapidapi.com/api/v1/exercises/search";
+const DEFAULT_EXERCISEDB_API_BASE = "https://oss.exercisedb.dev";
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -90,6 +89,19 @@ function normalizeStringArray(value: unknown): string[] | undefined {
   return strings.length > 0 ? strings : undefined;
 }
 
+function normalizeInstructions(value: unknown): string[] | undefined {
+  if (Array.isArray(value)) {
+    const strings = value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+    return strings.length > 0 ? strings : undefined;
+  }
+
+  if (typeof value === "string" && value.trim()) {
+    return [value.trim()];
+  }
+
+  return undefined;
+}
+
 function toExerciseMedia(value: unknown): ExerciseMedia | null {
   if (!isRecord(value)) return null;
 
@@ -107,6 +119,8 @@ function toExerciseMedia(value: unknown): ExerciseMedia | null {
     targetMuscles: normalizeStringArray(value.targetMuscles ?? value.target_muscles ?? value.target),
     bodyParts: normalizeStringArray(value.bodyParts ?? value.body_parts ?? value.bodyPart),
     equipments: normalizeStringArray(value.equipments ?? value.equipment),
+    secondaryMuscles: normalizeStringArray(value.secondaryMuscles ?? value.secondary_muscles ?? value.secondaryMuscle),
+    instructions: normalizeInstructions(value.instructions ?? value.instruction),
   };
 }
 
@@ -114,19 +128,12 @@ export async function getExerciseMediaByName(name: string): Promise<ExerciseMedi
   const search = name.trim();
   if (!search) return null;
 
-  const apiKey = process.env.RAPIDAPI_KEY;
-  const apiHost = process.env.ASCENDAPI_HOST ?? process.env.RAPIDAPI_HOST;
-  if (!apiKey || !apiHost) return null;
+  const apiBase = (process.env.EXERCISEDB_API_BASE ?? DEFAULT_EXERCISEDB_API_BASE).replace(/\/+$/, "");
 
   try {
-    const url = `${ASCENDAPI_BASE_URL}?search=${encodeURIComponent(search)}`;
+    const url = `${apiBase}/api/v1/exercises/search?search=${encodeURIComponent(search)}`;
     const response = await fetch(url, {
       method: "GET",
-      headers: {
-        "x-rapidapi-key": apiKey,
-        "x-rapidapi-host": apiHost,
-        "content-type": "application/json",
-      },
       cache: "no-store",
     });
 

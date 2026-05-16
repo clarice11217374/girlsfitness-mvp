@@ -1,7 +1,5 @@
 import type { ExerciseMedia } from "@/types/exerciseMedia";
 
-const DEFAULT_ASCENDAPI_HOST = "edb-with-gifs-and-images-by-ascendapi.p.rapidapi.com";
-
 type UnknownRecord = Record<string, unknown>;
 
 function isRecord(value: unknown): value is UnknownRecord {
@@ -26,6 +24,19 @@ function stringArray(value: unknown): string[] | undefined {
   if (!Array.isArray(value)) return typeof value === "string" && value.trim() ? [value.trim()] : undefined;
   const items = value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
   return items.length > 0 ? items.map((item) => item.trim()) : undefined;
+}
+
+function instructionsArray(value: unknown): string[] | undefined {
+  if (Array.isArray(value)) {
+    const items = value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+    return items.length > 0 ? items.map((item) => item.trim()) : undefined;
+  }
+
+  if (typeof value === "string" && value.trim().length > 0) {
+    return [value.trim()];
+  }
+
+  return undefined;
 }
 
 function pickResults(payload: unknown): unknown[] {
@@ -89,6 +100,8 @@ function toMedia(exercise: unknown): ExerciseMedia | null {
     targetMuscles: stringArray(exercise.targetMuscles ?? exercise.target_muscles ?? exercise.targetMuscle),
     bodyParts: stringArray(exercise.bodyParts ?? exercise.body_parts ?? exercise.bodyPart),
     equipments: stringArray(exercise.equipments ?? exercise.equipment),
+    secondaryMuscles: stringArray(exercise.secondaryMuscles ?? exercise.secondary_muscles ?? exercise.secondaryMuscle),
+    instructions: instructionsArray(exercise.instructions ?? exercise.instruction),
   };
 }
 
@@ -100,27 +113,21 @@ export async function GET(request: Request) {
     return Response.json({ success: false, message: "Missing required query parameter: name" }, { status: 400 });
   }
 
-  const apiKey = process.env.RAPIDAPI_KEY;
-  const apiHost = process.env.ASCENDAPI_HOST || DEFAULT_ASCENDAPI_HOST;
+  const apiBase = process.env.EXERCISEDB_API_BASE?.replace(/\/+$/, "");
 
-  if (!apiKey || !apiHost) {
-    return Response.json({ success: false, message: "AscendAPI environment variables are not configured" }, { status: 500 });
+  if (!apiBase) {
+    return Response.json({ success: false, message: "ExerciseDB API base URL is not configured" }, { status: 500 });
   }
 
   try {
-    const response = await fetch(`https://${apiHost}/api/v1/exercises/search?search=${encodeURIComponent(name)}`, {
+    const response = await fetch(`${apiBase}/api/v1/exercises/search?search=${encodeURIComponent(name)}`, {
       method: "GET",
-      headers: {
-        "x-rapidapi-key": apiKey,
-        "x-rapidapi-host": apiHost,
-        "content-type": "application/json",
-      },
       cache: "no-store",
     });
 
     if (!response.ok) {
       return Response.json(
-        { success: false, message: `AscendAPI request failed with status ${response.status}` },
+        { success: false, message: `ExerciseDB request failed with status ${response.status}` },
         { status: 502 },
       );
     }

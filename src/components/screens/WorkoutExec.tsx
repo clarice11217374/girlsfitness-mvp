@@ -15,7 +15,7 @@ import {
   getWorkoutTemplateById,
   type WorkoutExercise as TemplateWorkoutExercise,
 } from "@/data/workoutTemplates";
-import type { ExerciseMedia } from "@/types/exerciseMedia";
+import type { ExerciseMediaType } from "@/data/exerciseMediaManifest";
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
 import { writeWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
 
@@ -24,9 +24,9 @@ type Props = { onDone: () => void; templateId?: string | null; onBack?: () => vo
 type ExecExercise = {
   id: string;
   name: string;
-  mediaSearchQuery?: string;
-  englishName?: string;
-  slug?: string;
+  imageUrl?: string;
+  videoUrl?: string;
+  mediaType?: ExerciseMediaType;
   sets: number;
   reps: string;
   visualPlaceholder: string;
@@ -38,25 +38,6 @@ type ExecExercise = {
 };
 
 type PhasePlanRow = { label: string; exerciseIndexes: number[] };
-
-type ExerciseMediaState =
-  | { status: "idle" | "loading"; data: null }
-  | { status: "ready"; data: ExerciseMedia | null }
-  | { status: "error"; data: null };
-
-const exerciseMediaSearchQueries: Record<string, string> = {
-  // Reserved for UI-specific media search overrides.
-};
-
-function getMediaSearchQuery(exercise: ExecExercise): string {
-  return (
-    exercise.mediaSearchQuery?.trim() ||
-    exercise.englishName?.trim() ||
-    exercise.slug?.trim() ||
-    exerciseMediaSearchQueries[exercise.id] ||
-    exercise.name
-  );
-}
 
 const restOptions = [
   { label: "45s", seconds: 45 },
@@ -71,9 +52,9 @@ function toExecFromTemplate(ex: TemplateWorkoutExercise): ExecExercise {
   return {
     id: ex.id,
     name: ex.name,
-    mediaSearchQuery: ex.mediaSearchQuery,
-    englishName: ex.englishName,
-    slug: ex.slug,
+    imageUrl: ex.imageUrl,
+    videoUrl: ex.videoUrl,
+    mediaType: ex.mediaType,
     sets: ex.sets,
     reps: ex.reps,
     visualPlaceholder: ex.visualPlaceholder,
@@ -88,9 +69,9 @@ function toExecFromTemplate(ex: TemplateWorkoutExercise): ExecExercise {
 function toExecFromStatic(ex: {
   id: string;
   name: string;
-  mediaSearchQuery?: string;
-  englishName?: string;
-  slug?: string;
+  imageUrl?: string;
+  videoUrl?: string;
+  mediaType?: ExerciseMediaType;
   sets: number;
   reps: string;
   visualPlaceholder: string;
@@ -103,9 +84,9 @@ function toExecFromStatic(ex: {
   return {
     id: ex.id,
     name: ex.name,
-    mediaSearchQuery: ex.mediaSearchQuery,
-    englishName: ex.englishName,
-    slug: ex.slug,
+    imageUrl: ex.imageUrl,
+    videoUrl: ex.videoUrl,
+    mediaType: ex.mediaType,
     sets: ex.sets,
     reps: ex.reps,
     visualPlaceholder: ex.visualPlaceholder,
@@ -751,10 +732,8 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   const [ticking, setTicking] = useState(false);
   const [restPickerOpen, setRestPickerOpen] = useState(false);
   const [equipmentOpen, setEquipmentOpen] = useState(false);
-  const [mediaByQuery, setMediaByQuery] = useState<Record<string, ExerciseMediaState>>({});
   const [mediaAssetFailed, setMediaAssetFailed] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const requestedMediaQueriesRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     const staticPayload = initialStaticPayload();
@@ -800,58 +779,12 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
 
   const currentExercise = exercises[exIdx];
 
-  const currentMediaQuery = currentExercise ? getMediaSearchQuery(currentExercise).trim() : "";
-  const currentMediaState: ExerciseMediaState =
-    currentMediaQuery && mediaByQuery[currentMediaQuery]
-      ? mediaByQuery[currentMediaQuery]
-      : { status: "idle", data: null };
-  const currentMedia =
-    currentMediaState.status === "ready" && !mediaAssetFailed ? currentMediaState.data : null;
-
   useEffect(() => {
     setMediaAssetFailed(false);
-    if (!currentMediaQuery) return;
+  }, [exIdx, currentExercise?.id]);
 
-    if (requestedMediaQueriesRef.current.has(currentMediaQuery)) return;
-    requestedMediaQueriesRef.current.add(currentMediaQuery);
-
-    const controller = new AbortController();
-    setMediaByQuery((prev) => ({
-      ...prev,
-      [currentMediaQuery]: { status: "loading", data: null },
-    }));
-
-    async function loadMedia() {
-      try {
-        const response = await fetch(
-          `/api/exercises/media?name=${encodeURIComponent(currentMediaQuery)}`,
-          { signal: controller.signal },
-        );
-        const payload = (await response.json()) as {
-          success?: boolean;
-          data?: ExerciseMedia | null;
-        };
-
-        if (!response.ok || payload.success === false) {
-          throw new Error("Exercise media request failed");
-        }
-
-        setMediaByQuery((prev) => ({
-          ...prev,
-          [currentMediaQuery]: { status: "ready", data: payload.data ?? null },
-        }));
-      } catch {
-        if (controller.signal.aborted) return;
-        setMediaByQuery((prev) => ({
-          ...prev,
-          [currentMediaQuery]: { status: "error", data: null },
-        }));
-      }
-    }
-
-    loadMedia();
-    return () => controller.abort();
-  }, [currentMediaQuery]);
+  const showVideo = !!currentExercise?.videoUrl && !mediaAssetFailed;
+  const showImage = !showVideo && !!currentExercise?.imageUrl && !mediaAssetFailed;
 
   const phaseIdx = Math.max(
     0,
@@ -1000,35 +933,31 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
           <div className="ex-reps">{subtitle}</div>
 
           <div
-            className={`ex-anim ${
-              currentMediaState.status === "loading" ? "is-loading" : currentMedia ? "has-media" : ""
-            }`}
+            className={`ex-anim ${showVideo || showImage ? "has-media" : ""}`}
           >
-            {currentMediaState.status === "loading" && (
-              <div className="exercise-media-skeleton" aria-label="Loading exercise media" />
-            )}
-            {currentMedia?.videoUrl && (
+            {showVideo && (
               <video
                 className="exercise-media"
-                src={currentMedia.videoUrl}
-                poster={currentMedia.imageUrl}
-                controls
+                src={currentExercise.videoUrl}
+                poster={currentExercise.imageUrl}
+                autoPlay
+                loop
                 muted
                 playsInline
                 preload="metadata"
                 onError={() => setMediaAssetFailed(true)}
               />
             )}
-            {!currentMedia?.videoUrl && currentMedia?.imageUrl && (
+            {showImage && (
               <img
                 className="exercise-media"
-                src={currentMedia.imageUrl}
-                alt={`${currentExercise.name} 动作示意`}
+                src={currentExercise.imageUrl}
+                alt={currentExercise.name}
                 loading="lazy"
                 onError={() => setMediaAssetFailed(true)}
               />
             )}
-            {currentMediaState.status !== "loading" && !currentMedia && (
+            {!showVideo && !showImage && (
               <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
             )}
           </div>

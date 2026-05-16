@@ -1,3 +1,5 @@
+import { withManifestMedia } from "@/data/exerciseMediaManifest";
+
 export type WorkoutPhase = "warmup" | "strength" | "cardio" | "stretch";
 
 export type EquipmentGuide = {
@@ -21,6 +23,9 @@ export type WorkoutExercise = {
   mediaSearchQuery?: string;
   englishName?: string;
   slug?: string;
+  imageUrl?: string;
+  videoUrl?: string;
+  mediaType?: "image" | "gif" | "video";
   phase: WorkoutPhase;
   sets: number;
   reps: string;
@@ -299,7 +304,7 @@ export const workoutByPhase: Record<WorkoutPhase, WorkoutExercise[]> = {
 };
 
 export function getOrderedExercises(): WorkoutExercise[] {
-  return PHASE_ORDER.flatMap((phase) => workoutByPhase[phase]);
+  return PHASE_ORDER.flatMap((phase) => workoutByPhase[phase]).map(withManifestMedia);
 }
 
 export function getPhasePlanForExec(): { label: string; exerciseIndexes: number[] }[] {

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "set TURBOPACK=0 && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "fetch-exercise-media": "node scripts/fetch-exercise-media.mjs",
+    "fetch-exercise-media:force": "node scripts/fetch-exercise-media.mjs --force"
   },
   "dependencies": {
     "lucide-react": "^1.14.0",

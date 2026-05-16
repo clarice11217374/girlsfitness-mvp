@@ -1,6 +1,8 @@
 "use client";
 
 import { workoutTemplates } from "@/data/workoutTemplates";
+import { Home, ClipboardList, BarChart3 } from "lucide-react";
+import { StatusBar } from "@/components/StatusBar";
 
 type Props = {
   onHome: () => void;
@@ -22,9 +24,7 @@ function coverVariant(id: string): "push" | "recover" | "legs" {
 export function Training({ onHome, onPickTemplate, onRecords }: Props) {
   return (
     <div className="page training-screen">
-      <div className="sbar">
-        <span>9:41</span>
-      </div>
+      <StatusBar />
       <div className="hdr">
         <div>
           <div style={{ fontSize: 13, color: "var(--gray)" }}>训练选择</div>
@@ -71,12 +71,17 @@ export function Training({ onHome, onPickTemplate, onRecords }: Props) {
 
       <div className="bnav">
         {[
-          { icon: "🏠", lbl: "首页", on: false, click: onHome },
-          { icon: "📋", lbl: "训练", on: true },
-          { icon: "📊", lbl: "记录", on: false, click: onRecords },
+          { icon: Home, lbl: "首页", on: false, click: onHome },
+          { icon: ClipboardList, lbl: "训练", on: true },
+          { icon: BarChart3, lbl: "记录", on: false, click: onRecords },
         ].map((n) => (
           <div key={n.lbl} className={`ni ${n.on ? "on" : ""}`} onClick={n.click}>
-            <div className="nicon">{n.icon}</div>
+            <div className="nicon">
+              {(() => {
+                const Icon = n.icon;
+                return <Icon className="w-5 h-5" />;
+              })()}
+            </div>
             <div className="nlbl">{n.lbl}</div>
           </div>
         ))}

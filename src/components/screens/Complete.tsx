@@ -1,19 +1,38 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Dumbbell, ThumbsUp, Wind } from "lucide-react";
 import { saveTrainingRecord } from "@/utils/trainingRecordStorage";
 import { clearWorkoutExecSummary, readWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
+import { StatusBar } from "@/components/StatusBar";
 
 type Props = { onSaved: () => void };
+
+const galleryImages = [
+  "/gallery/1.png",
+  "/gallery/2.png",
+  "/gallery/3.png",
+  "/gallery/4.png",
+  "/gallery/5.png",
+  "/gallery/6.png",
+  "/gallery/7.png",
+];
 
 export function Complete({ onSaved }: Props) {
   const [feel, setFeel] = useState<string>("很好");
   const [hasSaved, setHasSaved] = useState(false);
+  const [randomImage, setRandomImage] = useState<string | null>(null);
+  const [imageFailed, setImageFailed] = useState(false);
   const feelOptions = [
-    { lbl: "很好", emoji: "💪" },
-    { lbl: "平稳", emoji: "👌" },
-    { lbl: "有点累", emoji: "😮‍💨" },
+    { lbl: "很好", icon: Dumbbell },
+    { lbl: "平稳", icon: ThumbsUp },
+    { lbl: "有点累", icon: Wind },
   ] as const;
+
+  useEffect(() => {
+    const index = Math.floor(Math.random() * galleryImages.length);
+    setRandomImage(galleryImages[index]);
+  }, []);
 
   const persistRecord = useCallback(() => {
     if (hasSaved) return;
@@ -39,9 +58,7 @@ export function Complete({ onSaved }: Props) {
 
   return (
     <div className="page complete-screen">
-      <div className="sbar" style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10 }}>
-        <span>9:41</span>
-      </div>
+      <StatusBar style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10 }} />
 
       <div className="complete-top">
         <p className="complete-eyebrow">训练完成</p>
@@ -54,13 +71,21 @@ export function Complete({ onSaved }: Props) {
       </div>
 
       <div className="complete-visual">
+        {randomImage && !imageFailed && (
+          <img
+            className="complete-random-image"
+            src={randomImage}
+            alt="训练完成展示图"
+            onError={() => setImageFailed(true)}
+          />
+        )}
         <span className="complete-visual-placeholder">情绪载体位</span>
       </div>
 
       <div className="feeling-sec">
         <div className="feel-title">现在感觉怎么样？</div>
         <div className="feel-row">
-          {feelOptions.map(({ lbl, emoji }) => (
+          {feelOptions.map(({ lbl, icon: Icon }) => (
             <button
               key={lbl}
               type="button"
@@ -69,7 +94,7 @@ export function Complete({ onSaved }: Props) {
               aria-pressed={feel === lbl}
             >
               <span className="feel-emoji" aria-hidden={true}>
-                {emoji}
+                <Icon className="w-5 h-5" />
               </span>
               <span className="feel-lbl">{lbl}</span>
             </button>

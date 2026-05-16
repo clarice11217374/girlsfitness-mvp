@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Bot, Dumbbell, Link, Footprints, Sparkles, Zap } from "lucide-react";
 import type { CycleStatus, EnergyLevel } from "@/data/workoutTemplates";
 import {
   getLastTargetAreaFromRecords,
@@ -9,6 +10,7 @@ import {
 } from "@/lib/workoutMatcher";
 import { saveCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
 import { getTrainingRecords } from "@/utils/trainingRecordStorage";
+import { StatusBar } from "@/components/StatusBar";
 
 type Props = { onDone: () => void };
 
@@ -52,10 +54,10 @@ export function StatusInput({ onDone }: Props) {
     { l: "有点累", s: "sl" },
   ];
   const parts = [
-    { id: "push", icon: "💪", name: "上肢推", desc: "胸 · 肩 · 三头" },
-    { id: "pull", icon: "🔗", name: "上肢拉", desc: "背 · 二头 · 肩后" },
-    { id: "legs", icon: "🦵", name: "臀腿核心", desc: "臀 · 大腿 · 核心" },
-    { id: "full", icon: "⚡", name: "全身燃脂", desc: "全身 · 有氧结合" },
+    { id: "push", icon: Dumbbell, name: "上肢推", desc: "胸 · 肩 · 三头" },
+    { id: "pull", icon: Link, name: "上肢拉", desc: "背 · 二头 · 肩后" },
+    { id: "legs", icon: Footprints, name: "臀腿核心", desc: "臀 · 大腿 · 核心" },
+    { id: "full", icon: Zap, name: "全身燃脂", desc: "全身 · 有氧结合" },
   ];
 
   const canSubmit = Boolean(period && energy && (smart || part));
@@ -93,14 +95,15 @@ export function StatusInput({ onDone }: Props) {
 
   return (
     <div className="page status-screen">
-      <div className="sbar">
-        <span>9:41</span>
-      </div>
+      <StatusBar />
       <div className="status-scroll">
         <div style={{ paddingTop: 24, marginBottom: 28 }}>
           <div className="t-title">
             告诉我你<br />
-            今天的状态 ✨
+            今天的状态
+            <span className="title-inline-icon" aria-hidden>
+              <Sparkles className="w-5 h-5" />
+            </span>
           </div>
           <div className="t-sub">我会为你定制最适合的训练计划</div>
         </div>
@@ -130,7 +133,9 @@ export function StatusInput({ onDone }: Props) {
               setPart(null);
             }}
           >
-            <div style={{ fontSize: 24 }}>🤖</div>
+            <div className="smart-icon" aria-hidden>
+              <Bot className="w-5 h-5" />
+            </div>
             <div>
               <div className="sname">智能推荐</div>
               <div className="ssub">根据你的状态自动选择最佳训练</div>
@@ -150,7 +155,12 @@ export function StatusInput({ onDone }: Props) {
                 setSmart(false);
               }}
             >
-              <div className="picon">{p.icon}</div>
+              <div className="picon">
+                {(() => {
+                  const Icon = p.icon;
+                  return <Icon className="w-5 h-5" />;
+                })()}
+              </div>
               <div className="pname">{p.name}</div>
               <div className="pdesc">{p.desc}</div>
             </div>

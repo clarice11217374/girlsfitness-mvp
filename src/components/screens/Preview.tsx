@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Dumbbell, Clock, Flame, Dumbbell as DumbbellIcon, Activity, Repeat } from "lucide-react";
 import { workoutByPhase, workoutTemplateMeta } from "@/data/workoutData";
 import { getWorkoutTemplateById, type WorkoutPhase, type WorkoutTemplate } from "@/data/workoutTemplates";
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
@@ -138,11 +139,26 @@ export function Preview({ onBack, onStart, templateId = null, onStartWorkout }: 
           <div className="prev-desc">{description}</div>
 
           <div className="preview-tags">
-            <span className="preview-tag tag-time">⏱ {estimatedMinutes} 分钟</span>
-            <span className="preview-tag tag-intensity">🔥 {intensity}</span>
-            <span className="preview-tag tag-focus">💪 {focus}</span>
-            <span className="preview-tag tag-type">🏋️ {trainingType}</span>
-            <span className="preview-tag tag-equip">🔁 {equipmentSummary}</span>
+            <span className="preview-tag tag-time">
+              <Clock className="w-4 h-4 inline mr-1" />
+              {estimatedMinutes} 分钟
+            </span>
+            <span className="preview-tag tag-intensity">
+              <Flame className="w-4 h-4 inline mr-1" />
+              {intensity}
+            </span>
+            <span className="preview-tag tag-focus">
+              <Dumbbell className="w-4 h-4 inline mr-1" />
+              {focus}
+            </span>
+            <span className="preview-tag tag-type">
+              <Activity className="w-4 h-4 inline mr-1" />
+              {trainingType}
+            </span>
+            <span className="preview-tag tag-equip">
+              <Repeat className="w-4 h-4 inline mr-1" />
+              {equipmentSummary}
+            </span>
           </div>
 
           <div className="schedule-list-wrap">

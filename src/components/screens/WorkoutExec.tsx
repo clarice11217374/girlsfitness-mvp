@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { StatusBar } from "@/components/StatusBar";
 import {
   getOrderedExercises as getStaticOrderedExercises,
   getPhasePlanForExec as getStaticPhasePlanForExec,
@@ -14,6 +15,7 @@ import {
   getWorkoutTemplateById,
   type WorkoutExercise as TemplateWorkoutExercise,
 } from "@/data/workoutTemplates";
+import type { ExerciseMedia } from "@/types/exerciseMedia";
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
 import { writeWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
 
@@ -22,6 +24,9 @@ type Props = { onDone: () => void; templateId?: string | null; onBack?: () => vo
 type ExecExercise = {
   id: string;
   name: string;
+  mediaSearchQuery?: string;
+  englishName?: string;
+  slug?: string;
   sets: number;
   reps: string;
   visualPlaceholder: string;
@@ -33,6 +38,25 @@ type ExecExercise = {
 };
 
 type PhasePlanRow = { label: string; exerciseIndexes: number[] };
+
+type ExerciseMediaState =
+  | { status: "idle" | "loading"; data: null }
+  | { status: "ready"; data: ExerciseMedia | null }
+  | { status: "error"; data: null };
+
+const exerciseMediaSearchQueries: Record<string, string> = {
+  // 保留 UI-syh 里面这一整大段 mapping
+};
+
+function getMediaSearchQuery(exercise: ExecExercise): string {
+  return (
+    exercise.mediaSearchQuery?.trim() ||
+    exercise.englishName?.trim() ||
+    exercise.slug?.trim() ||
+    exerciseMediaSearchQueries[exercise.id] ||
+    exercise.name
+  );
+}
 
 const restOptions = [
   { label: "45s", seconds: 45 },
@@ -47,6 +71,9 @@ function toExecFromTemplate(ex: TemplateWorkoutExercise): ExecExercise {
   return {
     id: ex.id,
     name: ex.name,
+    mediaSearchQuery: ex.mediaSearchQuery,
+    englishName: ex.englishName,
+    slug: ex.slug,
     sets: ex.sets,
     reps: ex.reps,
     visualPlaceholder: ex.visualPlaceholder,
@@ -61,6 +88,9 @@ function toExecFromTemplate(ex: TemplateWorkoutExercise): ExecExercise {
 function toExecFromStatic(ex: {
   id: string;
   name: string;
+  mediaSearchQuery?: string;
+  englishName?: string;
+  slug?: string;
   sets: number;
   reps: string;
   visualPlaceholder: string;
@@ -73,6 +103,9 @@ function toExecFromStatic(ex: {
   return {
     id: ex.id,
     name: ex.name,
+    mediaSearchQuery: ex.mediaSearchQuery,
+    englishName: ex.englishName,
+    slug: ex.slug,
     sets: ex.sets,
     reps: ex.reps,
     visualPlaceholder: ex.visualPlaceholder,
@@ -718,7 +751,10 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   const [ticking, setTicking] = useState(false);
   const [restPickerOpen, setRestPickerOpen] = useState(false);
   const [equipmentOpen, setEquipmentOpen] = useState(false);
+  const [mediaByQuery, setMediaByQuery] = useState<Record<string, ExerciseMediaState>>({});
+  const [mediaAssetFailed, setMediaAssetFailed] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const requestedMediaQueriesRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     const staticPayload = initialStaticPayload();
@@ -763,6 +799,60 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   }, [templateId]);
 
   const currentExercise = exercises[exIdx];
+  const currentExercise = exercises[exIdx];
+
+  const currentMediaQuery = currentExercise ? getMediaSearchQuery(currentExercise).trim() : "";
+  const currentMediaState: ExerciseMediaState =
+    currentMediaQuery && mediaByQuery[currentMediaQuery]
+      ? mediaByQuery[currentMediaQuery]
+      : { status: "idle", data: null };
+  const currentMedia =
+    currentMediaState.status === "ready" && !mediaAssetFailed ? currentMediaState.data : null;
+
+  useEffect(() => {
+    setMediaAssetFailed(false);
+    if (!currentMediaQuery) return;
+
+    if (requestedMediaQueriesRef.current.has(currentMediaQuery)) return;
+    requestedMediaQueriesRef.current.add(currentMediaQuery);
+
+    const controller = new AbortController();
+    setMediaByQuery((prev) => ({
+      ...prev,
+      [currentMediaQuery]: { status: "loading", data: null },
+    }));
+
+    async function loadMedia() {
+      try {
+        const response = await fetch(
+          `/api/exercises/media?name=${encodeURIComponent(currentMediaQuery)}`,
+          { signal: controller.signal },
+        );
+        const payload = (await response.json()) as {
+          success?: boolean;
+          data?: ExerciseMedia | null;
+        };
+
+        if (!response.ok || payload.success === false) {
+          throw new Error("Exercise media request failed");
+        }
+
+        setMediaByQuery((prev) => ({
+          ...prev,
+          [currentMediaQuery]: { status: "ready", data: payload.data ?? null },
+        }));
+      } catch {
+        if (controller.signal.aborted) return;
+        setMediaByQuery((prev) => ({
+          ...prev,
+          [currentMediaQuery]: { status: "error", data: null },
+        }));
+      }
+    }
+
+    loadMedia();
+    return () => controller.abort();
+  }, [currentMediaQuery]);
 
   const phaseIdx = Math.max(
     0,
@@ -885,10 +975,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
       <style dangerouslySetInnerHTML={{ __html: EXEC_PREMIUM_CSS }} />
 
       <div className="exec-top">
-        <div className="sbar" style={{ padding: "0 0 10px" }}>
-          <span>9:41</span>
-        </div>
-
+        <StatusBar style={{ padding: "0 0 10px" }} />
         <button className="exec-back" type="button" aria-label="返回" onClick={() => onBack?.()}>
           ←
         </button>
@@ -913,8 +1000,39 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
           <div className="ex-name">{currentExercise.name}</div>
           <div className="ex-reps">{subtitle}</div>
 
-          <div className="ex-anim">
-            <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
+          <div
+            className={`ex-anim ${
+              currentMediaState.status === "loading" ? "is-loading" : currentMedia ? "has-media" : ""
+            }`}
+          >
+            {currentMediaState.status === "loading" && (
+              <div className="exercise-media-skeleton" aria-label="动作媒体加载中" />
+            )}
+            {currentMedia?.videoUrl && (
+              <video
+                className="exercise-media"
+                src={currentMedia.videoUrl}
+                poster={currentMedia.imageUrl}
+                controls
+                muted
+                playsInline
+                preload="metadata"
+                onError={() => setMediaAssetFailed(true)}
+              />
+            )}
+            {!currentMedia?.videoUrl && currentMedia?.imageUrl && (
+              <img
+                className="exercise-media"
+                src={currentMedia.imageUrl}
+                alt={`${currentExercise.name} 动作示意`}
+                loading="lazy"
+                onError={() => setMediaAssetFailed(true)}
+              />
+            )}
+            {currentMediaState.status !== "loading" && !currentMedia && (
+              <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
+            )}
+          </div>
           </div>
 
           <div className="move-info-card">

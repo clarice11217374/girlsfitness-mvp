@@ -18,6 +18,9 @@ export type ActionGuide = {
 export type WorkoutExercise = {
   id: string;
   name: string;
+  mediaSearchQuery?: string;
+  englishName?: string;
+  slug?: string;
   phase: WorkoutPhase;
   sets: number;
   reps: string;

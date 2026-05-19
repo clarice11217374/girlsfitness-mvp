@@ -1,4 +1,8 @@
 import { withManifestMedia } from "@/data/exerciseMediaManifest";
+import {
+  buildWorkoutVariantTemplates,
+  NEW_WORKOUT_EXERCISES,
+} from "@/data/workoutTemplateVariants";
 
 export type WorkoutPhase = "warmup" | "strength" | "cardio" | "stretch";
 
@@ -71,7 +75,7 @@ export type WorkoutTemplate = {
 
 const phaseOrder: WorkoutPhase[] = ["warmup", "strength", "cardio", "stretch"];
 
-export const workoutTemplates: WorkoutTemplate[] = [
+const legacyWorkoutTemplates: WorkoutTemplate[] = [
   {
     meta: {
       id: "upper-push-strength-day",
@@ -827,11 +831,11 @@ export const workoutTemplates: WorkoutTemplate[] = [
   {
     meta: {
       id: "full-body-cardio-day",
-      title: "全身燃脂 · 有氧力量结合",
+      title: "全身燃脂 · 标准塑形",
       description:
         "先用复合力量动作唤醒全身，再用椭圆机匀速收尾；登山者采用「慢速、小幅度」版本，降低膝盖压力，适合新手理解节奏。",
       estimatedMinutes: 40,
-      intensity: "中等偏高（可自降强度）",
+      intensity: "中高强度",
       focus: "全身协调、心肺、基础力量",
       trainingType: "全身代谢",
       equipmentSummary: "哑铃或壶铃、瑜伽垫、椭圆机",
@@ -1303,6 +1307,41 @@ export const workoutTemplates: WorkoutTemplate[] = [
   },
 ];
 
+function indexExercises(templates: WorkoutTemplate[]): Map<string, WorkoutExercise> {
+  const map = new Map<string, WorkoutExercise>();
+  for (const template of templates) {
+    for (const phase of phaseOrder) {
+      for (const exercise of template.workoutByPhase[phase]) {
+        map.set(exercise.id, exercise);
+      }
+    }
+  }
+  return map;
+}
+
+const exerciseById = indexExercises(legacyWorkoutTemplates);
+for (const exercise of NEW_WORKOUT_EXERCISES) {
+  exerciseById.set(exercise.id, exercise);
+}
+
+export const workoutTemplates: WorkoutTemplate[] = [
+  ...legacyWorkoutTemplates,
+  ...buildWorkoutVariantTemplates(exerciseById),
+];
+
+/** Legacy ids kept for matchedTemplateId lookup; hidden from Training list UI. */
+const HIDDEN_FROM_TEMPLATE_LIST_IDS = new Set([
+  "upper-push-strength-day",
+  "upper-pull-strength-day",
+  "lower-core-strength-day",
+  "period-recovery-day",
+]);
+
+/** User-visible template picker: new variants + full-body only. */
+export const displayableWorkoutTemplates = workoutTemplates.filter(
+  (item) => !HIDDEN_FROM_TEMPLATE_LIST_IDS.has(item.meta.id),
+);
+
 export function getOrderedExercises(templateId = "upper-push-strength-day"): WorkoutExercise[] {
   const template =
     workoutTemplates.find((item) => item.meta.id === templateId) ?? workoutTemplates[0];
@@ -1334,5 +1373,10 @@ export function getPhasePlanForExec(templateId = "upper-push-strength-day") {
 }
 
 export function getWorkoutTemplateById(templateId: string): WorkoutTemplate {
-  return workoutTemplates.find((item) => item.meta.id === templateId) ?? workoutTemplates[0];
+  return (
+    workoutTemplates.find((item) => item.meta.id === templateId) ??
+    workoutTemplates.find((item) => item.meta.id === "upper-push-standard") ??
+    workoutTemplates.find((item) => item.meta.id === "upper-push-strength-day") ??
+    workoutTemplates[0]
+  );
 }

@@ -11,12 +11,34 @@ if (workoutTemplates.length === 0) {
   throw new Error("workoutTemplates: library is empty");
 }
 
-const TEMPLATE_IDS = {
+const LEGACY_TEMPLATE_IDS = {
   upperPush: "upper-push-strength-day",
   upperPull: "upper-pull-strength-day",
   lowerCore: "lower-core-strength-day",
   fullBody: "full-body-cardio-day",
   periodRecovery: "period-recovery-day",
+} as const;
+
+const VARIANT_TEMPLATE_IDS = {
+  upperPush: {
+    gentle: "upper-push-gentle",
+    standard: "upper-push-standard",
+    plus: "upper-push-plus",
+  },
+  upperPull: {
+    gentle: "upper-pull-gentle",
+    standard: "upper-pull-standard",
+    plus: "upper-pull-plus",
+  },
+  lowerCore: {
+    gentle: "lower-core-gentle",
+    standard: "lower-core-standard",
+    plus: "lower-core-plus",
+  },
+  periodRecovery: {
+    gentle: "period-recovery-gentle",
+    standard: "period-recovery-standard",
+  },
 } as const;
 
 const TARGET_AREA_VALUES: readonly TargetArea[] = [
@@ -28,12 +50,30 @@ const TARGET_AREA_VALUES: readonly TargetArea[] = [
   "recovery",
 ];
 
-function isPeriodLow(cycleStatus: CycleStatus, energyLevel: EnergyLevel): boolean {
-  return cycleStatus === "period" && energyLevel === "low";
-}
+type IntensityTier = "gentle" | "standard" | "plus";
+type BodyTrainingChoice = Exclude<TrainingChoice, "smart" | "full_body">;
 
 function isTargetArea(value: unknown): value is TargetArea {
   return typeof value === "string" && TARGET_AREA_VALUES.includes(value as TargetArea);
+}
+
+function tierFromEnergy(energyLevel: EnergyLevel): IntensityTier {
+  if (energyLevel === "low") return "gentle";
+  if (energyLevel === "high") return "plus";
+  return "standard";
+}
+
+function isPeriodCycle(cycleStatus: CycleStatus): boolean {
+  return cycleStatus === "period";
+}
+
+function templateExists(templateId: string): boolean {
+  return workoutTemplates.some((item) => item.meta.id === templateId);
+}
+
+function resolveTemplateId(templateId: string): string {
+  if (templateExists(templateId)) return templateId;
+  return LEGACY_TEMPLATE_IDS.upperPush;
 }
 
 export type TrainingChoice =
@@ -50,43 +90,82 @@ export type MatchWorkoutParams = {
   lastTargetArea?: TargetArea | null;
 };
 
+function periodTemplateId(energyLevel: EnergyLevel): string {
+  return energyLevel === "low"
+    ? VARIANT_TEMPLATE_IDS.periodRecovery.gentle
+    : VARIANT_TEMPLATE_IDS.periodRecovery.standard;
+}
+
+function bodyTemplateId(area: BodyTrainingChoice, tier: IntensityTier): string {
+  if (area === "upper_push") return VARIANT_TEMPLATE_IDS.upperPush[tier];
+  if (area === "upper_pull") return VARIANT_TEMPLATE_IDS.upperPull[tier];
+  return VARIANT_TEMPLATE_IDS.lowerCore[tier];
+}
+
+type SmartRoute =
+  | { kind: "body"; area: BodyTrainingChoice }
+  | { kind: "full_body" }
+  | { kind: "recovery" };
+
+function smartRouteFromLast(lastTargetArea: TargetArea | null): SmartRoute {
+  if (lastTargetArea === "upper_push" || lastTargetArea === "upper_pull") {
+    return { kind: "body", area: "lower_body" };
+  }
+  if (lastTargetArea === "lower_body") {
+    return { kind: "body", area: "upper_push" };
+  }
+  if (lastTargetArea === "full_body") {
+    return { kind: "body", area: "upper_push" };
+  }
+  if (lastTargetArea === "recovery") {
+    return { kind: "recovery" };
+  }
+  return { kind: "full_body" };
+}
+
+function matchSmartTemplate(
+  lastTargetArea: TargetArea | null,
+  energyLevel: EnergyLevel,
+): WorkoutTemplate {
+  const tier = tierFromEnergy(energyLevel);
+  const route = smartRouteFromLast(lastTargetArea);
+
+  if (route.kind === "recovery") {
+    return getWorkoutTemplateById(
+      resolveTemplateId(
+        energyLevel === "low"
+          ? VARIANT_TEMPLATE_IDS.periodRecovery.gentle
+          : VARIANT_TEMPLATE_IDS.periodRecovery.standard,
+      ),
+    );
+  }
+
+  if (route.kind === "full_body") {
+    return getWorkoutTemplateById(LEGACY_TEMPLATE_IDS.fullBody);
+  }
+
+  return getWorkoutTemplateById(resolveTemplateId(bodyTemplateId(route.area, tier)));
+}
+
 export function getMatchedWorkoutTemplate(params: MatchWorkoutParams): WorkoutTemplate {
   const { cycleStatus, energyLevel, selectedTraining, lastTargetArea } = params;
 
-  if (isPeriodLow(cycleStatus, energyLevel)) {
-    return getWorkoutTemplateById(TEMPLATE_IDS.periodRecovery);
+  if (isPeriodCycle(cycleStatus)) {
+    return getWorkoutTemplateById(resolveTemplateId(periodTemplateId(energyLevel)));
   }
+
+  const tier = tierFromEnergy(energyLevel);
 
   if (selectedTraining !== "smart") {
-    const directId: Record<Exclude<TrainingChoice, "smart">, string> = {
-      upper_push: TEMPLATE_IDS.upperPush,
-      upper_pull: TEMPLATE_IDS.upperPull,
-      lower_body: TEMPLATE_IDS.lowerCore,
-      full_body: TEMPLATE_IDS.fullBody,
-    };
-    return getWorkoutTemplateById(directId[selectedTraining]);
+    if (selectedTraining === "full_body") {
+      return getWorkoutTemplateById(LEGACY_TEMPLATE_IDS.fullBody);
+    }
+    return getWorkoutTemplateById(
+      resolveTemplateId(bodyTemplateId(selectedTraining, tier)),
+    );
   }
 
-  const last = lastTargetArea ?? null;
-
-  if (last === "upper_push" || last === "upper_pull") {
-    return getWorkoutTemplateById(TEMPLATE_IDS.lowerCore);
-  }
-
-  if (last === "lower_body") {
-    return getWorkoutTemplateById(TEMPLATE_IDS.upperPush);
-  }
-
-  if (last === "full_body") {
-    return getWorkoutTemplateById(TEMPLATE_IDS.upperPush);
-  }
-
-  if (last === "recovery" || last === null) {
-    return getWorkoutTemplateById(TEMPLATE_IDS.fullBody);
-  }
-
-  // lastTargetArea 为 core 等未单独列出的情况：与「无记录」类似，给全身模板
-  return getWorkoutTemplateById(TEMPLATE_IDS.fullBody);
+  return matchSmartTemplate(lastTargetArea ?? null, energyLevel);
 }
 
 /** 从记录数组中读取最近一次出现的 targetArea；无有效值时返回 null。 */

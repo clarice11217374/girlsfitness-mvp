@@ -1,6 +1,9 @@
 "use client";
 
-import { workoutTemplates } from "@/data/workoutTemplates";
+import {
+  displayableWorkoutTemplates,
+  type WorkoutTemplate,
+} from "@/data/workoutTemplates";
 import { Home, ClipboardList, BarChart3 } from "lucide-react";
 import { StatusBar } from "@/components/StatusBar";
 
@@ -10,7 +13,7 @@ type Props = {
   onRecords: () => void;
 };
 
-function countExercises(template: (typeof workoutTemplates)[number]): number {
+function countExercises(template: WorkoutTemplate): number {
   const p = template.workoutByPhase;
   return p.warmup.length + p.strength.length + p.cardio.length + p.stretch.length;
 }
@@ -36,7 +39,7 @@ export function Training({ onHome, onPickTemplate, onRecords }: Props) {
 
       <div className="training-scroll">
         <div className="template-list">
-          {workoutTemplates.map((item) => {
+          {displayableWorkoutTemplates.map((item) => {
             const meta = item.meta;
             const moveCount = countExercises(item);
             const cover = coverVariant(meta.id);

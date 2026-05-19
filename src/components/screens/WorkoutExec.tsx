@@ -15,11 +15,57 @@ import {
   getWorkoutTemplateById,
   type WorkoutExercise as TemplateWorkoutExercise,
 } from "@/data/workoutTemplates";
-import type { ExerciseMediaType } from "@/data/exerciseMediaManifest";
+import {
+  getExerciseMediaFromManifest,
+  type ExerciseMediaManifestEntry,
+  type ExerciseMediaType,
+} from "@/data/exerciseMediaManifest";
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
+import {
+  getExercisePerformance,
+  upsertExercisePerformance,
+  type ExercisePerformanceEntryV1,
+} from "@/utils/exercisePerformanceStorage";
 import { writeWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
 
 type Props = { onDone: () => void; templateId?: string | null; onBack?: () => void };
+
+type ManifestExecEntry = ExerciseMediaManifestEntry & { execDisplayApproved?: boolean };
+
+/** Show real media only when manifest marks illustration / UI-approved assets. */
+function isExecMediaDisplayApproved(exerciseId: string): boolean {
+  const entry = getExerciseMediaFromManifest(exerciseId) as ManifestExecEntry | undefined;
+  if (!entry) return false;
+  if (entry.execDisplayApproved === true) return true;
+  const source = (entry.source ?? "").toLowerCase();
+  return source.includes("opentraining") || source.includes("illustration");
+}
+
+function ExerciseMediaPendingPlaceholder() {
+  return (
+    <div className="ex-anim-pending-inner" role="img" aria-label="动作示意图待补充">
+      <svg
+        className="ex-anim-pending-icon"
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden
+      >
+        <rect x="6" y="8" width="36" height="28" rx="6" stroke="currentColor" strokeWidth="1.5" />
+        <circle cx="17" cy="19" r="2.5" fill="currentColor" opacity="0.55" />
+        <path
+          d="M10 32l9-8 6 5 7-9 6 12"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity="0.7"
+        />
+      </svg>
+      <span className="ex-anim-pending-label">动作示意图待补充</span>
+    </div>
+  );
+}
 
 type ExecExercise = {
   id: string;
@@ -120,28 +166,56 @@ function initialStaticPayload(): { exercises: ExecExercise[]; phasePlan: PhasePl
   };
 }
 
+type WorkoutExecMeta = {
+  title: string;
+  templateId: string;
+  targetArea: string;
+  estimatedMinutes: number;
+};
+
+function resolveDurationMinutes(estimatedMinutes: number, sessionStartedAt: number | null): number {
+  if (sessionStartedAt === null) return estimatedMinutes;
+  const elapsedMs = Date.now() - sessionStartedAt;
+  if (elapsedMs < 60_000) return estimatedMinutes;
+  return Math.max(1, Math.round(elapsedMs / 60_000));
+}
+
 function writeSummaryForExercises(
   exercises: ExecExercise[],
-  meta: {
-    title: string;
-    templateId: string;
-    targetArea: string;
-    estimatedMinutes: number;
-  },
+  meta: WorkoutExecMeta,
+  sessionStartedAt: number | null,
 ): void {
+  if (exercises.length === 0) return;
+
   writeWorkoutExecSummary({
     workoutTitle: meta.title,
     templateId: meta.templateId,
     targetArea: meta.targetArea,
     totalExercises: exercises.length,
     totalSets: exercises.reduce((acc, e) => acc + e.sets, 0),
-    durationMinutes: meta.estimatedMinutes,
+    durationMinutes: resolveDurationMinutes(meta.estimatedMinutes, sessionStartedAt),
+    completedAt: new Date().toISOString(),
   });
 }
 
 function parseNumber(text: string, fallback: number): number {
   const match = text.match(/\d+/);
   return match ? Number(match[0]) : fallback;
+}
+
+function formatLastPerformanceHint(
+  entry: ExercisePerformanceEntryV1,
+  showWeight: boolean,
+  showReps: boolean,
+): string | null {
+  const w = entry.weightKg;
+  const r = entry.reps;
+  if (showWeight && showReps && w !== undefined && r !== undefined) {
+    return `上次记录：${w}kg × ${r}次`;
+  }
+  if (showWeight && w !== undefined) return `上次记录：${w}kg`;
+  if (showReps && r !== undefined) return `上次记录：${r}次`;
+  return null;
 }
 
 function fmt(s: number): string {
@@ -186,7 +260,14 @@ const EXEC_PREMIUM_CSS = `
   line-height: 1.15;
   margin-bottom: 8px;
 }
-.exec-premium .ex-reps { font-size: 13px; font-weight: 600; opacity: 0.5; margin-bottom: 16px; }
+.exec-premium .exec-last-record {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(74, 63, 92, 0.55);
+  text-align: center;
+  margin: 4px 0 14px;
+  line-height: 1.4;
+}
 
 .exec-premium .move-info-card {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", system-ui, sans-serif;
@@ -727,6 +808,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
 
   const [weight, setWeight] = useState(5);
   const [reps, setReps] = useState(12);
+  const [lastPerformanceLabel, setLastPerformanceLabel] = useState<string | null>(null);
 
   const [restSec, setRestSec] = useState(0);
   const [ticking, setTicking] = useState(false);
@@ -734,12 +816,16 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   const [equipmentOpen, setEquipmentOpen] = useState(false);
   const [mediaAssetFailed, setMediaAssetFailed] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sessionStartedAtRef = useRef<number | null>(null);
+  const workoutMetaRef = useRef<WorkoutExecMeta | null>(null);
 
   useEffect(() => {
     const staticPayload = initialStaticPayload();
     const propId = typeof templateId === "string" && templateId.length > 0 ? templateId : null;
     const selectionId = loadCurrentWorkoutSelection()?.matchedTemplateId ?? null;
     const resolvedId = propId ?? selectionId;
+
+    sessionStartedAtRef.current = Date.now();
 
     if (resolvedId) {
       const raw = getTemplateOrderedExercises(resolvedId);
@@ -749,21 +835,21 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
 
       setExercises(mapped);
       setPhasePlan(phases);
-      writeSummaryForExercises(mapped, {
+      workoutMetaRef.current = {
         title: template.meta.title,
         templateId: template.meta.id,
         targetArea: template.meta.targetArea,
         estimatedMinutes: template.meta.estimatedMinutes,
-      });
+      };
     } else {
       setExercises(staticPayload.exercises);
       setPhasePlan(staticPayload.phasePlan);
-      writeSummaryForExercises(staticPayload.exercises, {
+      workoutMetaRef.current = {
         title: workoutTemplateMeta.title,
         templateId: "upper-push-strength-day",
         targetArea: "upper_push",
         estimatedMinutes: workoutTemplateMeta.estimatedMinutes,
-      });
+      };
     }
 
     setExIdx(0);
@@ -783,8 +869,17 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
     setMediaAssetFailed(false);
   }, [exIdx, currentExercise?.id]);
 
-  const showVideo = !!currentExercise?.videoUrl && !mediaAssetFailed;
-  const showImage = !showVideo && !!currentExercise?.imageUrl && !mediaAssetFailed;
+  const mediaDisplayApproved = currentExercise
+    ? isExecMediaDisplayApproved(currentExercise.id)
+    : false;
+  const showVideo =
+    mediaDisplayApproved && !!currentExercise?.videoUrl && !mediaAssetFailed;
+  const showImage =
+    mediaDisplayApproved &&
+    !showVideo &&
+    !!currentExercise?.imageUrl &&
+    !mediaAssetFailed;
+  const showMediaPending = !showVideo && !showImage;
 
   const phaseIdx = Math.max(
     0,
@@ -811,9 +906,35 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
     setTicking(false);
     setRestPickerOpen(false);
     setEquipmentOpen(false);
-    setReps(parseNumber(currentExercise.reps, 12));
-    setWeight(5);
-  }, [currentExercise?.id]);
+
+    const phaseIndex = Math.max(
+      0,
+      phasePlan.findIndex((phase) => phase.exerciseIndexes.includes(exIdx)),
+    );
+    const phaseLabel = phasePlan[phaseIndex]?.label ?? "";
+    const isStrength = phaseLabel === "力量";
+    const useWeight =
+      isStrength &&
+      !isBodyweightName(currentExercise.name) &&
+      !isNoLoadEquipment(currentExercise.equipment);
+    const useReps = isStrength;
+    const templateId = workoutMetaRef.current?.templateId;
+
+    if (!isStrength || !templateId) {
+      setLastPerformanceLabel(null);
+      setReps(parseNumber(currentExercise.reps, 12));
+      setWeight(5);
+      return;
+    }
+
+    const history = getExercisePerformance(templateId, currentExercise.id);
+    const defaultReps = parseNumber(currentExercise.reps, 12);
+    setReps(history?.reps ?? defaultReps);
+    setWeight(history?.weightKg ?? 5);
+    setLastPerformanceLabel(
+      history ? formatLastPerformanceHint(history, useWeight, useReps) : null,
+    );
+  }, [currentExercise?.id, exIdx, phasePlan]);
 
   useEffect(() => {
     if (!ticking) return;
@@ -843,6 +964,34 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
     setRestSec(0);
   }
 
+  function persistExerciseMetrics(nextWeight: number, nextReps: number) {
+    const templateId = workoutMetaRef.current?.templateId;
+    if (!templateId || !currentExercise || !isStrengthPhase) return;
+
+    const partial: Partial<Pick<ExercisePerformanceEntryV1, "weightKg" | "reps">> = {};
+    if (shouldUseRepsControl) partial.reps = nextReps;
+    if (shouldUseWeight) partial.weightKg = nextWeight;
+    if (partial.reps === undefined && partial.weightKg === undefined) return;
+
+    upsertExercisePerformance(templateId, currentExercise.id, partial);
+  }
+
+  function adjustWeight(delta: number) {
+    const nextWeight = Math.max(0, weight + delta);
+    setWeight(nextWeight);
+    if (shouldUseWeight || shouldUseRepsControl) {
+      persistExerciseMetrics(nextWeight, reps);
+    }
+  }
+
+  function adjustReps(delta: number) {
+    const nextReps = Math.max(1, reps + delta);
+    setReps(nextReps);
+    if (shouldUseWeight || shouldUseRepsControl) {
+      persistExerciseMetrics(weight, nextReps);
+    }
+  }
+
   function completeCurrentSet() {
     if (!currentExercise) return;
 
@@ -863,6 +1012,10 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
     if (exIdx < exercises.length - 1) {
       setExIdx((i) => i + 1);
     } else {
+      const meta = workoutMetaRef.current;
+      if (meta) {
+        writeSummaryForExercises(exercises, meta, sessionStartedAtRef.current);
+      }
       onDone();
     }
   }
@@ -879,10 +1032,16 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
     return Math.round((localProgress / total) * 100);
   };
 
-  if (!currentExercise) {
+  if (exercises.length === 0 || !currentExercise) {
     return (
       <div className="page exec-page" style={{ padding: 24 }}>
-        <p>暂无可执行动作</p>
+        <StatusBar style={{ padding: "0 0 10px" }} />
+        <p style={{ marginBottom: 16, color: "var(--gray)", lineHeight: 1.5 }}>
+          当前训练计划没有可执行动作，请返回预览页重新选择训练。
+        </p>
+        <button className="cta" type="button" onClick={() => onBack?.()}>
+          返回
+        </button>
       </div>
     );
   }
@@ -895,12 +1054,6 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
       ? "下一个动作"
       : "完成训练"
     : `完成第${currentSetLabel}组`;
-
-  const subtitle = shouldUseWeight
-    ? `本次：${weight}kg × ${reps}次 · 共${currentExercise.sets}组`
-    : shouldUseRepsControl
-      ? `本次：${reps}次 · 共${currentExercise.sets}组`
-      : `${currentExercise.reps} · 共${currentExercise.sets}组`;
 
   return (
     <div className="page exec-page exec-premium">
@@ -930,7 +1083,9 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
       <div className="exec-body">
         <div className="exec-main">
           <div className="ex-name">{currentExercise.name}</div>
-          <div className="ex-reps">{subtitle}</div>
+          {lastPerformanceLabel ? (
+            <div className="exec-last-record">{lastPerformanceLabel}</div>
+          ) : null}
 
           <div
             className={`ex-anim ${showVideo || showImage ? "has-media" : ""}`}
@@ -957,9 +1112,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
                 onError={() => setMediaAssetFailed(true)}
               />
             )}
-            {!showVideo && !showImage && (
-              <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
-            )}
+            {showMediaPending && <ExerciseMediaPendingPlaceholder />}
           </div>
 
           <div className="move-info-card">
@@ -1073,11 +1226,11 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
               <div className="metric-box">
                 <div className="metric-label">重量 kg</div>
                 <div className="metric-controls">
-                  <button type="button" onClick={() => setWeight((w) => Math.max(0, w - 1))}>
+                  <button type="button" onClick={() => adjustWeight(-1)}>
                     −
                   </button>
                   <span>{weight}</span>
-                  <button type="button" onClick={() => setWeight((w) => w + 1)}>
+                  <button type="button" onClick={() => adjustWeight(1)}>
                     +
                   </button>
                 </div>
@@ -1095,11 +1248,11 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
               <div className="metric-box">
                 <div className="metric-label">次数</div>
                 <div className="metric-controls">
-                  <button type="button" onClick={() => setReps((r) => Math.max(1, r - 1))}>
+                  <button type="button" onClick={() => adjustReps(-1)}>
                     −
                   </button>
                   <span>{reps}</span>
-                  <button type="button" onClick={() => setReps((r) => r + 1)}>
+                  <button type="button" onClick={() => adjustReps(1)}>
                     +
                   </button>
                 </div>

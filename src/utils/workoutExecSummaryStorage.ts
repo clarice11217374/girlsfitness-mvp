@@ -7,6 +7,7 @@ export type WorkoutExecSummaryV1 = {
   totalExercises: number;
   totalSets: number;
   durationMinutes: number;
+  completedAt: string;
 };
 
 function canUseLocalStorage(): boolean {
@@ -44,6 +45,7 @@ export function readWorkoutExecSummary(): WorkoutExecSummaryV1 | null {
     ) {
       return null;
     }
+    const completedAt = isNonEmptyString(o.completedAt) ? o.completedAt : new Date().toISOString();
     return {
       workoutTitle: o.workoutTitle,
       templateId: o.templateId,
@@ -51,6 +53,7 @@ export function readWorkoutExecSummary(): WorkoutExecSummaryV1 | null {
       totalExercises: o.totalExercises,
       totalSets: o.totalSets,
       durationMinutes: o.durationMinutes,
+      completedAt,
     };
   } catch {
     return null;

@@ -81,7 +81,9 @@ export default function AppPage() {
           />
         )}
         {page === "records" && <Record onHome={() => setPage("home")} onTraining={() => setPage("training")} />}
-        {page === "complete" && <Complete onSaved={() => setPage("records")} />}
+        {page === "complete" && (
+          <Complete onSaved={() => setPage("records")} onHome={() => setPage("home")} />
+        )}
       </div>
     </div>
   );

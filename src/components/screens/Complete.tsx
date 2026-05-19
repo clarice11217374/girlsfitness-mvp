@@ -3,10 +3,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { Dumbbell, ThumbsUp, Wind } from "lucide-react";
 import { saveTrainingRecord } from "@/utils/trainingRecordStorage";
-import { clearWorkoutExecSummary, readWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
+import {
+  clearWorkoutExecSummary,
+  readWorkoutExecSummary,
+  type WorkoutExecSummaryV1,
+} from "@/utils/workoutExecSummaryStorage";
 import { StatusBar } from "@/components/StatusBar";
 
-type Props = { onSaved: () => void };
+type Props = { onSaved: () => void; onHome: () => void };
 
 const galleryImages = [
   "/gallery/1.png",
@@ -18,7 +22,8 @@ const galleryImages = [
   "/gallery/7.png",
 ];
 
-export function Complete({ onSaved }: Props) {
+export function Complete({ onSaved, onHome }: Props) {
+  const [summary, setSummary] = useState<WorkoutExecSummaryV1 | null>(null);
   const [feel, setFeel] = useState<string>("很好");
   const [hasSaved, setHasSaved] = useState(false);
   const [randomImage, setRandomImage] = useState<string | null>(null);
@@ -32,26 +37,29 @@ export function Complete({ onSaved }: Props) {
   useEffect(() => {
     const index = Math.floor(Math.random() * galleryImages.length);
     setRandomImage(galleryImages[index]);
+    setSummary(readWorkoutExecSummary());
   }, []);
 
   const persistRecord = useCallback(() => {
-    if (hasSaved) return;
-    const summary = readWorkoutExecSummary();
+    if (hasSaved || !summary) return;
+
     saveTrainingRecord({
-      workoutTitle: summary?.workoutTitle ?? "上肢推 · 力量日",
-      totalExercises: summary?.totalExercises ?? 9,
-      totalSets: summary?.totalSets ?? 13,
-      durationMinutes: summary?.durationMinutes ?? 45,
+      workoutTitle: summary.workoutTitle,
+      totalExercises: summary.totalExercises,
+      totalSets: summary.totalSets,
+      durationMinutes: summary.durationMinutes,
+      completedAt: summary.completedAt,
       feeling: feel,
-      notes: summary?.templateId ? `templateId:${summary.templateId}` : "workoutId:upper-push-strength",
-      templateId: summary?.templateId,
-      targetArea: summary?.targetArea,
+      notes: `templateId:${summary.templateId}`,
+      templateId: summary.templateId,
+      targetArea: summary.targetArea,
     });
     clearWorkoutExecSummary();
     setHasSaved(true);
-  }, [hasSaved, feel]);
+  }, [hasSaved, feel, summary]);
 
   const handleSaveRecord = () => {
+    if (!summary) return;
     persistRecord();
     onSaved();
   };
@@ -82,30 +90,49 @@ export function Complete({ onSaved }: Props) {
         <span className="complete-visual-placeholder">情绪载体位</span>
       </div>
 
-      <div className="feeling-sec">
-        <div className="feel-title">现在感觉怎么样？</div>
-        <div className="feel-row">
-          {feelOptions.map(({ lbl, icon: Icon }) => (
-            <button
-              key={lbl}
-              type="button"
-              className={`feel-btn ${feel === lbl ? "sel" : ""}`}
-              onClick={() => setFeel(lbl)}
-              aria-pressed={feel === lbl}
-            >
-              <span className="feel-emoji" aria-hidden={true}>
-                <Icon className="w-5 h-5" />
-              </span>
-              <span className="feel-lbl">{lbl}</span>
-            </button>
-          ))}
+      {summary ? (
+        <div className="feeling-sec">
+          <div className="feel-title">现在感觉怎么样？</div>
+          <div className="feel-row">
+            {feelOptions.map(({ lbl, icon: Icon }) => (
+              <button
+                key={lbl}
+                type="button"
+                className={`feel-btn ${feel === lbl ? "sel" : ""}`}
+                onClick={() => setFeel(lbl)}
+                aria-pressed={feel === lbl}
+                disabled={hasSaved}
+              >
+                <span className="feel-emoji" aria-hidden={true}>
+                  <Icon className="w-5 h-5" />
+                </span>
+                <span className="feel-lbl">{lbl}</span>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : null}
 
       <div className="complete-actions">
-        <button type="button" className="comp-cta" onClick={handleSaveRecord}>
-          保存记录 →
-        </button>
+        {summary ? (
+          <button
+            type="button"
+            className="comp-cta"
+            onClick={handleSaveRecord}
+            disabled={hasSaved}
+          >
+            {hasSaved ? "已保存" : "保存记录 →"}
+          </button>
+        ) : (
+          <>
+            <p style={{ marginBottom: 16, color: "var(--gray)", textAlign: "center", lineHeight: 1.5 }}>
+              暂无可保存的训练记录
+            </p>
+            <button type="button" className="comp-cta" onClick={onHome}>
+              返回首页
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

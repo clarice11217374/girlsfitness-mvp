@@ -88,7 +88,7 @@ export const NEW_WORKOUT_EXERCISES: WorkoutExercise[] = [
     reps: "12次",
     duration: "6分钟",
     equipment: "蝴蝶机",
-    visualPlaceholder: "pec-fly-placeholder",
+    visualPlaceholder: "蝴蝶机夹胸示意",
     equipmentGuide: {
       machineIntro: "蝴蝶机夹胸主要训练胸部内侧，适合新手控制轨迹。",
       seatSetup: "调整座椅高度，让把手与胸口同高。",
@@ -113,7 +113,7 @@ export const NEW_WORKOUT_EXERCISES: WorkoutExercise[] = [
     reps: "12次",
     duration: "6分钟",
     equipment: "哑铃",
-    visualPlaceholder: "lateral-raise-placeholder",
+    visualPlaceholder: "侧平举示意",
     equipmentGuide: {
       machineIntro: "侧平举主要训练肩部中束，帮助改善溜肩视觉。",
       seatSetup: "站姿训练，无需座椅。",
@@ -138,7 +138,7 @@ export const NEW_WORKOUT_EXERCISES: WorkoutExercise[] = [
     reps: "12次",
     duration: "6分钟",
     equipment: "蝴蝶机",
-    visualPlaceholder: "reverse-pec-fly-placeholder",
+    visualPlaceholder: "反向蝴蝶机示意",
     equipmentGuide: {
       machineIntro: "反向飞鸟主要训练后肩与上背外侧，改善圆肩。",
       seatSetup: "面向器械，调整座椅使把手与肩同高。",
@@ -163,7 +163,7 @@ export const NEW_WORKOUT_EXERCISES: WorkoutExercise[] = [
     reps: "15次",
     duration: "6分钟",
     equipment: "坐姿内收机",
-    visualPlaceholder: "hip-adduction-placeholder",
+    visualPlaceholder: "坐姿内收示意",
     equipmentGuide: {
       machineIntro: "坐姿内收主要训练大腿内侧，适合新手固定轨迹。",
       seatSetup: "调整座椅，膝盖与护垫对齐。",
@@ -188,7 +188,7 @@ export const NEW_WORKOUT_EXERCISES: WorkoutExercise[] = [
     reps: "12次",
     duration: "6分钟",
     equipment: "瑜伽垫",
-    visualPlaceholder: "glute-bridge-placeholder",
+    visualPlaceholder: "臀桥示意",
     equipmentGuide: {
       machineIntro: "臀桥主要训练臀部与后侧链，适合新手建立发力感。",
       seatSetup: "仰卧于垫上，无需器械。",
@@ -213,7 +213,7 @@ export const NEW_WORKOUT_EXERCISES: WorkoutExercise[] = [
     reps: "30秒",
     duration: "4分钟",
     equipment: "瑜伽垫",
-    visualPlaceholder: "plank-placeholder",
+    visualPlaceholder: "平板支撑示意",
     equipmentGuide: {
       machineIntro: "平板支撑主要训练核心稳定，适合新手控制时长。",
       seatSetup: "俯卧于垫上。",
@@ -238,7 +238,7 @@ export const NEW_WORKOUT_EXERCISES: WorkoutExercise[] = [
     reps: "每侧8次",
     duration: "5分钟",
     equipment: "瑜伽垫",
-    visualPlaceholder: "bird-dog-placeholder",
+    visualPlaceholder: "对侧伸展示意",
     equipmentGuide: {
       machineIntro: "对侧伸展训练核心稳定与臀背协调，幅度小即可。",
       seatSetup: "四足跪姿于垫上。",

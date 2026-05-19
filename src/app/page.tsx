@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Complete } from "@/components/screens/Complete";
 import { Record } from "@/components/screens/Record";
 import { Home } from "@/components/screens/Home";
@@ -8,10 +8,23 @@ import { Preview } from "@/components/screens/Preview";
 import { StatusInput } from "@/components/screens/StatusInput";
 import { Training } from "@/components/screens/Training";
 import { WorkoutExec } from "@/components/screens/WorkoutExec";
+import { workoutTemplates } from "@/data/workoutTemplates";
 import { createThemeCssVars } from "@/theme";
+import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
+
+function resolveInitialPage(): "home" | "status" {
+  const selection = loadCurrentWorkoutSelection();
+  if (!selection?.matchedTemplateId) return "status";
+  const valid = workoutTemplates.some((item) => item.meta.id === selection.matchedTemplateId);
+  return valid ? "home" : "status";
+}
 
 export default function AppPage() {
   const [page, setPage] = useState("status");
+
+  useEffect(() => {
+    setPage(resolveInitialPage());
+  }, []);
   const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
   const [previewReturnTo, setPreviewReturnTo] = useState<"home" | "training">("home");
   const [execTemplateId, setExecTemplateId] = useState<string | null>(null);

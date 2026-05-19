@@ -120,22 +120,35 @@ function initialStaticPayload(): { exercises: ExecExercise[]; phasePlan: PhasePl
   };
 }
 
+type WorkoutExecMeta = {
+  title: string;
+  templateId: string;
+  targetArea: string;
+  estimatedMinutes: number;
+};
+
+function resolveDurationMinutes(estimatedMinutes: number, sessionStartedAt: number | null): number {
+  if (sessionStartedAt === null) return estimatedMinutes;
+  const elapsedMs = Date.now() - sessionStartedAt;
+  if (elapsedMs < 60_000) return estimatedMinutes;
+  return Math.max(1, Math.round(elapsedMs / 60_000));
+}
+
 function writeSummaryForExercises(
   exercises: ExecExercise[],
-  meta: {
-    title: string;
-    templateId: string;
-    targetArea: string;
-    estimatedMinutes: number;
-  },
+  meta: WorkoutExecMeta,
+  sessionStartedAt: number | null,
 ): void {
+  if (exercises.length === 0) return;
+
   writeWorkoutExecSummary({
     workoutTitle: meta.title,
     templateId: meta.templateId,
     targetArea: meta.targetArea,
     totalExercises: exercises.length,
     totalSets: exercises.reduce((acc, e) => acc + e.sets, 0),
-    durationMinutes: meta.estimatedMinutes,
+    durationMinutes: resolveDurationMinutes(meta.estimatedMinutes, sessionStartedAt),
+    completedAt: new Date().toISOString(),
   });
 }
 
@@ -734,12 +747,16 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   const [equipmentOpen, setEquipmentOpen] = useState(false);
   const [mediaAssetFailed, setMediaAssetFailed] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sessionStartedAtRef = useRef<number | null>(null);
+  const workoutMetaRef = useRef<WorkoutExecMeta | null>(null);
 
   useEffect(() => {
     const staticPayload = initialStaticPayload();
     const propId = typeof templateId === "string" && templateId.length > 0 ? templateId : null;
     const selectionId = loadCurrentWorkoutSelection()?.matchedTemplateId ?? null;
     const resolvedId = propId ?? selectionId;
+
+    sessionStartedAtRef.current = Date.now();
 
     if (resolvedId) {
       const raw = getTemplateOrderedExercises(resolvedId);
@@ -749,21 +766,21 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
 
       setExercises(mapped);
       setPhasePlan(phases);
-      writeSummaryForExercises(mapped, {
+      workoutMetaRef.current = {
         title: template.meta.title,
         templateId: template.meta.id,
         targetArea: template.meta.targetArea,
         estimatedMinutes: template.meta.estimatedMinutes,
-      });
+      };
     } else {
       setExercises(staticPayload.exercises);
       setPhasePlan(staticPayload.phasePlan);
-      writeSummaryForExercises(staticPayload.exercises, {
+      workoutMetaRef.current = {
         title: workoutTemplateMeta.title,
         templateId: "upper-push-strength-day",
         targetArea: "upper_push",
         estimatedMinutes: workoutTemplateMeta.estimatedMinutes,
-      });
+      };
     }
 
     setExIdx(0);
@@ -863,6 +880,10 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
     if (exIdx < exercises.length - 1) {
       setExIdx((i) => i + 1);
     } else {
+      const meta = workoutMetaRef.current;
+      if (meta) {
+        writeSummaryForExercises(exercises, meta, sessionStartedAtRef.current);
+      }
       onDone();
     }
   }
@@ -879,10 +900,16 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
     return Math.round((localProgress / total) * 100);
   };
 
-  if (!currentExercise) {
+  if (exercises.length === 0 || !currentExercise) {
     return (
       <div className="page exec-page" style={{ padding: 24 }}>
-        <p>暂无可执行动作</p>
+        <StatusBar style={{ padding: "0 0 10px" }} />
+        <p style={{ marginBottom: 16, color: "var(--gray)", lineHeight: 1.5 }}>
+          当前训练计划没有可执行动作，请返回预览页重新选择训练。
+        </p>
+        <button className="cta" type="button" onClick={() => onBack?.()}>
+          返回
+        </button>
       </div>
     );
   }

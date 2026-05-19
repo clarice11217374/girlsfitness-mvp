@@ -265,7 +265,9 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
       </div>
       <div className="sec-row">
         <div className="t-sec">本周进度</div>
-        <div className="see-all">查看全部</div>
+        <button type="button" className="see-all" onClick={onRecords}>
+          查看全部
+        </button>
       </div>
       <div className="wstrip">
         {weekDays.map((d) => {

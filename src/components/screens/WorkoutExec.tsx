@@ -15,7 +15,11 @@ import {
   getWorkoutTemplateById,
   type WorkoutExercise as TemplateWorkoutExercise,
 } from "@/data/workoutTemplates";
-import type { ExerciseMediaType } from "@/data/exerciseMediaManifest";
+import {
+  getExerciseMediaFromManifest,
+  type ExerciseMediaManifestEntry,
+  type ExerciseMediaType,
+} from "@/data/exerciseMediaManifest";
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
 import {
   getExercisePerformance,
@@ -25,6 +29,43 @@ import {
 import { writeWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
 
 type Props = { onDone: () => void; templateId?: string | null; onBack?: () => void };
+
+type ManifestExecEntry = ExerciseMediaManifestEntry & { execDisplayApproved?: boolean };
+
+/** Show real media only when manifest marks illustration / UI-approved assets. */
+function isExecMediaDisplayApproved(exerciseId: string): boolean {
+  const entry = getExerciseMediaFromManifest(exerciseId) as ManifestExecEntry | undefined;
+  if (!entry) return false;
+  if (entry.execDisplayApproved === true) return true;
+  const source = (entry.source ?? "").toLowerCase();
+  return source.includes("opentraining") || source.includes("illustration");
+}
+
+function ExerciseMediaPendingPlaceholder() {
+  return (
+    <div className="ex-anim-pending-inner" role="img" aria-label="动作示意图待补充">
+      <svg
+        className="ex-anim-pending-icon"
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden
+      >
+        <rect x="6" y="8" width="36" height="28" rx="6" stroke="currentColor" strokeWidth="1.5" />
+        <circle cx="17" cy="19" r="2.5" fill="currentColor" opacity="0.55" />
+        <path
+          d="M10 32l9-8 6 5 7-9 6 12"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity="0.7"
+        />
+      </svg>
+      <span className="ex-anim-pending-label">动作示意图待补充</span>
+    </div>
+  );
+}
 
 type ExecExercise = {
   id: string;
@@ -828,8 +869,17 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
     setMediaAssetFailed(false);
   }, [exIdx, currentExercise?.id]);
 
-  const showVideo = !!currentExercise?.videoUrl && !mediaAssetFailed;
-  const showImage = !showVideo && !!currentExercise?.imageUrl && !mediaAssetFailed;
+  const mediaDisplayApproved = currentExercise
+    ? isExecMediaDisplayApproved(currentExercise.id)
+    : false;
+  const showVideo =
+    mediaDisplayApproved && !!currentExercise?.videoUrl && !mediaAssetFailed;
+  const showImage =
+    mediaDisplayApproved &&
+    !showVideo &&
+    !!currentExercise?.imageUrl &&
+    !mediaAssetFailed;
+  const showMediaPending = !showVideo && !showImage;
 
   const phaseIdx = Math.max(
     0,
@@ -1062,9 +1112,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
                 onError={() => setMediaAssetFailed(true)}
               />
             )}
-            {!showVideo && !showImage && (
-              <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
-            )}
+            {showMediaPending && <ExerciseMediaPendingPlaceholder />}
           </div>
 
           <div className="move-info-card">

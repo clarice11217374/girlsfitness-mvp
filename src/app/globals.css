@@ -635,6 +635,39 @@ body {
   100% { background-position: -120% 0, 0 0; }
 }
 .exercise-placeholder-text { font-size: 13px; color: rgba(26,26,26,.28); font-weight: 500; letter-spacing: .01em; text-align: center; line-height: 1.45; padding: 0 16px; max-width: 100%; }
+.ex-anim--pending {
+  min-height: 200px;
+  height: 200px;
+  margin: 0 10px 16px;
+  background: linear-gradient(135deg, #f5f3fa 0%, #f5e8ef 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.44);
+  overflow: hidden;
+}
+.ex-anim-pending-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+}
+.ex-anim-pending-icon {
+  width: 44px;
+  height: 44px;
+  color: rgba(74,63,92,.32);
+}
+.ex-anim-pending-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(26,26,26,.34);
+  letter-spacing: .02em;
+  text-align: center;
+  line-height: 1.45;
+}
 .set-progress-title {
   font-family: system-ui, sans-serif;
   font-size: 12px;

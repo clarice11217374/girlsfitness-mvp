@@ -9,6 +9,8 @@ export type ExerciseMediaManifestEntry = {
   searchQuery?: string;
   source?: string;
   matchedName?: string;
+  /** When true, WorkoutExec may render imageUrl/videoUrl (UI-reviewed assets). */
+  execDisplayApproved?: boolean;
 };
 
 export type ExerciseMediaManifest = Record<string, ExerciseMediaManifestEntry>;

@@ -261,7 +261,7 @@ const VARIANT_SPECS: VariantSpec[] = [
   {
     meta: {
       id: "upper-push-gentle",
-      title: "上肢推 · 轻量启动",
+      title: "胸肩手臂 · 轻量启动",
       description: "以固定器械与绳索为主的上肢推，组数较少，适合精力一般或回归训练。",
       estimatedMinutes: 35,
       intensity: "轻强度",
@@ -291,7 +291,7 @@ const VARIANT_SPECS: VariantSpec[] = [
   {
     meta: {
       id: "upper-push-standard",
-      title: "上肢推 · 标准训练",
+      title: "胸肩手臂 · 标准塑形",
       description: "胸肩三头常规配比，适合大多数训练日的上肢推流程。",
       estimatedMinutes: 45,
       intensity: "中等强度",
@@ -321,10 +321,10 @@ const VARIANT_SPECS: VariantSpec[] = [
   {
     meta: {
       id: "upper-push-plus",
-      title: "上肢推 · 高量日",
+      title: "胸肩手臂 · 高能量日",
       description: "在上肢推标准动作上略增组数与动作数，仍保持新手友好器械，无高风险杠铃动作。",
       estimatedMinutes: 50,
-      intensity: "中高量",
+      intensity: "中高强度",
       focus: "胸、肩、三头",
       trainingType: "上肢推",
       equipmentSummary: "推胸机、蝴蝶机、哑铃、绳索机",
@@ -352,7 +352,7 @@ const VARIANT_SPECS: VariantSpec[] = [
   {
     meta: {
       id: "upper-pull-gentle",
-      title: "上肢拉 · 轻量启动",
+      title: "背部线条 · 轻量启动",
       description: "背部与后肩轻量激活，组数少、器械稳定，适合新手建立拉力感。",
       estimatedMinutes: 35,
       intensity: "轻强度",
@@ -382,7 +382,7 @@ const VARIANT_SPECS: VariantSpec[] = [
   {
     meta: {
       id: "upper-pull-standard",
-      title: "上肢拉 · 标准训练",
+      title: "背部线条 · 标准训练",
       description: "背、后肩与肱二头常规配比，适合日常上肢拉训练日。",
       estimatedMinutes: 45,
       intensity: "中等强度",
@@ -412,10 +412,10 @@ const VARIANT_SPECS: VariantSpec[] = [
   {
     meta: {
       id: "upper-pull-plus",
-      title: "上肢拉 · 高量日",
+      title: "背部线条 · 高能量日",
       description: "略增组数并加入反向飞鸟，仍避免复杂高风险动作。",
       estimatedMinutes: 50,
-      intensity: "中高量",
+      intensity: "中高强度",
       focus: "背、后肩、肱二头",
       trainingType: "上肢拉",
       equipmentSummary: "下拉机、划船机、蝴蝶机、哑铃",
@@ -474,7 +474,7 @@ const VARIANT_SPECS: VariantSpec[] = [
   {
     meta: {
       id: "lower-core-standard",
-      title: "臀腿核心 · 标准训练",
+      title: "臀腿核心 · 日常塑形",
       description: "臀腿力量与核心稳定常规配比，适合大多数训练日。",
       estimatedMinutes: 45,
       intensity: "中等强度",
@@ -504,10 +504,10 @@ const VARIANT_SPECS: VariantSpec[] = [
   {
     meta: {
       id: "lower-core-plus",
-      title: "臀腿核心 · 高量日",
+      title: "臀腿核心 · 高能量日",
       description: "在标准臀腿日上略增动作与组数，仍避免传统杠铃硬拉等高风险动作。",
       estimatedMinutes: 50,
-      intensity: "中高量",
+      intensity: "中高强度",
       focus: "臀腿、核心",
       trainingType: "臀腿核心",
       equipmentSummary: "倒蹬机、内外展机、腿屈伸机、瑜伽垫",
@@ -536,7 +536,7 @@ const VARIANT_SPECS: VariantSpec[] = [
   {
     meta: {
       id: "period-recovery-gentle",
-      title: "经期 · 温和恢复",
+      title: "舒缓恢复 · 温和活动",
       description: "更短、更轻的经期友好活动，以步行、温和激活与拉伸为主。",
       estimatedMinutes: 25,
       intensity: "低强度",
@@ -564,7 +564,7 @@ const VARIANT_SPECS: VariantSpec[] = [
   {
     meta: {
       id: "period-recovery-standard",
-      title: "经期 · 标准恢复",
+      title: "舒缓恢复 · 日常恢复",
       description: "经期低强度恢复流程，含浅角度力量与舒缓有氧，不追求力竭。",
       estimatedMinutes: 30,
       intensity: "低强度",

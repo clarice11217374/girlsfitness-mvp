@@ -3,6 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import React from "react";
 import { Home, ClipboardList, BarChart3, Dumbbell, Flame, ThumbsUp, Trophy, Wind } from "lucide-react";
+import { DayDetailSheet } from "@/components/DayDetailSheet";
+import { dayMarkerState } from "@/utils/calendarDayMarkers";
+import { loadCycleRecords } from "@/utils/cycleRecordStorage";
+import { dateKeyFromParts } from "@/utils/dayKey";
 import { getTrainingRecords, type TrainingRecord } from "@/utils/trainingRecordStorage";
 import { StatusBar } from "@/components/StatusBar";
 
@@ -89,6 +93,9 @@ function buildCalendarCells(year: number, month: number): ({ day: number } | { p
 export function Record({ onHome, onTraining }: Props) {
   const [records, setRecords] = useState<RecordView[]>([]);
   const [showAllRecent, setShowAllRecent] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
+  const [cycleRevision, setCycleRevision] = useState(0);
 
   useEffect(() => {
     setRecords(getTrainingRecords());
@@ -143,6 +150,14 @@ export function Record({ onHome, onTraining }: Props) {
   }, [records, viewYear, viewMonth]);
 
   const calendarCells = useMemo(() => buildCalendarCells(viewYear, viewMonth), [viewYear, viewMonth]);
+
+  const periodDateKeys = useMemo(() => {
+    const keys = new Set<string>();
+    for (const [key, entry] of Object.entries(loadCycleRecords())) {
+      if (entry.isPeriod) keys.add(key);
+    }
+    return keys;
+  }, [cycleRevision]);
 
   const isToday = (day: number) =>
     now.getFullYear() === viewYear && now.getMonth() + 1 === viewMonth && now.getDate() === day;
@@ -228,15 +243,28 @@ export function Record({ onHome, onTraining }: Props) {
                   return <div key={`p-${idx}`} className="record-cal-cell record-cal-cell--pad" aria-hidden />;
                 }
                 const { day } = cell;
+                const dateKey = dateKeyFromParts(viewYear, viewMonth, day);
                 const trained = derived.trainedDays.has(day);
                 const today = isToday(day);
+                const period = periodDateKeys.has(dateKey);
+                const markers = dayMarkerState(dateKey, trained, period);
                 return (
-                  <div
+                  <button
                     key={day}
-                    className={`record-cal-cell${trained ? " record-cal-cell--done" : ""}${today ? " record-cal-cell--today" : ""}`}
+                    type="button"
+                    className={`record-cal-cell record-cal-cell--clickable${markers.trainedOnCircle ? " record-cal-cell--done" : ""}${today ? " record-cal-cell--today" : ""}`}
+                    onClick={() => {
+                      setSelectedDateKey(dateKeyFromParts(viewYear, viewMonth, day));
+                      setSheetOpen(true);
+                    }}
                   >
-                    {day}
-                  </div>
+                    <span className="record-cal-cell-inner">
+                      <span>{day}</span>
+                      {markers.showPeriodDot ? (
+                        <span className="record-cycle-dot" aria-hidden />
+                      ) : null}
+                    </span>
+                  </button>
                 );
               })}
             </div>
@@ -276,6 +304,13 @@ export function Record({ onHome, onTraining }: Props) {
           </section>
         </div>
       </div>
+
+      <DayDetailSheet
+        open={sheetOpen}
+        dateKey={selectedDateKey}
+        onClose={() => setSheetOpen(false)}
+        onCycleUpdated={() => setCycleRevision((n) => n + 1)}
+      />
 
       <div className="bnav">
         {[

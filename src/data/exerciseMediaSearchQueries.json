@@ -51,5 +51,12 @@
   "period-st-pelvic-tilt-supine": "supine pelvic tilt",
   "period-ca-walk-talk-test": "walking",
   "period-st-child-pose": "child pose",
-  "period-st-supine-spinal-twist": "supine spinal twist"
+  "period-st-supine-spinal-twist": "supine spinal twist",
+  "up-push-st-pec-fly": "pec deck fly machine",
+  "up-push-st-lateral-raise": "dumbbell lateral raise",
+  "up-pull-st-reverse-pec-fly": "reverse pec deck fly",
+  "lower-st-hip-adduction": "hip adduction machine",
+  "lower-st-glute-bridge": "glute bridge",
+  "lower-st-plank": "plank exercise",
+  "lower-st-bird-dog": "bird dog exercise"
 }

@@ -1,4 +1,8 @@
 import { withManifestMedia } from "@/data/exerciseMediaManifest";
+import {
+  buildWorkoutVariantTemplates,
+  NEW_WORKOUT_EXERCISES,
+} from "@/data/workoutTemplateVariants";
 
 export type WorkoutPhase = "warmup" | "strength" | "cardio" | "stretch";
 
@@ -71,7 +75,7 @@ export type WorkoutTemplate = {
 
 const phaseOrder: WorkoutPhase[] = ["warmup", "strength", "cardio", "stretch"];
 
-export const workoutTemplates: WorkoutTemplate[] = [
+const legacyWorkoutTemplates: WorkoutTemplate[] = [
   {
     meta: {
       id: "upper-push-strength-day",
@@ -1303,6 +1307,28 @@ export const workoutTemplates: WorkoutTemplate[] = [
   },
 ];
 
+function indexExercises(templates: WorkoutTemplate[]): Map<string, WorkoutExercise> {
+  const map = new Map<string, WorkoutExercise>();
+  for (const template of templates) {
+    for (const phase of phaseOrder) {
+      for (const exercise of template.workoutByPhase[phase]) {
+        map.set(exercise.id, exercise);
+      }
+    }
+  }
+  return map;
+}
+
+const exerciseById = indexExercises(legacyWorkoutTemplates);
+for (const exercise of NEW_WORKOUT_EXERCISES) {
+  exerciseById.set(exercise.id, exercise);
+}
+
+export const workoutTemplates: WorkoutTemplate[] = [
+  ...legacyWorkoutTemplates,
+  ...buildWorkoutVariantTemplates(exerciseById),
+];
+
 export function getOrderedExercises(templateId = "upper-push-strength-day"): WorkoutExercise[] {
   const template =
     workoutTemplates.find((item) => item.meta.id === templateId) ?? workoutTemplates[0];
@@ -1334,5 +1360,10 @@ export function getPhasePlanForExec(templateId = "upper-push-strength-day") {
 }
 
 export function getWorkoutTemplateById(templateId: string): WorkoutTemplate {
-  return workoutTemplates.find((item) => item.meta.id === templateId) ?? workoutTemplates[0];
+  return (
+    workoutTemplates.find((item) => item.meta.id === templateId) ??
+    workoutTemplates.find((item) => item.meta.id === "upper-push-standard") ??
+    workoutTemplates.find((item) => item.meta.id === "upper-push-strength-day") ??
+    workoutTemplates[0]
+  );
 }

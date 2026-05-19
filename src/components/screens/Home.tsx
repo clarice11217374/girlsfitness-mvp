@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Home as HomeIcon, ClipboardList, BarChart3, Flower2, Hand, Medal, Sparkles, Trophy, Zap } from "lucide-react";
 import { workoutByPhase, workoutTemplateMeta } from "@/data/workoutData";
 import {
@@ -13,6 +13,10 @@ import {
   loadCurrentWorkoutSelection,
   type CurrentWorkoutSelectionV1,
 } from "@/utils/currentWorkoutSelectionStorage";
+import { DayDetailSheet } from "@/components/DayDetailSheet";
+import { dayMarkerState } from "@/utils/calendarDayMarkers";
+import { loadCycleRecords } from "@/utils/cycleRecordStorage";
+import { toDateKey } from "@/utils/dayKey";
 import { getTrainingRecords } from "@/utils/trainingRecordStorage";
 import { StatusBar } from "@/components/StatusBar";
 
@@ -24,6 +28,34 @@ type Props = {
 };
 
 const CHALLENGE_GOAL_HOURS = 100;
+const WEEK_LABELS = ["一", "二", "三", "四", "五", "六", "日"] as const;
+
+type WeekDayCell = {
+  label: string;
+  day: number;
+  dateKey: string;
+  isToday: boolean;
+};
+
+function getWeekDays(anchor = new Date()): WeekDayCell[] {
+  const today = new Date(anchor);
+  today.setHours(0, 0, 0, 0);
+  const mondayOffset = (today.getDay() + 6) % 7;
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - mondayOffset);
+
+  return WEEK_LABELS.map((label, index) => {
+    const cell = new Date(monday);
+    cell.setDate(monday.getDate() + index);
+    const dateKey = toDateKey(cell);
+    return {
+      label,
+      day: cell.getDate(),
+      dateKey,
+      isToday: dateKey === toDateKey(today),
+    };
+  });
+}
 
 /** 四舍五入到 1 位小数；去掉末尾 `.0`（如 5.0 → 5；0.0 → 0；0.8 保留） */
 function formatHoursValue(hours: number): string {
@@ -92,6 +124,9 @@ const chipBaseStyle: CSSProperties = {
 export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
   const [totalMinutes, setTotalMinutes] = useState(0);
   const [selection, setSelection] = useState<CurrentWorkoutSelectionV1 | null>(null);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
+  const [cycleRevision, setCycleRevision] = useState(0);
 
   useEffect(() => {
     const records = getTrainingRecords();
@@ -103,15 +138,24 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
     setSelection(loadCurrentWorkoutSelection());
   }, []);
 
-  const days = [
-    { n: "一", d: 21 },
-    { n: "二", d: 22 },
-    { n: "三", d: 23, dot: true },
-    { n: "四", d: 24, today: true },
-    { n: "五", d: 25 },
-    { n: "六", d: 26, dot: true },
-    { n: "日", d: 27 },
-  ];
+  const weekDays = useMemo(() => getWeekDays(), []);
+
+  const trainingDateKeys = useMemo(() => {
+    const keys = new Set<string>();
+    for (const r of getTrainingRecords()) {
+      const t = new Date(r.completedAt);
+      if (!Number.isNaN(t.getTime())) keys.add(toDateKey(t));
+    }
+    return keys;
+  }, [totalMinutes]);
+
+  const periodDateKeys = useMemo(() => {
+    const keys = new Set<string>();
+    for (const [key, entry] of Object.entries(loadCycleRecords())) {
+      if (entry.isPeriod) keys.add(key);
+    }
+    return keys;
+  }, [cycleRevision]);
 
   const totalHours = totalMinutes / 60;
   const hasProgress = totalMinutes > 0;
@@ -220,17 +264,49 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
         <div className="wbig">{`${planMinutes}’`}</div>
       </div>
       <div className="sec-row">
-        <div className="t-sec">本周计划</div>
-        <div className="see-all">查看全部</div>
+        <div className="t-sec">本周进度</div>
+        <button type="button" className="see-all" onClick={onRecords}>
+          查看全部
+        </button>
       </div>
       <div className="wstrip">
-        {days.map((d) => (
-          <div className="dcell" key={d.d}>
-            <div className="dname">{d.n}</div>
-            <div className={`dnum ${d.today ? "today" : ""}`}>{d.d}</div>
-            {d.dot && <div className="ddot" />}
-          </div>
-        ))}
+        {weekDays.map((d) => {
+          const markers = dayMarkerState(
+            d.dateKey,
+            trainingDateKeys.has(d.dateKey),
+            periodDateKeys.has(d.dateKey),
+          );
+          const dnumClass = [
+            "dnum",
+            d.isToday ? "today" : "",
+            markers.trainedOnCircle ? "dnum--trained" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+
+          return (
+            <button
+              type="button"
+              key={d.dateKey}
+              className="dcell"
+              onClick={() => {
+                setSelectedDateKey(d.dateKey);
+                setSheetOpen(true);
+              }}
+            >
+              <div className="dname">{d.label}</div>
+              <div className={dnumClass}>{d.day}</div>
+              {markers.showPeriodDot || markers.showTrainingDot ? (
+                <div className="dcell-dots">
+                  {markers.showTrainingDot ? <div className="ddot" aria-hidden /> : null}
+                  {markers.showPeriodDot ? (
+                    <div className="ddot ddot--cycle" aria-hidden />
+                  ) : null}
+                </div>
+              ) : null}
+            </button>
+          );
+        })}
       </div>
       <div className="mcard">
         <div className="mtop">
@@ -258,6 +334,13 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
             : "完成第一次训练，开始累计你的百小时挑战"}
         </div>
       </div>
+      <DayDetailSheet
+        open={sheetOpen}
+        dateKey={selectedDateKey}
+        onClose={() => setSheetOpen(false)}
+        onCycleUpdated={() => setCycleRevision((n) => n + 1)}
+      />
+
       <div className="bnav">
         {[
           { icon: HomeIcon, lbl: "首页", on: true },

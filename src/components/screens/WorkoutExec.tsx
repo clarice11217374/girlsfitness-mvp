@@ -26,9 +26,6 @@ import { writeWorkoutExecSummary } from "@/utils/workoutExecSummaryStorage";
 
 type Props = { onDone: () => void; templateId?: string | null; onBack?: () => void };
 
-/** Set true when UI is ready to show exercise image/gif/video on the exec screen. */
-const SHOW_EXERCISE_MEDIA = false;
-
 type ExecExercise = {
   id: string;
   name: string;
@@ -831,10 +828,8 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
     setMediaAssetFailed(false);
   }, [exIdx, currentExercise?.id]);
 
-  const showVideo =
-    SHOW_EXERCISE_MEDIA && !!currentExercise?.videoUrl && !mediaAssetFailed;
-  const showImage =
-    SHOW_EXERCISE_MEDIA && !showVideo && !!currentExercise?.imageUrl && !mediaAssetFailed;
+  const showVideo = !!currentExercise?.videoUrl && !mediaAssetFailed;
+  const showImage = !showVideo && !!currentExercise?.imageUrl && !mediaAssetFailed;
 
   const phaseIdx = Math.max(
     0,
@@ -1042,7 +1037,6 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
             <div className="exec-last-record">{lastPerformanceLabel}</div>
           ) : null}
 
-          {SHOW_EXERCISE_MEDIA ? (
           <div
             className={`ex-anim ${showVideo || showImage ? "has-media" : ""}`}
           >
@@ -1072,7 +1066,6 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
               <span className="exercise-placeholder-text">{currentExercise.visualPlaceholder}</span>
             )}
           </div>
-          ) : null}
 
           <div className="move-info-card">
             <div className="move-info-card-inner">

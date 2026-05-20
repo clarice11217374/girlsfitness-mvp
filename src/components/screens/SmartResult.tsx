@@ -256,34 +256,45 @@ export function SmartResult({ onStartToday, onBack }: Props) {
       <StatusBar style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10 }} />
 
       <div className="smart-result-scroll">
-        <div className="smart-result-hero">
+        <header className="smart-result-topbar">
           <button type="button" className="smart-result-back" onClick={onBack} aria-label="返回">
             ←
           </button>
+        </header>
+
+        <section className="smart-result-hero">
           <div className="smart-result-hero-badge">
             <Sparkles className="w-3.5 h-3.5" aria-hidden />
             智能推荐
           </div>
-          <h1 className="smart-result-hero-title">正在为你生成</h1>
-          <p className="smart-result-hero-sub">根据今日状态，匹配训练与建议</p>
+          <p className="smart-result-hero-sub">根据你今天的状态</p>
+          <h1 className="smart-result-hero-title">
+            {progressDone ? (
+              <>
+                为你选好了 <span className="smart-result-hero-spark" aria-hidden>✦</span>
+              </>
+            ) : (
+              "正在为你生成"
+            )}
+          </h1>
           <div className="smart-result-tags">
             <span className="smart-result-tag">{cycleChipText(selection.cycleStatus)}</span>
             <span className="smart-result-tag">{energyChipText(selection.energyLevel)}</span>
           </div>
-        </div>
 
-        <section className="smart-result-progress" aria-live="polite">
-          <div className="smart-result-progress-head">
-            <span className="smart-result-progress-status">
-              {progressStatusLabel(progressDone, progressStep)}
-            </span>
-            <span className="smart-result-progress-pct">{progress}%</span>
-          </div>
-          <div className="smart-result-progress-track">
-            <div
-              className="smart-result-progress-fill"
-              style={{ width: `${progress}%` }}
-            />
+          <div className="smart-result-progress" aria-live="polite">
+            <div className="smart-result-progress-head">
+              <span className="smart-result-progress-status">
+                {progressStatusLabel(progressDone, progressStep)}
+              </span>
+              <span className="smart-result-progress-pct">{progress}%</span>
+            </div>
+            <div className="smart-result-progress-track">
+              <div
+                className="smart-result-progress-fill"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
           </div>
         </section>
 

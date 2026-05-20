@@ -1205,8 +1205,9 @@ button.dcell {
   overflow: hidden;
   position: relative;
   background: #f5f3ff;
+  --smart-result-safe-top: 50px;
   --smart-result-cta-gap: 28px;
-  --smart-result-cta-bar: calc(10px + 48px + 16px + env(safe-area-inset-bottom, 0px));
+  --smart-result-cta-bar: calc(12px + 48px + 16px + env(safe-area-inset-bottom, 0px));
   --smart-result-cta-reserve: calc(var(--smart-result-cta-bar) + var(--smart-result-cta-gap));
 }
 .smart-result-particles {
@@ -1241,15 +1242,35 @@ button.dcell {
   position: relative;
   z-index: 1;
 }
+.smart-result-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-top: var(--smart-result-safe-top);
+  scroll-padding-top: var(--smart-result-safe-top);
+  padding-bottom: 12px;
+}
+.smart-result-screen--cta-visible .smart-result-scroll {
+  padding-bottom: var(--smart-result-cta-reserve);
+}
+.smart-result-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
 .smart-result-hero {
-  flex-shrink: 0;
   position: relative;
-  padding: 52px 24px 18px;
+  padding: 12px 24px 14px;
   background: transparent;
 }
 .smart-result-back {
   position: absolute;
-  top: 48px;
+  top: 8px;
   left: 20px;
   border: none;
   background: rgba(255, 255, 255, 0.42);
@@ -1303,17 +1324,8 @@ button.dcell {
   background: #ffffff;
   border: 1px solid #e4e0ee;
 }
-.smart-result-scroll {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  padding: 8px 20px 12px;
-  scroll-padding-bottom: var(--smart-result-cta-reserve);
-}
 .smart-result-progress {
-  margin-bottom: 16px;
+  margin: 0 20px 16px;
   padding: 0 2px;
 }
 .smart-result-progress-head {
@@ -1356,7 +1368,7 @@ button.dcell {
   border: 1px solid #e8e4f4;
   border-radius: 18px;
   padding: 14px 14px;
-  margin-bottom: 14px;
+  margin: 0 20px 14px;
   box-shadow: 0 2px 12px rgba(74, 63, 92, 0.06);
   opacity: 0;
   transform: translateY(14px);
@@ -1405,11 +1417,8 @@ button.dcell {
   display: flex;
   flex-direction: column;
   gap: 13px;
-  margin-bottom: 0;
+  margin: 0 20px;
   animation: smart-result-fade-in 0.4s ease forwards;
-}
-.smart-result-screen--cta-visible .smart-result-insights {
-  margin-bottom: var(--smart-result-cta-reserve);
 }
 .smart-result-insight-block {
   display: flex;
@@ -1504,15 +1513,26 @@ button.dcell {
   right: 0;
   bottom: 0;
   z-index: 20;
-  padding: 10px 20px calc(16px + env(safe-area-inset-bottom, 0px));
-  background: linear-gradient(180deg, rgba(245, 243, 255, 0) 0%, rgba(245, 243, 255, 0.88) 18%, #f5f3ff 100%);
-  pointer-events: none;
-  opacity: 0;
+  padding: 12px 20px calc(16px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
+  background: linear-gradient(180deg, rgba(245, 243, 255, 0) 0%, rgba(245, 243, 255, 0.9) 22%, #f5f3ff 100%);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
 }
 .smart-result-cta-wrap--in {
   pointer-events: auto;
-  animation: smart-result-fade-in 0.45s ease forwards;
+  animation: smart-result-cta-enter 0.36s ease forwards;
+}
+@keyframes smart-result-cta-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .smart-result-cta {
   width: 100%;

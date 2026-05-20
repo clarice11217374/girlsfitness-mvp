@@ -29,6 +29,7 @@ const SESSION_FALLBACK_MS = 6000;
 const CARD_REVEAL_DELAY_MS = 180;
 const TYPING_START_DELAY_MS = 320;
 const TARGET_TYPING_MS = 4200;
+const CTA_REVEAL_DELAY_MS = 400;
 
 const PROGRESS_LABELS = ["匹配训练模板…", "生成建议中…", "完成 ✓"] as const;
 
@@ -89,6 +90,7 @@ export function SmartResult({ onStartToday, onBack }: Props) {
   const forcedCompleteRef = useRef(false);
   const charDelayRef = useRef(24);
   const segmentTextsRef = useRef<string[]>([]);
+  const ctaRevealTimerRef = useRef<number | null>(null);
 
   const template = useMemo(() => {
     if (!selection?.matchedTemplateId) return null;
@@ -114,6 +116,16 @@ export function SmartResult({ onStartToday, onBack }: Props) {
   const onBackRef = useRef(onBack);
   onBackRef.current = onBack;
 
+  const scheduleCtaReveal = useCallback(() => {
+    if (ctaRevealTimerRef.current !== null) {
+      window.clearTimeout(ctaRevealTimerRef.current);
+    }
+    ctaRevealTimerRef.current = window.setTimeout(() => {
+      ctaRevealTimerRef.current = null;
+      setCtaVisible(true);
+    }, CTA_REVEAL_DELAY_MS);
+  }, []);
+
   const forceCompleteAll = useCallback(() => {
     if (forcedCompleteRef.current) return;
     forcedCompleteRef.current = true;
@@ -123,8 +135,8 @@ export function SmartResult({ onStartToday, onBack }: Props) {
     setCardVisible(true);
     setActiveTextIndex(SEGMENT_COUNT);
     setTypedText("");
-    setCtaVisible(true);
-  }, []);
+    scheduleCtaReveal();
+  }, [scheduleCtaReveal]);
 
   useEffect(() => {
     if (!selection?.matchedTemplateId || !template) {
@@ -148,6 +160,10 @@ export function SmartResult({ onStartToday, onBack }: Props) {
     setActiveTextIndex(-1);
     setTypedText("");
     setCtaVisible(false);
+    if (ctaRevealTimerRef.current !== null) {
+      window.clearTimeout(ctaRevealTimerRef.current);
+      ctaRevealTimerRef.current = null;
+    }
 
     let cancelled = false;
     const timers: number[] = [];
@@ -189,6 +205,10 @@ export function SmartResult({ onStartToday, onBack }: Props) {
       cancelled = true;
       window.clearInterval(progressTick);
       timers.forEach((id) => window.clearTimeout(id));
+      if (ctaRevealTimerRef.current !== null) {
+        window.clearTimeout(ctaRevealTimerRef.current);
+        ctaRevealTimerRef.current = null;
+      }
     };
   }, [copySessionKey, copy, forceCompleteAll]);
 
@@ -201,9 +221,9 @@ export function SmartResult({ onStartToday, onBack }: Props) {
 
     if (typedText.length >= fullText.length) {
       if (activeTextIndex + 1 >= SEGMENT_COUNT) {
-        setCtaVisible(true);
         setActiveTextIndex(SEGMENT_COUNT);
         setTypedText("");
+        scheduleCtaReveal();
       } else {
         setActiveTextIndex(activeTextIndex + 1);
         setTypedText("");
@@ -216,7 +236,7 @@ export function SmartResult({ onStartToday, onBack }: Props) {
     }, charDelayRef.current);
 
     return () => window.clearTimeout(timer);
-  }, [progressDone, cardVisible, copy, activeTextIndex, typedText]);
+  }, [progressDone, cardVisible, copy, activeTextIndex, typedText, scheduleCtaReveal]);
 
   if (!selection || !template || !copy) {
     return null;
@@ -235,23 +255,23 @@ export function SmartResult({ onStartToday, onBack }: Props) {
       <div className="smart-result-particles" aria-hidden />
       <StatusBar style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10 }} />
 
-      <div className="smart-result-hero">
-        <button type="button" className="smart-result-back" onClick={onBack} aria-label="返回">
-          ←
-        </button>
-        <div className="smart-result-hero-badge">
-          <Sparkles className="w-3.5 h-3.5" aria-hidden />
-          智能推荐
-        </div>
-        <h1 className="smart-result-hero-title">正在为你生成</h1>
-        <p className="smart-result-hero-sub">根据今日状态，匹配训练与建议</p>
-        <div className="smart-result-tags">
-          <span className="smart-result-tag">{cycleChipText(selection.cycleStatus)}</span>
-          <span className="smart-result-tag">{energyChipText(selection.energyLevel)}</span>
-        </div>
-      </div>
-
       <div className="smart-result-scroll">
+        <div className="smart-result-hero">
+          <button type="button" className="smart-result-back" onClick={onBack} aria-label="返回">
+            ←
+          </button>
+          <div className="smart-result-hero-badge">
+            <Sparkles className="w-3.5 h-3.5" aria-hidden />
+            智能推荐
+          </div>
+          <h1 className="smart-result-hero-title">正在为你生成</h1>
+          <p className="smart-result-hero-sub">根据今日状态，匹配训练与建议</p>
+          <div className="smart-result-tags">
+            <span className="smart-result-tag">{cycleChipText(selection.cycleStatus)}</span>
+            <span className="smart-result-tag">{energyChipText(selection.energyLevel)}</span>
+          </div>
+        </div>
+
         <section className="smart-result-progress" aria-live="polite">
           <div className="smart-result-progress-head">
             <span className="smart-result-progress-status">

@@ -8,16 +8,32 @@ import {
   getMatchedWorkoutTemplate,
   type TrainingChoice,
 } from "@/lib/workoutMatcher";
+import { setCyclePeriod } from "@/utils/cycleRecordStorage";
 import { saveCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
+import { todayDateKey } from "@/utils/dayKey";
 import { getTrainingRecords } from "@/utils/trainingRecordStorage";
 import { StatusBar } from "@/components/StatusBar";
 
-type Props = { onDone: () => void };
+type Props = {
+  onDone: () => void;
+  onSmartDone: () => void;
+};
 
 function mapPeriodLabelToCycle(label: string): CycleStatus {
   if (label === "经期中") return "period";
   if (label === "不在经期") return "not_period";
   return "uncertain";
+}
+
+function syncTodayCycleRecord(cycleStatus: CycleStatus): void {
+  const today = todayDateKey();
+  if (cycleStatus === "period") {
+    setCyclePeriod(today, true);
+    return;
+  }
+  if (cycleStatus === "not_period") {
+    setCyclePeriod(today, false);
+  }
 }
 
 function mapEnergyLabelToLevel(label: string): EnergyLevel {
@@ -41,7 +57,7 @@ function mapPartIdToTraining(id: string): TrainingChoice {
   }
 }
 
-export function StatusInput({ onDone }: Props) {
+export function StatusInput({ onDone, onSmartDone }: Props) {
   const [period, setPeriod] = useState<string | null>(null);
   const [energy, setEnergy] = useState<string | null>(null);
   const [part, setPart] = useState<string | null>(null);
@@ -90,7 +106,13 @@ export function StatusInput({ onDone }: Props) {
       selectedAt: new Date().toISOString(),
     });
 
-    onDone();
+    syncTodayCycleRecord(cycleStatus);
+
+    if (smart) {
+      onSmartDone();
+    } else {
+      onDone();
+    }
   };
 
   return (

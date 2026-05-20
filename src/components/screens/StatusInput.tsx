@@ -8,7 +8,9 @@ import {
   getMatchedWorkoutTemplate,
   type TrainingChoice,
 } from "@/lib/workoutMatcher";
+import { setCyclePeriod } from "@/utils/cycleRecordStorage";
 import { saveCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
+import { todayDateKey } from "@/utils/dayKey";
 import { getTrainingRecords } from "@/utils/trainingRecordStorage";
 import { StatusBar } from "@/components/StatusBar";
 
@@ -21,6 +23,17 @@ function mapPeriodLabelToCycle(label: string): CycleStatus {
   if (label === "经期中") return "period";
   if (label === "不在经期") return "not_period";
   return "uncertain";
+}
+
+function syncTodayCycleRecord(cycleStatus: CycleStatus): void {
+  const today = todayDateKey();
+  if (cycleStatus === "period") {
+    setCyclePeriod(today, true);
+    return;
+  }
+  if (cycleStatus === "not_period") {
+    setCyclePeriod(today, false);
+  }
 }
 
 function mapEnergyLabelToLevel(label: string): EnergyLevel {
@@ -92,6 +105,8 @@ export function StatusInput({ onDone, onSmartDone }: Props) {
       targetArea: template.meta.targetArea,
       selectedAt: new Date().toISOString(),
     });
+
+    syncTodayCycleRecord(cycleStatus);
 
     if (smart) {
       onSmartDone();

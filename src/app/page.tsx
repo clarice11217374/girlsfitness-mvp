@@ -45,7 +45,7 @@ export default function AppPage() {
             onBack={() => setPage("status")}
             onStartToday={() => {
               setPreviewTemplateId(null);
-              setPreviewReturnTo("smartResult");
+              setPreviewReturnTo("home");
               setPage("preview");
             }}
           />

@@ -17,10 +17,10 @@ type Props = {
   onBack: () => void;
 };
 
-const AI_SEGMENTS: { key: keyof SmartResultCopy; label: string }[] = [
-  { key: "reason", label: "我看到了你的状态" },
-  { key: "knowledge", label: "所以推荐这套训练" },
-  { key: "tip", label: "今天训练时注意" },
+const AI_SEGMENTS: { key: keyof SmartResultCopy; label: string; icon: string }[] = [
+  { key: "reason", label: "我看到了你的状态", icon: "👁️" },
+  { key: "knowledge", label: "为你推荐这套训练", icon: "💡" },
+  { key: "tip", label: "今天训练时注意", icon: "⚡" },
 ];
 
 const SEGMENT_COUNT = AI_SEGMENTS.length;
@@ -30,12 +30,12 @@ const CARD_REVEAL_DELAY_MS = 180;
 const TYPING_START_DELAY_MS = 320;
 const TARGET_TYPING_MS = 4200;
 
-const PROGRESS_LABELS = [
-  "正在分析状态…",
-  "匹配训练模板…",
-  "生成建议中…",
-  "完成 ✓",
-] as const;
+const PROGRESS_LABELS = ["匹配训练模板…", "生成建议中…", "完成 ✓"] as const;
+
+function progressStatusLabel(progressDone: boolean, progressStep: number): string {
+  if (progressDone) return PROGRESS_LABELS[2];
+  return PROGRESS_LABELS[Math.min(progressStep, 1)];
+}
 
 function countTemplateExercises(t: WorkoutTemplate): number {
   const { warmup, strength, cardio, stretch } = t.workoutByPhase;
@@ -118,7 +118,7 @@ export function SmartResult({ onStartToday, onBack }: Props) {
     if (forcedCompleteRef.current) return;
     forcedCompleteRef.current = true;
     setProgress(100);
-    setProgressStep(3);
+    setProgressStep(2);
     setProgressDone(true);
     setCardVisible(true);
     setActiveTextIndex(SEGMENT_COUNT);
@@ -163,14 +163,13 @@ export function SmartResult({ onStartToday, onBack }: Props) {
       const nextProgress = Math.round(ratio * 100);
       setProgress(nextProgress);
 
-      if (ratio >= 0.26) setProgressStep(1);
-      if (ratio >= 0.55) setProgressStep(2);
-      if (ratio >= 0.82) setProgressStep(3);
+      if (ratio >= 0.5) setProgressStep(1);
+      else setProgressStep(0);
 
       if (elapsed >= PROGRESS_MS) {
         window.clearInterval(progressTick);
         setProgress(100);
-        setProgressStep(3);
+        setProgressStep(2);
         setProgressDone(true);
       }
     }, 40);
@@ -230,7 +229,9 @@ export function SmartResult({ onStartToday, onBack }: Props) {
   const isTypingPhase = progressDone && !allTypingDone;
 
   return (
-    <div className="page smart-result-screen">
+    <div
+      className={`page smart-result-screen${ctaVisible ? " smart-result-screen--cta-visible" : ""}`}
+    >
       <div className="smart-result-particles" aria-hidden />
       <StatusBar style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10 }} />
 
@@ -251,12 +252,11 @@ export function SmartResult({ onStartToday, onBack }: Props) {
       </div>
 
       <div className="smart-result-scroll">
-        <section
-          className={`smart-result-progress-card${progressDone ? " smart-result-progress-card--done" : ""}`}
-          aria-live="polite"
-        >
+        <section className="smart-result-progress" aria-live="polite">
           <div className="smart-result-progress-head">
-            <span className="smart-result-progress-label">AI 生成中</span>
+            <span className="smart-result-progress-status">
+              {progressStatusLabel(progressDone, progressStep)}
+            </span>
             <span className="smart-result-progress-pct">{progress}%</span>
           </div>
           <div className="smart-result-progress-track">
@@ -265,7 +265,6 @@ export function SmartResult({ onStartToday, onBack }: Props) {
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="smart-result-progress-status">{PROGRESS_LABELS[progressStep]}</p>
         </section>
 
         {cardVisible ? (
@@ -273,42 +272,48 @@ export function SmartResult({ onStartToday, onBack }: Props) {
             <div className="smart-result-plan-icon" aria-hidden>
               <Bot className="w-5 h-5" />
             </div>
-            <h2 className="smart-result-plan-title">{meta.title}</h2>
-            <p className="smart-result-plan-meta">
-              {meta.estimatedMinutes} 分钟 · {meta.intensity} · {exerciseCount} 个动作
-            </p>
-            <p className="smart-result-plan-desc">{meta.description}</p>
+            <div className="smart-result-plan-body">
+              <p className="smart-result-plan-kicker">AI 推荐训练</p>
+              <h2 className="smart-result-plan-title">{meta.title}</h2>
+              <p className="smart-result-plan-meta">
+                {meta.estimatedMinutes} 分钟 · {meta.intensity} · {exerciseCount} 个动作
+              </p>
+            </div>
           </div>
         ) : null}
 
         {progressDone ? (
-          <article className="smart-result-ai-card" aria-busy={isTypingPhase}>
-            <h2 className="smart-result-ai-heading">AI 今日建议</h2>
-            <div className="smart-result-ai-body">
-              {AI_SEGMENTS.map(({ key, label }, index) => {
-                if (activeTextIndex < 0) return null;
-                if (!allTypingDone && index > activeTextIndex) return null;
+          <div className="smart-result-insights" aria-busy={isTypingPhase}>
+            {AI_SEGMENTS.map(({ key, label, icon }, index) => {
+              if (activeTextIndex < 0) return null;
+              if (!allTypingDone && index > activeTextIndex) return null;
 
-                const fullText = segmentTexts[index];
-                const isDone = allTypingDone || index < activeTextIndex;
-                const isActive = !allTypingDone && index === activeTextIndex;
-                const displayText = isDone ? fullText : isActive ? typedText : "";
+              const fullText = segmentTexts[index];
+              const isDone = allTypingDone || index < activeTextIndex;
+              const isActive = !allTypingDone && index === activeTextIndex;
+              const displayText = isDone ? fullText : isActive ? typedText : "";
 
-                return (
-                  <section
-                    key={key}
-                    className={`smart-result-ai-segment${isActive ? " smart-result-ai-segment--typing" : ""}${isDone ? " smart-result-ai-segment--done" : ""}`}
-                  >
-                    <h3 className="smart-result-ai-segment-label">{label}</h3>
-                    <p className="smart-result-ai-segment-text">
+              return (
+                <section
+                  key={key}
+                  className={`smart-result-insight-block${isActive ? " smart-result-insight-block--typing" : ""}${isDone ? " smart-result-insight-block--done" : ""}`}
+                >
+                  <div className="smart-result-insight-head">
+                    <span className="smart-result-insight-icon" aria-hidden>
+                      {icon}
+                    </span>
+                    <h3 className="smart-result-insight-title">{label}</h3>
+                  </div>
+                  <div className="smart-result-insight-card">
+                    <p className="smart-result-insight-text">
                       {displayText}
                       {isActive ? <span className="smart-result-type-cursor" aria-hidden /> : null}
                     </p>
-                  </section>
-                );
-              })}
-            </div>
-          </article>
+                  </div>
+                </section>
+              );
+            })}
+          </div>
         ) : null}
       </div>
 

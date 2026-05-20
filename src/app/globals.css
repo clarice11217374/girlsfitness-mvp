@@ -1205,6 +1205,9 @@ button.dcell {
   overflow: hidden;
   position: relative;
   background: #f5f3ff;
+  --smart-result-cta-gap: 28px;
+  --smart-result-cta-bar: calc(10px + 48px + 16px + env(safe-area-inset-bottom, 0px));
+  --smart-result-cta-reserve: calc(var(--smart-result-cta-bar) + var(--smart-result-cta-gap));
 }
 .smart-result-particles {
   pointer-events: none;
@@ -1307,9 +1310,7 @@ button.dcell {
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   padding: 8px 20px 12px;
-}
-.smart-result-screen--cta-visible .smart-result-scroll {
-  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  scroll-padding-bottom: var(--smart-result-cta-reserve);
 }
 .smart-result-progress {
   margin-bottom: 16px;
@@ -1403,14 +1404,17 @@ button.dcell {
 .smart-result-insights {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  margin-bottom: 8px;
+  gap: 13px;
+  margin-bottom: 0;
   animation: smart-result-fade-in 0.4s ease forwards;
+}
+.smart-result-screen--cta-visible .smart-result-insights {
+  margin-bottom: var(--smart-result-cta-reserve);
 }
 .smart-result-insight-block {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 .smart-result-insight-block--typing,
 .smart-result-insight-block--done {
@@ -1424,26 +1428,27 @@ button.dcell {
 }
 .smart-result-insight-icon {
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1;
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid #ebe7f5;
-  box-shadow: 0 1px 4px rgba(74, 63, 92, 0.06);
+  border-radius: 8px;
+  background: rgba(123, 111, 232, 0.12);
+  border: none;
+  box-shadow: none;
 }
 .smart-result-insight-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: #4a4560;
+  font-size: 11px;
+  font-weight: 500;
+  color: #8b8aaa;
+  letter-spacing: 0.03em;
   line-height: 1.35;
 }
 .smart-result-insight-block--typing .smart-result-insight-title {
-  color: var(--plum);
+  color: #7d74a8;
 }
 .smart-result-insight-card {
   background: #ffffff;
@@ -1500,9 +1505,10 @@ button.dcell {
   bottom: 0;
   z-index: 20;
   padding: 10px 20px calc(16px + env(safe-area-inset-bottom, 0px));
-  background: linear-gradient(180deg, rgba(245, 243, 255, 0) 0%, rgba(245, 243, 255, 0.92) 24%, #f5f3ff 100%);
+  background: linear-gradient(180deg, rgba(245, 243, 255, 0) 0%, rgba(245, 243, 255, 0.88) 18%, #f5f3ff 100%);
   pointer-events: none;
   opacity: 0;
+  box-sizing: border-box;
 }
 .smart-result-cta-wrap--in {
   pointer-events: auto;

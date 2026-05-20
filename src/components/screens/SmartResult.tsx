@@ -283,7 +283,10 @@ export function SmartResult({ onStartToday, onBack }: Props) {
             <span className="smart-result-tag">{energyChipText(selection.energyLevel)}</span>
           </div>
 
-          <div className="smart-result-progress" aria-live="polite">
+          <div
+            className={`smart-result-progress${progressDone ? " smart-result-progress--done" : ""}`}
+            aria-live="polite"
+          >
             <div className="smart-result-progress-head">
               <span className="smart-result-progress-status">
                 {progressStatusLabel(progressDone, progressStep)}

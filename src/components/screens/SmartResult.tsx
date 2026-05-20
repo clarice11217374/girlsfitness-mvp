@@ -21,6 +21,7 @@ const AI_SEGMENTS: { key: keyof SmartResultCopy; label: string; icon: string }[]
   { key: "reason", label: "我看到了你的状态", icon: "👁️" },
   { key: "knowledge", label: "为你推荐这套训练", icon: "💡" },
   { key: "tip", label: "今天训练时注意", icon: "⚡" },
+  { key: "fact", label: "一个小知识", icon: "✨" },
 ];
 
 const SEGMENT_COUNT = AI_SEGMENTS.length;
@@ -72,7 +73,7 @@ function buildCopySessionKey(selection: CurrentWorkoutSelectionV1 | null): strin
 }
 
 function segmentTextsFromCopy(copy: SmartResultCopy): string[] {
-  return [copy.reason, copy.knowledge, copy.tip];
+  return [copy.reason, copy.knowledge, copy.tip, copy.fact];
 }
 
 export function SmartResult({ onStartToday, onBack }: Props) {

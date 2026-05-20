@@ -9,7 +9,42 @@ export type SmartResultCopy = {
   reason: string;
   knowledge: string;
   tip: string;
+  fact: string;
 };
+
+const LITTLE_FACTS: readonly string[] = [
+  "肌肉是在恢复里慢慢适应训练的。\n今天练完，留一点休息，长期反而更稳。",
+  "组间休息够不够用，会直接影响下一个动作的质量。\n宁可多歇半分钟，也别赶节奏。",
+  "新手阶段，动作稳比重量重要。\n先把路线走顺，再加量会更安心。",
+  "状态好可以稍微推进，状态一般就少练一点。\n这样更容易一直练下去。",
+  "不需要每次都练到力竭。\n留一点余量，第二天会轻松很多。",
+  "训练是在「练」和「恢复」之间来回的。\n今天认真练，明天好好歇，都算数。",
+  "同一个动作，慢做比快做更容易找到发力感。\n质量上去了，次数自然跟得上。",
+];
+
+function pickLittleFactIndex(params: SmartResultCopyParams): number {
+  const seed = [
+    params.matchedTemplateId,
+    params.cycleStatus,
+    params.energyLevel,
+    params.lastTargetArea ?? "none",
+  ].join("|");
+  let hash = 0;
+  for (let i = 0; i < seed.length; i += 1) {
+    hash = (hash * 31 + seed.charCodeAt(i)) % 9973;
+  }
+  return Math.abs(hash) % LITTLE_FACTS.length;
+}
+
+function littleFactLines(params: SmartResultCopyParams): string {
+  if (params.cycleStatus === "period") {
+    return "经期训练以舒服为主。\n恢复到位了，身体才会慢慢适应，不必赶进度。";
+  }
+  if (params.energyLevel === "low") {
+    return "今天精力一般，少练一点也没关系。\n坚持比一次练满更重要。";
+  }
+  return LITTLE_FACTS[pickLittleFactIndex(params)] ?? LITTLE_FACTS[0];
+}
 
 export type SmartResultCopyParams = {
   cycleStatus: CycleStatus;
@@ -98,5 +133,6 @@ export function buildSmartResultCopy(params: SmartResultCopyParams): SmartResult
       params.lastTargetArea,
     ),
     tip: tipLines(params.cycleStatus, params.energyLevel, meta.targetArea),
+    fact: littleFactLines(params),
   };
 }

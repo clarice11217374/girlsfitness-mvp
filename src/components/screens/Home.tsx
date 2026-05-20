@@ -239,7 +239,7 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
                 fontWeight: 500,
               }}
             >
-              重新选择
+              更新今日状态
             </button>
           </div>
         </div>

@@ -1,6 +1,6 @@
-import { exerciseMediaRegistry } from "@/data/exerciseMediaRegistry";
+import { exerciseMediaRegistry, type ExerciseMediaRegistryItem } from "@/data/exerciseMediaRegistry";
 
-type ExerciseMediaQuerySource = {
+export type ExerciseMediaQueryable = {
   id: string;
   name: string;
   mediaSearchQuery?: string;
@@ -8,9 +8,13 @@ type ExerciseMediaQuerySource = {
   slug?: string;
 };
 
-export function getExerciseMediaQuery(exercise: ExerciseMediaQuerySource): string {
+export function getExerciseMediaRegistryItem(exercise: Pick<ExerciseMediaQueryable, "id">): ExerciseMediaRegistryItem | undefined {
+  return exerciseMediaRegistry[exercise.id];
+}
+
+export function getExerciseMediaQuery(exercise: ExerciseMediaQueryable): string {
   return (
-    exerciseMediaRegistry[exercise.id]?.query?.trim() ||
+    exerciseMediaRegistry[exercise.id]?.query.trim() ||
     exercise.mediaSearchQuery?.trim() ||
     exercise.englishName?.trim() ||
     exercise.slug?.trim() ||

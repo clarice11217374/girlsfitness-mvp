@@ -1,8 +1,8 @@
 export type ExerciseMedia = {
   exerciseId?: string;
-  imageUrl?: string;
-  gifUrl?: string;
-  videoUrl?: string;
+  gifUrl?: string | null;
+  imageUrl?: string | null;
+  videoUrl?: string | null;
   name?: string;
   targetMuscles?: string[];
   bodyParts?: string[];

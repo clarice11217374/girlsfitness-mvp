@@ -1,6 +1,18 @@
 import type { ExerciseMedia } from "@/types/exerciseMedia";
 
 type UnknownRecord = Record<string, unknown>;
+type ExerciseMediaDebug = {
+  searchQuery: string;
+  preferredMatch?: string;
+  matchedName?: string;
+  score: number;
+  candidateCount: number;
+};
+type ScoredExercise = {
+  exercise: unknown;
+  name?: string;
+  score: number;
+};
 
 function isRecord(value: unknown): value is UnknownRecord {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -37,6 +49,65 @@ function instructionsArray(value: unknown): string[] | undefined {
   }
 
   return undefined;
+}
+
+function normalize(value: string | undefined): string {
+  return (value ?? "")
+    .toLowerCase()
+    .replace(/[''`]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function words(value: string | undefined): Set<string> {
+  const normalized = normalize(value);
+  return new Set(normalized ? normalized.split(/\s+/).filter(Boolean) : []);
+}
+
+function wordOverlapScore(a: string | undefined, b: string | undefined): number {
+  const aWords = words(a);
+  const bWords = words(b);
+  if (aWords.size === 0 || bWords.size === 0) return 0;
+
+  let overlap = 0;
+  for (const word of aWords) {
+    if (bWords.has(word)) overlap += 1;
+  }
+
+  const coverage = overlap / Math.max(aWords.size, bWords.size);
+  return Math.round(coverage * 40);
+}
+
+function getExerciseName(exercise: unknown): string | undefined {
+  if (!isRecord(exercise)) return undefined;
+  return firstString(exercise.name, exercise.title, exercise.exerciseName, exercise.exercise_name);
+}
+
+function scoreExercise(exercise: unknown, query: string, preferredMatch?: string): ScoredExercise {
+  const name = getExerciseName(exercise);
+  const normalizedName = normalize(name);
+  const normalizedQuery = normalize(query);
+  const normalizedPreferred = normalize(preferredMatch);
+
+  let score = 0;
+
+  if (normalizedName && normalizedQuery && normalizedName === normalizedQuery) score += 120;
+  if (normalizedName && normalizedPreferred && normalizedName === normalizedPreferred) score += 130;
+  if (normalizedName && normalizedQuery && normalizedName.includes(normalizedQuery)) score += 80;
+  if (normalizedName && normalizedQuery && normalizedQuery.includes(normalizedName)) score += 75;
+  if (normalizedName && normalizedPreferred && normalizedName.includes(normalizedPreferred)) score += 90;
+  if (normalizedName && normalizedPreferred && normalizedPreferred.includes(normalizedName)) score += 85;
+
+  score += wordOverlapScore(name, query);
+  if (preferredMatch) score += wordOverlapScore(name, preferredMatch);
+
+  return { exercise, name, score };
+}
+
+function pickBestExercise(results: unknown[], query: string, preferredMatch?: string): ScoredExercise | null {
+  const scored = results.map((exercise) => scoreExercise(exercise, query, preferredMatch));
+  scored.sort((a, b) => b.score - a.score);
+  return scored[0] ?? null;
 }
 
 function pickResults(payload: unknown): unknown[] {
@@ -94,9 +165,9 @@ function toMedia(exercise: unknown): ExerciseMedia | null {
   return {
     exerciseId: firstString(exercise.exerciseId, exercise.exercise_id, exercise.id, exercise.uuid),
     name: firstString(exercise.name, exercise.title, exercise.exerciseName, exercise.exercise_name),
-    imageUrl,
-    gifUrl,
-    videoUrl,
+    gifUrl: gifUrl ?? null,
+    imageUrl: imageUrl ?? null,
+    videoUrl: videoUrl ?? null,
     targetMuscles: stringArray(exercise.targetMuscles ?? exercise.target_muscles ?? exercise.targetMuscle),
     bodyParts: stringArray(exercise.bodyParts ?? exercise.body_parts ?? exercise.bodyPart),
     equipments: stringArray(exercise.equipments ?? exercise.equipment),
@@ -108,16 +179,14 @@ function toMedia(exercise: unknown): ExerciseMedia | null {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const name = searchParams.get("name")?.trim();
+  const preferredMatch = searchParams.get("preferred")?.trim() || undefined;
 
   if (!name) {
     return Response.json({ success: false, message: "Missing required query parameter: name" }, { status: 400 });
   }
 
-  const apiBase = process.env.EXERCISEDB_API_BASE?.replace(/\/+$/, "");
-
-  if (!apiBase) {
-    return Response.json({ success: false, message: "ExerciseDB API base URL is not configured" }, { status: 500 });
-  }
+  const baseUrl = process.env.EXERCISEDB_API_BASE || "https://oss.exercisedb.dev";
+  const apiBase = baseUrl.replace(/\/+$/, "");
 
   try {
     const response = await fetch(`${apiBase}/api/v1/exercises/search?search=${encodeURIComponent(name)}`, {
@@ -127,17 +196,46 @@ export async function GET(request: Request) {
 
     if (!response.ok) {
       return Response.json(
-        { success: false, message: `ExerciseDB request failed with status ${response.status}` },
+        {
+          success: false,
+          message: `ExerciseDB request failed with status ${response.status}`,
+          debug: {
+            searchQuery: name,
+            preferredMatch,
+            score: 0,
+            candidateCount: 0,
+          },
+        },
         { status: 502 },
       );
     }
 
     const payload = await response.json();
     const results = pickResults(payload);
-    const media = results.map(toMedia).find((item): item is ExerciseMedia => item !== null) ?? null;
+    const best = pickBestExercise(results, name, preferredMatch);
+    const media = best ? toMedia(best.exercise) : null;
+    const debug: ExerciseMediaDebug = {
+      searchQuery: name,
+      preferredMatch,
+      matchedName: best?.name,
+      score: best?.score ?? 0,
+      candidateCount: results.length,
+    };
 
-    return Response.json({ success: true, data: media });
+    return Response.json({ success: true, data: media, debug });
   } catch {
-    return Response.json({ success: false, message: "Unable to fetch exercise media at this time" }, { status: 502 });
+    return Response.json(
+      {
+        success: false,
+        message: "Unable to fetch exercise media at this time",
+        debug: {
+          searchQuery: name,
+          preferredMatch,
+          score: 0,
+          candidateCount: 0,
+        },
+      },
+      { status: 502 },
+    );
   }
 }

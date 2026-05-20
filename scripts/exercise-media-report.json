@@ -1,0 +1,479 @@
+[
+  {
+    "exerciseId": "warmup-shoulder-circle",
+    "name": "肩部环绕",
+    "searchQuery": "shoulder circles",
+    "matchedName": "cable shoulder press",
+    "hasGif": true,
+    "score": 26,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "warmup-scap-activation",
+    "name": "肩胛激活",
+    "searchQuery": "scapular activation",
+    "matchedName": "dumbbell lying external shoulder rotation",
+    "hasGif": true,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "strength-machine-chest-press",
+    "name": "器械推胸",
+    "searchQuery": "chest press",
+    "matchedName": "lever chest press",
+    "hasGif": true,
+    "score": 224,
+    "status": "OK"
+  },
+  {
+    "exerciseId": "strength-dumbbell-shoulder-press",
+    "name": "哑铃肩推",
+    "searchQuery": "dumbbell shoulder press",
+    "matchedName": "cable shoulder press",
+    "hasGif": true,
+    "score": 54,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "strength-cable-pushdown",
+    "name": "绳索下压",
+    "searchQuery": "triceps pushdown",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "strength-incline-pushup",
+    "name": "上斜俯卧撑",
+    "searchQuery": "incline push up",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "cardio-elliptical",
+    "name": "椭圆机轻有氧",
+    "searchQuery": "elliptical trainer",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "stretch-chest",
+    "name": "胸部拉伸",
+    "searchQuery": "chest stretch",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "stretch-front-delt",
+    "name": "肩前三角肌拉伸",
+    "searchQuery": "shoulder stretch",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-push-wu-shoulder-circles",
+    "name": "肩部环绕",
+    "searchQuery": "shoulder circles",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-push-wu-scapula-activation",
+    "name": "肩胛激活",
+    "searchQuery": "scapular activation",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-push-st-machine-chest-press",
+    "name": "器械推胸",
+    "searchQuery": "chest press",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-push-st-dumbbell-shoulder-press",
+    "name": "哑铃肩推",
+    "searchQuery": "dumbbell shoulder press",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-push-st-cable-triceps-pushdown",
+    "name": "绳索下压",
+    "searchQuery": "triceps pushdown",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-push-st-incline-push-up",
+    "name": "上斜俯卧撑",
+    "searchQuery": "incline push up",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-push-ca-elliptical-easy",
+    "name": "椭圆机轻有氧",
+    "searchQuery": "elliptical trainer",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-push-st-chest-stretch",
+    "name": "胸部拉伸",
+    "searchQuery": "chest stretch",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-push-st-front-shoulder-stretch",
+    "name": "肩前三角肌拉伸",
+    "searchQuery": "shoulder stretch",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-pull-wu-band-pull-apart",
+    "name": "弹力带胸前拉开",
+    "searchQuery": "band pull apart",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-pull-wu-dead-hang-light",
+    "name": "悬垂肩袖激活（轻悬吊）",
+    "searchQuery": "dead hang",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-pull-st-lat-pulldown",
+    "name": "高位下拉",
+    "searchQuery": "lat pulldown",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-pull-st-seated-cable-row",
+    "name": "坐姿划船",
+    "searchQuery": "seated cable row",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-pull-st-face-pull",
+    "name": "绳索面拉",
+    "searchQuery": "face pull",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-pull-st-dumbbell-curl",
+    "name": "哑铃弯举",
+    "searchQuery": "dumbbell curl",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-pull-ca-rower-easy",
+    "name": "划船机轻松划行",
+    "searchQuery": "rowing machine",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-pull-st-lat-stretch",
+    "name": "背阔肌侧屈拉伸",
+    "searchQuery": "lat stretch",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "up-pull-st-biceps-stretch",
+    "name": "肱二头肌扶墙拉伸",
+    "searchQuery": "biceps stretch",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "lower-wu-hip-circle",
+    "name": "扶墙髋部绕环",
+    "searchQuery": "hip circles",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "lower-wu-bodyweight-squat",
+    "name": "徒手深蹲热身",
+    "searchQuery": "bodyweight squat",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "lower-st-leg-press",
+    "name": "腿举机",
+    "searchQuery": "leg press",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "lower-st-hip-abduction",
+    "name": "坐姿髋外展",
+    "searchQuery": "hip abduction",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "lower-st-leg-curl",
+    "name": "腿弯举机",
+    "searchQuery": "leg curl",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "lower-st-dead-bug",
+    "name": "死虫式",
+    "searchQuery": "dead bug",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "lower-ca-elliptical-recovery",
+    "name": "椭圆机匀速放松有氧",
+    "searchQuery": "elliptical trainer",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "lower-st-quad-stretch",
+    "name": "站姿股四头肌拉伸",
+    "searchQuery": "quadriceps stretch",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "lower-st-glute-pigeon-lite",
+    "name": "坐姿臀部拉伸（简易版）",
+    "searchQuery": "pigeon stretch",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "full-wu-arm-leg-swing",
+    "name": "手臂绕环与摆腿",
+    "searchQuery": "arm circles",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "full-wu-goblet-hold-squat",
+    "name": "徒手深蹲节奏热身",
+    "searchQuery": "bodyweight squat",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "full-st-db-rdl",
+    "name": "哑铃罗马尼亚硬拉",
+    "searchQuery": "dumbbell romanian deadlift",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "full-st-db-squat-to-press",
+    "name": "哑铃深蹲推举",
+    "searchQuery": "dumbbell squat to press",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "full-st-mountain-climber-slow",
+    "name": "登山者（慢速低幅度）",
+    "searchQuery": "mountain climber",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "full-st-low-impact-jack",
+    "name": "低冲击开合步",
+    "searchQuery": "low impact jumping jack",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "full-ca-elliptical-steady",
+    "name": "椭圆机匀速全身有氧",
+    "searchQuery": "elliptical trainer",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "full-st-hamstring-stretch",
+    "name": "坐姿体前屈（腘绳肌）",
+    "searchQuery": "seated hamstring stretch",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "full-st-thoracic-open",
+    "name": "胸背打开组合拉伸",
+    "searchQuery": "chest opener stretch",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "period-wu-cat-cow",
+    "name": "猫牛式",
+    "searchQuery": "cat cow stretch",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "period-wu-easy-walk",
+    "name": "轻松步行",
+    "searchQuery": "walking",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "period-st-wall-sit-shallow",
+    "name": "靠墙静蹲（浅角度）",
+    "searchQuery": "wall sit",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "period-st-clamshell",
+    "name": "侧卧蚌式开合",
+    "searchQuery": "clamshell",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "period-st-pelvic-tilt-supine",
+    "name": "仰卧骨盆前后倾",
+    "searchQuery": "pelvic tilt",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "period-ca-walk-talk-test",
+    "name": "轻松步行（对话强度）",
+    "searchQuery": "walking",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "period-st-child-pose",
+    "name": "婴儿式",
+    "searchQuery": "child pose",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  },
+  {
+    "exerciseId": "period-st-supine-spinal-twist",
+    "name": "仰卧脊柱扭转",
+    "searchQuery": "supine spinal twist",
+    "matchedName": null,
+    "hasGif": false,
+    "score": 0,
+    "status": "NEEDS_REVIEW"
+  }
+]

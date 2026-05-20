@@ -5,7 +5,7 @@ export const exerciseMediaSearchQueries: Record<string, string> =
   exerciseMediaSearchQueriesJson;
 
 export function getExerciseMediaSearchQuery(
-  id: string,
+  _id: string,
   fallbackName: string,
   mediaSearchQuery?: string,
   englishName?: string,
@@ -15,7 +15,6 @@ export function getExerciseMediaSearchQuery(
     mediaSearchQuery?.trim() ||
     englishName?.trim() ||
     slug?.trim() ||
-    exerciseMediaSearchQueries[id] ||
     fallbackName
   );
 }

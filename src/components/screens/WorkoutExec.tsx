@@ -15,10 +15,9 @@ import {
   getWorkoutTemplateById,
   type WorkoutExercise as TemplateWorkoutExercise,
 } from "@/data/workoutTemplates";
-import { exerciseMediaRegistry } from "@/data/exerciseMediaRegistry";
 import { localExerciseMediaMap } from "@/data/localExerciseMediaMap";
 import type { ExerciseMedia } from "@/types/exerciseMedia";
-import { getExerciseMediaQuery } from "@/utils/getExerciseMediaQuery";
+import { getExerciseMediaQuery, getExerciseMediaRegistryItem } from "@/utils/getExerciseMediaQuery";
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
 import {
   getExercisePerformance,
@@ -46,9 +45,16 @@ type ExecExercise = {
 };
 
 type PhasePlanRow = { label: string; exerciseIndexes: number[] };
+type ExerciseMediaDebug = {
+  searchQuery: string;
+  preferredMatch?: string;
+  matchedName?: string;
+  score: number;
+  candidateCount: number;
+};
 type ExerciseMediaState =
   | { status: "idle" | "loading"; data: null }
-  | { status: "ready"; data: ExerciseMedia | null }
+  | { status: "ready"; data: ExerciseMedia | null; debug?: ExerciseMediaDebug }
   | { status: "error"; data: null };
 
 const restOptions = [
@@ -59,6 +65,8 @@ const restOptions = [
 ];
 
 const chineseNums = ["一", "二", "三", "四", "五", "六"];
+const MEDIA_MATCH_DISPLAY_SCORE = 45;
+const MEDIA_MATCH_REVIEW_SCORE = 55;
 
 function toExecFromTemplate(ex: TemplateWorkoutExercise): ExecExercise {
   return {
@@ -833,30 +841,55 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
 
   const currentExercise = exercises[exIdx];
   const currentMediaQuery = currentExercise ? getExerciseMediaQuery(currentExercise).trim() : "";
-  const registryMedia = currentExercise ? exerciseMediaRegistry[currentExercise.id] : undefined;
   const localMedia = currentExercise ? localExerciseMediaMap[currentExercise.id] : undefined;
+  const currentMediaRegistryItem = currentExercise ? getExerciseMediaRegistryItem(currentExercise) : undefined;
+  const currentPreferredMatch = currentMediaRegistryItem?.preferredMatch?.trim();
+  const currentMediaAliasesKey = currentMediaRegistryItem?.aliases?.join("\n") ?? "";
+  const currentExerciseId = currentExercise?.id;
+  const currentExerciseName = currentExercise?.name;
+  const currentExerciseReps = currentExercise?.reps;
+  const currentMediaKey = currentExerciseId
+    ? [currentExerciseId, currentMediaQuery, currentPreferredMatch ?? ""].join("::")
+    : "";
   const currentMediaState: ExerciseMediaState =
-    currentMediaQuery && mediaByQuery[currentMediaQuery]
-      ? mediaByQuery[currentMediaQuery]
+    currentMediaKey && mediaByQuery[currentMediaKey]
+      ? mediaByQuery[currentMediaKey]
       : { status: "idle", data: null };
   const currentMedia =
-    currentMediaState.status === "ready" && currentMediaState.data ? currentMediaState.data : null;
+    currentMediaState.status === "ready" &&
+    currentMediaState.data &&
+    (currentMediaState.debug?.score ?? MEDIA_MATCH_DISPLAY_SCORE) >= MEDIA_MATCH_DISPLAY_SCORE
+      ? currentMediaState.data
+      : null;
   const displayMedia =
     localMedia?.videoUrl && failedMediaKeys[localMedia.videoUrl] !== true
       ? {
           kind: "video" as const,
           src: localMedia.videoUrl,
-          poster: localMedia.imageUrl ?? localMedia.gifUrl,
+          poster: localMedia.imageUrl ?? localMedia.gifUrl ?? undefined,
         }
       : localMedia?.gifUrl && failedMediaKeys[localMedia.gifUrl] !== true
         ? { kind: "gif" as const, src: localMedia.gifUrl }
         : localMedia?.imageUrl && failedMediaKeys[localMedia.imageUrl] !== true
           ? { kind: "image" as const, src: localMedia.imageUrl }
-          : currentMedia?.videoUrl && failedMediaKeys[currentMedia.videoUrl] !== true
+          : currentMediaRegistryItem?.localVideoUrl &&
+              failedMediaKeys[currentMediaRegistryItem.localVideoUrl] !== true
+            ? {
+                kind: "video" as const,
+                src: currentMediaRegistryItem.localVideoUrl,
+                poster: currentMediaRegistryItem.localImageUrl ?? currentMediaRegistryItem.localGifUrl ?? undefined,
+              }
+            : currentMediaRegistryItem?.localGifUrl &&
+                failedMediaKeys[currentMediaRegistryItem.localGifUrl] !== true
+              ? { kind: "gif" as const, src: currentMediaRegistryItem.localGifUrl }
+              : currentMediaRegistryItem?.localImageUrl &&
+                  failedMediaKeys[currentMediaRegistryItem.localImageUrl] !== true
+                ? { kind: "image" as const, src: currentMediaRegistryItem.localImageUrl }
+                : currentMedia?.videoUrl && failedMediaKeys[currentMedia.videoUrl] !== true
             ? {
                 kind: "video" as const,
                 src: currentMedia.videoUrl,
-                poster: currentMedia.imageUrl ?? currentMedia.gifUrl,
+                poster: currentMedia.imageUrl ?? currentMedia.gifUrl ?? undefined,
               }
             : currentMedia?.gifUrl && failedMediaKeys[currentMedia.gifUrl] !== true
               ? { kind: "gif" as const, src: currentMedia.gifUrl }
@@ -868,39 +901,88 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   const showImage = displayMedia?.kind === "image";
 
   useEffect(() => {
-    if (!currentMediaQuery || requestedMediaQueriesRef.current.has(currentMediaQuery)) return;
-    requestedMediaQueriesRef.current.add(currentMediaQuery);
+    if (!currentMediaQuery || !currentMediaKey || requestedMediaQueriesRef.current.has(currentMediaKey)) return;
+    requestedMediaQueriesRef.current.add(currentMediaKey);
 
     const controller = new AbortController();
 
     async function loadMedia() {
       setMediaByQuery((prev) => ({
         ...prev,
-        [currentMediaQuery]: { status: "loading", data: null },
+        [currentMediaKey]: { status: "loading", data: null },
       }));
 
       try {
-        const params = new URLSearchParams({ name: currentMediaQuery });
-        if (registryMedia?.preferredMatch) {
-          params.set("preferred", registryMedia.preferredMatch);
-        }
-        const response = await fetch(`/api/exercises/media?${params.toString()}`, {
-          signal: controller.signal,
-        });
-        const payload = (await response.json()) as { success?: boolean; data?: ExerciseMedia | null };
+        const searchQueries = [
+          currentMediaQuery,
+          ...currentMediaAliasesKey.split("\n").map((alias) => alias.trim()),
+        ].filter(Boolean);
+        let payload: { success?: boolean; data?: ExerciseMedia | null; debug?: ExerciseMediaDebug } | null = null;
 
-        if (!response.ok || payload.success === false) {
-          throw new Error("Exercise media request failed");
+        for (const searchQuery of searchQueries) {
+          const params = new URLSearchParams({ name: searchQuery });
+          if (currentPreferredMatch) params.set("preferred", currentPreferredMatch);
+
+          const response = await fetch(`/api/exercises/media?${params.toString()}`, {
+            signal: controller.signal,
+          });
+          const candidate = (await response.json()) as {
+            success?: boolean;
+            data?: ExerciseMedia | null;
+            debug?: ExerciseMediaDebug;
+          };
+
+          if (!response.ok || candidate.success === false) {
+            throw new Error("Exercise media request failed");
+          }
+
+          payload = candidate;
+          const hasCandidateMedia = !!(candidate.data?.videoUrl || candidate.data?.gifUrl || candidate.data?.imageUrl);
+          if (hasCandidateMedia && (candidate.debug?.score ?? MEDIA_MATCH_DISPLAY_SCORE) >= MEDIA_MATCH_DISPLAY_SCORE) {
+            break;
+          }
+        }
+
+        if (!payload) throw new Error("Exercise media request failed");
+
+        const hasLocalMedia = !!(
+          localMedia?.videoUrl ||
+          localMedia?.gifUrl ||
+          localMedia?.imageUrl ||
+          currentMediaRegistryItem?.localVideoUrl ||
+          currentMediaRegistryItem?.localGifUrl ||
+          currentMediaRegistryItem?.localImageUrl
+        );
+        const matchedName = payload.debug?.matchedName;
+        const score = payload.debug?.score ?? 0;
+        const hasApiMedia = !!(payload.data?.videoUrl || payload.data?.gifUrl || payload.data?.imageUrl);
+
+        if (
+          process.env.NODE_ENV === "development" &&
+          currentExerciseId &&
+          currentExerciseName &&
+          ((!hasLocalMedia && !hasApiMedia) || (matchedName && score < MEDIA_MATCH_REVIEW_SCORE))
+        ) {
+          console.warn("Exercise media needs review", {
+            exerciseId: currentExerciseId,
+            chineseName: currentExerciseName,
+            searchQuery: payload.debug?.searchQuery ?? currentMediaQuery,
+            preferredMatch: currentPreferredMatch,
+            matchedName,
+            gifUrl: payload.data?.gifUrl ?? currentMediaRegistryItem?.localGifUrl,
+            imageUrl: payload.data?.imageUrl ?? currentMediaRegistryItem?.localImageUrl,
+            reason: !hasLocalMedia && !hasApiMedia ? "no_media" : "low_match_score",
+          });
         }
 
         setMediaByQuery((prev) => ({
           ...prev,
-          [currentMediaQuery]: { status: "ready", data: payload.data ?? null },
+          [currentMediaKey]: { status: "ready", data: payload.data ?? null, debug: payload.debug },
         }));
         if (process.env.NODE_ENV === "development") {
           console.warn("[WorkoutExec] exercise media loaded", {
             query: currentMediaQuery,
-            preferred: registryMedia?.preferredMatch,
+            preferred: currentPreferredMatch,
             data: payload.data ?? null,
           });
         }
@@ -908,12 +990,12 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
         if (controller.signal.aborted) return;
         setMediaByQuery((prev) => ({
           ...prev,
-          [currentMediaQuery]: { status: "error", data: null },
+          [currentMediaKey]: { status: "error", data: null },
         }));
         if (process.env.NODE_ENV === "development") {
           console.warn("[WorkoutExec] exercise media request failed", {
             query: currentMediaQuery,
-            preferred: registryMedia?.preferredMatch,
+            preferred: currentPreferredMatch,
           });
         }
       }
@@ -921,7 +1003,16 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
 
     void loadMedia();
     return () => controller.abort();
-  }, [currentMediaQuery, registryMedia?.preferredMatch]);
+  }, [
+    currentExerciseId,
+    currentExerciseName,
+    currentMediaAliasesKey,
+    currentMediaKey,
+    currentMediaQuery,
+    currentMediaRegistryItem,
+    currentPreferredMatch,
+    localMedia,
+  ]);
 
   const phaseIdx = Math.max(
     0,
@@ -940,7 +1031,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
   const shouldUseRepsControl = isStrengthPhase;
 
   useEffect(() => {
-    if (!currentExercise) return;
+    if (!currentExerciseId || !currentExerciseReps) return;
 
     setCurrentSet(0);
     setCompletedSets([]);

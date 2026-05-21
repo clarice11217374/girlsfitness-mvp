@@ -1,0 +1,1457 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/cr3hr2",
+    "id": "cr3hr2",
+    "slide": 8,
+    "layoutId": "1d00c54b-499a-4deb-a0f3-6455d5399ea5",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "2e48efcc-a62e-4993-86df-66703f3c901d",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Georgia",
+      "Microsoft YaHei UI"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "1d00c54b-499a-4deb-a0f3-6455d5399ea5",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "2e48efcc-a62e-4993-86df-66703f3c901d",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "2e48efcc-a62e-4993-86df-66703f3c901d",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cj6tovah",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#FBF7F2",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nyd0z610",
+      "id": "2",
+      "name": "kicker-08-marker",
+      "bbox": [
+        58,
+        54,
+        8,
+        8
+      ],
+      "geometry": "rect",
+      "fillColor": "#514462",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/udg7adsj",
+      "id": "3",
+      "name": "kicker-08-label",
+      "bbox": [
+        78,
+        46,
+        320,
+        26
+      ],
+      "geometry": "rect",
+      "text": "MVP SCOPE",
+      "textPreview": "MVP SCOPE",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MVP SCOPE"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MVP SCOPE",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MVP SCOPE",
+              "fontSize": 10,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gbq1ory",
+      "id": "4",
+      "bbox": [
+        58,
+        78,
+        1120,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#D9CDC5",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cvixczed",
+      "id": "5",
+      "bbox": [
+        58,
+        106,
+        900,
+        88
+      ],
+      "geometry": "rect",
+      "text": "MVP 不追求完整 App，先保护一个可被用户完成的闭环。",
+      "textPreview": "MVP 不追求完整 App，先保护一个可被用户完成的闭环。",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MVP 不追求完整 App，先保护一个可被用户完成的闭环。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MVP 不追求完整 App，先保护一个可被用户完成的闭环。",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MVP 不追求完整 App，先保护一个可被用户完成的闭环。",
+              "fontSize": 34,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nap4r65w",
+      "id": "6",
+      "bbox": [
+        86,
+        292,
+        190,
+        92
+      ],
+      "geometry": "rect",
+      "fillColor": "#F6E9EC",
+      "lineColor": "#D9CDC5",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/upwb2hwf",
+      "id": "7",
+      "bbox": [
+        104,
+        310,
+        150,
+        24
+      ],
+      "geometry": "rect",
+      "text": "基础信息",
+      "textPreview": "基础信息",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "基础信息"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "基础信息",
+          "runs": [
+            {
+              "index": 1,
+              "text": "基础信息",
+              "fontSize": 19,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1orytsvu",
+      "id": "8",
+      "bbox": [
+        104,
+        342,
+        150,
+        26
+      ],
+      "geometry": "rect",
+      "text": "用户填写目标、经验、状态",
+      "textPreview": "用户填写目标、经验、状态",
+      "resolvedFontSize": 11.51,
+      "resolvedTextStyle": {
+        "fontSize": 11.51,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "用户填写目标、经验、状态"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "用户填写目标、经验、状态",
+          "runs": [
+            {
+              "index": 1,
+              "text": "用户填写目标、经验、状态",
+              "fontSize": 11.51,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c7u54zid",
+      "id": "9",
+      "bbox": [
+        346,
+        214,
+        190,
+        92
+      ],
+      "geometry": "rect",
+      "fillColor": "#514462",
+      "lineColor": "#D9CDC5",
+      "lineWidth": 1
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6xkf6dcb",
+      "id": "10",
+      "bbox": [
+        364,
+        232,
+        150,
+        24
+      ],
+      "geometry": "rect",
+      "text": "计划生成",
+      "textPreview": "计划生成",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "计划生成"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "计划生成",
+          "runs": [
+            {
+              "index": 1,
+              "text": "计划生成",
+              "fontSize": 19,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zed8v6ps",
+      "id": "11",
+      "bbox": [
+        364,
+        264,
+        150,
+        26
+      ],
+      "geometry": "rect",
+      "text": "根据周期和体感生成今日训练",
+      "textPreview": "根据周期和体感生成今日训练",
+      "resolvedFontSize": 11.51,
+      "resolvedTextStyle": {
+        "fontSize": 11.51,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "根据周期和体感生成今日训练"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "根据周期和体感生成今日训练",
+          "runs": [
+            {
+              "index": 1,
+              "text": "根据周期和体感生成今日训练",
+              "fontSize": 11.51,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#EDE8F2"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oza1gvy9",
+      "id": "12",
+      "bbox": [
+        620,
+        292,
+        190,
+        92
+      ],
+      "geometry": "rect",
+      "fillColor": "#F6E9EC",
+      "lineColor": "#D9CDC5",
+      "lineWidth": 1
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hk3q5o7q",
+      "id": "13",
+      "bbox": [
+        638,
+        310,
+        150,
+        24
+      ],
+      "geometry": "rect",
+      "text": "动作库",
+      "textPreview": "动作库",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "动作库"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "动作库",
+          "runs": [
+            {
+              "index": 1,
+              "text": "动作库",
+              "fontSize": 19,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65wjudg7",
+      "id": "14",
+      "bbox": [
+        638,
+        342,
+        150,
+        26
+      ],
+      "geometry": "rect",
+      "text": "动作说明、器械提示、注意事项",
+      "textPreview": "动作说明、器械提示、注意事项",
+      "resolvedFontSize": 11.51,
+      "resolvedTextStyle": {
+        "fontSize": 11.51,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "动作说明、器械提示、注意事"
+          },
+          {
+            "index": 2,
+            "text": "项"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "动作说明、器械提示、注意事项",
+          "runs": [
+            {
+              "index": 1,
+              "text": "动作说明、器械提示、注意事项",
+              "fontSize": 11.51,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqtcj6to",
+      "id": "15",
+      "bbox": [
+        346,
+        420,
+        190,
+        92
+      ],
+      "geometry": "rect",
+      "fillColor": "#F6E9EC",
+      "lineColor": "#D9CDC5",
+      "lineWidth": 1
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/obm58z25",
+      "id": "16",
+      "bbox": [
+        364,
+        438,
+        150,
+        24
+      ],
+      "geometry": "rect",
+      "text": "训练引导",
+      "textPreview": "训练引导",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "训练引导"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "训练引导",
+          "runs": [
+            {
+              "index": 1,
+              "text": "训练引导",
+              "fontSize": 19,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/hwfyxobm",
+      "id": "17",
+      "bbox": [
+        364,
+        470,
+        150,
+        26
+      ],
+      "geometry": "rect",
+      "text": "流线式完成热身到拉伸",
+      "textPreview": "流线式完成热身到拉伸",
+      "resolvedFontSize": 11.51,
+      "resolvedTextStyle": {
+        "fontSize": 11.51,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "流线式完成热身到拉伸"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "流线式完成热身到拉伸",
+          "runs": [
+            {
+              "index": 1,
+              "text": "流线式完成热身到拉伸",
+              "fontSize": 11.51,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a9w3m94f",
+      "id": "18",
+      "bbox": [
+        620,
+        420,
+        190,
+        92
+      ],
+      "geometry": "rect",
+      "fillColor": "#A9B8A3",
+      "lineColor": "#D9CDC5",
+      "lineWidth": 1
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zupwb2hw",
+      "id": "19",
+      "bbox": [
+        638,
+        438,
+        150,
+        24
+      ],
+      "geometry": "rect",
+      "text": "反馈记录",
+      "textPreview": "反馈记录",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "反馈记录"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "反馈记录",
+          "runs": [
+            {
+              "index": 1,
+              "text": "反馈记录",
+              "fontSize": 19,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#241E2A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b6xkf6dc",
+      "id": "20",
+      "bbox": [
+        638,
+        470,
+        150,
+        26
+      ],
+      "geometry": "rect",
+      "text": "完成情况、感受、打卡趋势",
+      "textPreview": "完成情况、感受、打卡趋势",
+      "resolvedFontSize": 11.51,
+      "resolvedTextStyle": {
+        "fontSize": 11.51,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "完成情况、感受、打卡趋势"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "完成情况、感受、打卡趋势",
+          "runs": [
+            {
+              "index": 1,
+              "text": "完成情况、感受、打卡趋势",
+              "fontSize": 11.51,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/il0rqd4v",
+      "id": "21",
+      "bbox": [
+        276,
+        338,
+        60,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#514462",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tcj6tova",
+      "id": "22",
+      "bbox": [
+        326,
+        321,
+        28,
+        28
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0rqd4vmt",
+      "id": "23",
+      "bbox": [
+        536,
+        260,
+        70,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#514462",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/byhgn29g",
+      "id": "24",
+      "bbox": [
+        596,
+        243,
+        28,
+        28
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/idonyd0z",
+      "id": "25",
+      "bbox": [
+        536,
+        466,
+        70,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#514462",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t47y1kre",
+      "id": "26",
+      "bbox": [
+        596,
+        449,
+        28,
+        28
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0je9cvix",
+      "id": "27",
+      "bbox": [
+        810,
+        466,
+        60,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#514462",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bulwval8",
+      "id": "28",
+      "bbox": [
+        860,
+        449,
+        28,
+        28
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i9s36hcr",
+      "id": "29",
+      "bbox": [
+        536,
+        338,
+        70,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#514462",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w3m94fu1",
+      "id": "30",
+      "bbox": [
+        596,
+        321,
+        28,
+        28
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 20,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#514462"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/loj2t83i",
+      "id": "31",
+      "bbox": [
+        906,
+        230,
+        220,
+        300
+      ],
+      "geometry": "rect",
+      "fillColor": "#211A29",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ex0nuxc3",
+      "id": "32",
+      "bbox": [
+        936,
+        262,
+        160,
+        26
+      ],
+      "geometry": "rect",
+      "text": "后端 / 数据",
+      "textPreview": "后端 / 数据",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "后端 / 数据"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "后端 / 数据",
+          "runs": [
+            {
+              "index": 1,
+              "text": "后端 / 数据",
+              "fontSize": 22,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3itgfmlk",
+      "id": "33",
+      "bbox": [
+        936,
+        314,
+        160,
+        140
+      ],
+      "geometry": "rect",
+      "text": "Supabase / Firebase 可先承担账户、训练记录、动作库和反馈表。真正的难点不是数据库名，而是数据结构围绕闭环设计。",
+      "textPreview": "Supabase / Firebase 可先承担账户、训练记录、动作库和反馈表。真正的难点不是数据库名，而是数据结构围绕闭环设计。",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 5,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Supabase / Firebase"
+          },
+          {
+            "index": 2,
+            "text": "可先承担账户、训练记录、"
+          },
+          {
+            "index": 3,
+            "text": "动作库和反馈表。真正的难"
+          },
+          {
+            "index": 4,
+            "text": "点不是数据库名，而是数据"
+          },
+          {
+            "index": 5,
+            "text": "结构围绕闭环设计。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Supabase / Firebase 可先承担账户、训练记录、动作库和反馈表。真正的难点不是数据库名，而是数据结构围绕闭环设计。",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Supabase / Firebase 可先承担账户、训练记录、动作库和反馈表。真正的难点不是数据库名，而是数据结构围绕闭环设计。",
+              "fontSize": 13,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#E9E2EF"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "34",
+      "bbox": [
+        936,
+        478,
+        150,
+        3
+      ],
+      "geometry": "rect",
+      "fillColor": "#A9B8A3",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "35",
+      "bbox": [
+        936,
+        496,
+        150,
+        24
+      ],
+      "geometry": "rect",
+      "text": "先少而准",
+      "textPreview": "先少而准",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Microsoft YaHei UI",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "先少而准"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "先少而准",
+          "runs": [
+            {
+              "index": 1,
+              "text": "先少而准",
+              "fontSize": 18,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e9cvixcz",
+      "id": "36",
+      "bbox": [
+        58,
+        674,
+        1120,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#D9CDC5",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3q5o7qpg",
+      "id": "37",
+      "bbox": [
+        58,
+        688,
+        820,
+        18
+      ],
+      "geometry": "rect",
+      "text": "GirlsFitness source: product plan + demo video",
+      "textPreview": "GirlsFitness source: product plan + demo video",
+      "resolvedFontSize": 8.51,
+      "resolvedTextStyle": {
+        "fontSize": 8.51,
+        "typeface": "Microsoft YaHei UI",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GirlsFitness source: product plan + demo video"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GirlsFitness source: product plan + demo video",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GirlsFitness source: product plan + demo video",
+              "fontSize": 8.51,
+              "typeface": "Microsoft YaHei UI",
+              "color": "#7B7280"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 38,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sneloj2t",
+      "id": "38",
+      "bbox": [
+        1138,
+        684,
+        40,
+        22
+      ],
+      "geometry": "rect",
+      "text": "08",
+      "textPreview": "08",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "right"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "08"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "08",
+          "runs": [
+            {
+              "index": 1,
+              "text": "08",
+              "fontSize": 13,
+              "typeface": "Georgia",
+              "color": "#514462",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

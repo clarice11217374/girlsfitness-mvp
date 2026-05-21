@@ -71,6 +71,7 @@ export const workoutByPhase: Record<WorkoutPhase, WorkoutExercise[]> = {
   warmup: [
     {
       id: "warmup-shoulder-circle",
+      mediaSearchQuery: "shoulder circles",
       name: "肩部环绕",
       phase: "warmup",
       sets: 1,
@@ -96,6 +97,7 @@ export const workoutByPhase: Record<WorkoutPhase, WorkoutExercise[]> = {
     },
     {
       id: "warmup-scap-activation",
+      mediaSearchQuery: "scapular activation",
       name: "肩胛激活",
       phase: "warmup",
       sets: 1,
@@ -123,6 +125,7 @@ export const workoutByPhase: Record<WorkoutPhase, WorkoutExercise[]> = {
   strength: [
     {
       id: "strength-machine-chest-press",
+      mediaSearchQuery: "machine chest press",
       name: "器械推胸",
       phase: "strength",
       sets: 4,
@@ -148,6 +151,7 @@ export const workoutByPhase: Record<WorkoutPhase, WorkoutExercise[]> = {
     },
     {
       id: "strength-dumbbell-shoulder-press",
+      mediaSearchQuery: "dumbbell shoulder press",
       name: "哑铃肩推",
       phase: "strength",
       sets: 3,
@@ -173,6 +177,7 @@ export const workoutByPhase: Record<WorkoutPhase, WorkoutExercise[]> = {
     },
     {
       id: "strength-cable-pushdown",
+      mediaSearchQuery: "cable triceps pushdown",
       name: "绳索下压",
       phase: "strength",
       sets: 3,
@@ -198,6 +203,7 @@ export const workoutByPhase: Record<WorkoutPhase, WorkoutExercise[]> = {
     },
     {
       id: "strength-incline-pushup",
+      mediaSearchQuery: "incline push up",
       name: "上斜俯卧撑",
       phase: "strength",
       sets: 3,
@@ -225,6 +231,7 @@ export const workoutByPhase: Record<WorkoutPhase, WorkoutExercise[]> = {
   cardio: [
     {
       id: "cardio-elliptical",
+      mediaSearchQuery: "elliptical trainer",
       name: "椭圆机轻有氧",
       phase: "cardio",
       sets: 1,
@@ -252,6 +259,7 @@ export const workoutByPhase: Record<WorkoutPhase, WorkoutExercise[]> = {
   stretch: [
     {
       id: "stretch-chest",
+      mediaSearchQuery: "chest stretch",
       name: "胸部拉伸",
       phase: "stretch",
       sets: 1,

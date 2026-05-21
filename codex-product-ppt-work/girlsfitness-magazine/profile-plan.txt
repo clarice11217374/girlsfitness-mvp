@@ -1,0 +1,7 @@
+﻿Task mode: create
+Primary deck-profile: product-platform
+Secondary profile gate: consumer-retail image-led subject gate
+Required proof objects: workflow/product journey, storyboard visual, demo screenshot evidence, MVP system map, roadmap/support needs
+Source/asset requirements: user-provided DOCX planning document; user-provided MP4 product demo frames; AI-generated storyboard image with no logos/readable UI text
+Brand authenticity: no fabricated logo/app icon; GirlsFitness appears as text only; product UI screenshots only from user video
+Known missing inputs: no quantitative user research numbers, no official brand assets beyond product name and demo

@@ -7,6 +7,7 @@
     "build": "set TURBOPACK=0 && next build",
     "start": "next start",
     "lint": "eslint",
+    "check:exercise-media": "tsx scripts/check-exercise-media.ts",
     "fetch-exercise-media": "node scripts/fetch-exercise-media.mjs",
     "fetch-exercise-media:force": "node scripts/fetch-exercise-media.mjs --force"
   },
@@ -22,6 +23,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
+    "tsx": "^4.22.2",
     "typescript": "^5"
   }
 }

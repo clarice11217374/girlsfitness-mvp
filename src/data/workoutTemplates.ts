@@ -101,6 +101,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
           duration: "30秒",
           equipment: "无需器械",
           visualPlaceholder: "shoulder-circles-placeholder",
+          mediaSearchQuery: "shoulder circles",
           equipmentGuide: {
             machineIntro: "这是徒手热身动作，不需要器械。",
             seatSetup: "无需座椅。",
@@ -119,6 +120,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
         },
         {
           id: "up-push-wu-scapula-activation",
+          mediaSearchQuery: "scapular activation",
           name: "肩胛激活",
           phase: "warmup",
           sets: 1,
@@ -146,6 +148,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
       strength: [
         {
           id: "up-push-st-machine-chest-press",
+          mediaSearchQuery: "machine chest press",
           name: "器械推胸",
           phase: "strength",
           sets: 4,
@@ -178,6 +181,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
           duration: "7分钟",
           equipment: "哑铃",
           visualPlaceholder: "dumbbell-shoulder-press-placeholder",
+          mediaSearchQuery: "dumbbell shoulder press",
           equipmentGuide: {
             machineIntro: "哑铃肩推主要训练肩部。",
             seatSetup: "建议坐在有靠背的训练凳上。",
@@ -196,6 +200,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
         },
         {
           id: "up-push-st-cable-triceps-pushdown",
+          mediaSearchQuery: "cable triceps pushdown",
           name: "绳索下压",
           phase: "strength",
           sets: 3,
@@ -221,6 +226,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
         },
         {
           id: "up-push-st-incline-push-up",
+          mediaSearchQuery: "incline push up",
           name: "上斜俯卧撑",
           phase: "strength",
           sets: 3,
@@ -248,6 +254,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
       cardio: [
         {
           id: "up-push-ca-elliptical-easy",
+          mediaSearchQuery: "elliptical trainer",
           name: "椭圆机轻有氧",
           phase: "cardio",
           sets: 1,
@@ -275,6 +282,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
       stretch: [
         {
           id: "up-push-st-chest-stretch",
+          mediaSearchQuery: "chest stretch",
           name: "胸部拉伸",
           phase: "stretch",
           sets: 1,
@@ -397,6 +405,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
       strength: [
         {
           id: "up-pull-st-lat-pulldown",
+          mediaSearchQuery: "lat pulldown",
           name: "高位下拉",
           phase: "strength",
           sets: 4,
@@ -429,6 +438,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
           duration: "7分钟",
           equipment: "坐姿划船机 / 低位拉力器",
           visualPlaceholder: "seated-row-placeholder",
+          mediaSearchQuery: "seated cable row",
           equipmentGuide: {
             machineIntro: "坐姿划船练中背部与肩胛稳定，适合久坐人群。",
             seatSetup: "胸贴靠垫或坐稳后脚蹬踏板，膝微屈。",
@@ -447,6 +457,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
         },
         {
           id: "up-pull-st-face-pull",
+          mediaSearchQuery: "face pull",
           name: "绳索面拉",
           phase: "strength",
           sets: 3,
@@ -472,6 +483,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
         },
         {
           id: "up-pull-st-dumbbell-curl",
+          mediaSearchQuery: "dumbbell biceps curl",
           name: "哑铃弯举",
           phase: "strength",
           sets: 3,
@@ -603,6 +615,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
           duration: "1分钟",
           equipment: "墙面",
           visualPlaceholder: "hip-circle-warmup-placeholder",
+          mediaSearchQuery: "hip circles",
           equipmentGuide: {
             machineIntro: "徒手髋关节活动，帮助深蹲与腿举前关节润滑。",
             seatSetup: "无需座椅，单手扶墙保持平衡。",
@@ -648,6 +661,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
       strength: [
         {
           id: "lower-st-leg-press",
+          mediaSearchQuery: "leg press",
           name: "腿举机",
           phase: "strength",
           sets: 4,
@@ -673,6 +687,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
         },
         {
           id: "lower-st-hip-abduction",
+          mediaSearchQuery: "hip abduction",
           name: "坐姿髋外展",
           phase: "strength",
           sets: 3,
@@ -698,6 +713,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
         },
         {
           id: "lower-st-leg-curl",
+          mediaSearchQuery: "leg curl",
           name: "腿弯举机",
           phase: "strength",
           sets: 3,
@@ -723,6 +739,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
         },
         {
           id: "lower-st-dead-bug",
+          mediaSearchQuery: "dead bug",
           name: "死虫式",
           phase: "strength",
           sets: 3,
@@ -750,6 +767,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
       cardio: [
         {
           id: "lower-ca-elliptical-recovery",
+          mediaSearchQuery: "elliptical trainer",
           name: "椭圆机匀速放松有氧",
           phase: "cardio",
           sets: 1,
@@ -949,6 +967,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
         },
         {
           id: "full-st-mountain-climber-slow",
+          mediaSearchQuery: "mountain climber",
           name: "登山者（慢速低幅度）",
           phase: "strength",
           sets: 3,
@@ -974,6 +993,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
         },
         {
           id: "full-st-low-impact-jack",
+          mediaSearchQuery: "low impact jumping jack",
           name: "低冲击开合步",
           phase: "strength",
           sets: 2,
@@ -1001,6 +1021,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
       cardio: [
         {
           id: "full-ca-elliptical-steady",
+          mediaSearchQuery: "elliptical trainer",
           name: "椭圆机匀速全身有氧",
           phase: "cardio",
           sets: 1,
@@ -1098,6 +1119,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
       warmup: [
         {
           id: "period-wu-cat-cow",
+          mediaSearchQuery: "cat cow",
           name: "猫牛式",
           phase: "warmup",
           sets: 1,
@@ -1150,6 +1172,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
       strength: [
         {
           id: "period-st-wall-sit-shallow",
+          mediaSearchQuery: "wall sit",
           name: "靠墙静蹲（浅角度）",
           phase: "strength",
           sets: 2,
@@ -1175,6 +1198,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
         },
         {
           id: "period-st-clamshell",
+          mediaSearchQuery: "clamshell",
           name: "侧卧蚌式开合",
           phase: "strength",
           sets: 2,
@@ -1200,6 +1224,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
         },
         {
           id: "period-st-pelvic-tilt-supine",
+          mediaSearchQuery: "pelvic tilt",
           name: "仰卧骨盆前后倾",
           phase: "strength",
           sets: 2,
@@ -1254,6 +1279,7 @@ const legacyWorkoutTemplates: WorkoutTemplate[] = [
       stretch: [
         {
           id: "period-st-child-pose",
+          mediaSearchQuery: "child pose",
           name: "婴儿式",
           phase: "stretch",
           sets: 1,

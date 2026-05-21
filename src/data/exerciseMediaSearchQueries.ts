@@ -1,19 +1,20 @@
 import exerciseMediaSearchQueriesJson from "./exerciseMediaSearchQueries.json";
 
-/** English search terms for media lookup (AscendAPI / female gif sources). */
+/** English search terms for ExerciseDB media lookup. */
 export const exerciseMediaSearchQueries: Record<string, string> =
   exerciseMediaSearchQueriesJson;
 
 export function getExerciseMediaSearchQuery(
-  id: string,
+  _id: string,
   fallbackName: string,
   mediaSearchQuery?: string,
   englishName?: string,
+  slug?: string,
 ): string {
   return (
     mediaSearchQuery?.trim() ||
     englishName?.trim() ||
-    exerciseMediaSearchQueries[id] ||
+    slug?.trim() ||
     fallbackName
   );
 }

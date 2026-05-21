@@ -1,0 +1,5 @@
+﻿Sources:
+- DOCX: C:\Users\shiyu\Desktop\她代码——健身\workshop3\她代码计划2026_学员项目策划书(1).docx, user-provided product planning document.
+- MP4: C:\Users\shiyu\Desktop\她代码——健身\workshop3\merge1.mp4, user-provided product demo video. Frames extracted locally for product proof.
+- Generated storyboard: C:\Users\shiyu\Desktop\她代码——健身\girlsfitness-mvp\codex-product-ppt-src\generated\storyboard-four-panel.png. AI-generated narrative visual, not official product UI or brand asset.
+Identity assets: no logos, app icons, mascots, partner/customer marks used.

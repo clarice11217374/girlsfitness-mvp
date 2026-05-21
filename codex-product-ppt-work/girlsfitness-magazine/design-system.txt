@@ -1,0 +1,8 @@
+﻿Slide size: 1280x720
+Background: ivory paper (#F8F1EA) with dark plum/chalk alternation.
+Typography: Microsoft YaHei UI for Chinese, Georgia for large Latin numerals and editorial accents.
+Palette: paper ivory, muted plum #514462, blush #EFDDE4, sage #A9B8A3, ink #241E2A, warm gray #7B7280.
+Chart/diagram grammar: hairline rules, direct labels, no legends, no heavy card grids.
+Image grammar: product screenshots inside phone-like crops; storyboard is the only generated lifestyle image.
+Footer grammar: source note left, page number right.
+Banned motifs: no pseudo logos, no stock badges, no decorative app icons, no gradient blob backgrounds.

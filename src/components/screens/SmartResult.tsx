@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Bot, Sparkles } from "lucide-react";
+import { Bot } from "lucide-react";
 import { getWorkoutTemplateById, type WorkoutTemplate } from "@/data/workoutTemplates";
 import { buildSmartResultCopy, type SmartResultCopy } from "@/lib/smartResultCopy";
 import { getLastTargetAreaFromRecords } from "@/lib/workoutMatcher";
@@ -254,30 +254,26 @@ export function SmartResult({ onStartToday, onBack }: Props) {
       className={`page smart-result-screen${ctaVisible ? " smart-result-screen--cta-visible" : ""}`}
     >
       <div className="smart-result-particles" aria-hidden />
-      <StatusBar style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10 }} />
+      <StatusBar
+        className="smart-result-sbar"
+        style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 10 }}
+      />
 
       <div className="smart-result-scroll">
-        <header className="smart-result-topbar">
-          <button type="button" className="smart-result-back" onClick={onBack} aria-label="返回">
-            ←
-          </button>
-        </header>
-
         <section className="smart-result-hero">
-          <div className="smart-result-hero-badge">
-            <Sparkles className="w-3.5 h-3.5" aria-hidden />
-            智能推荐
-          </div>
-          <p className="smart-result-hero-sub">根据你今天的状态</p>
+          <div className="smart-result-hero-backdrop" aria-hidden />
+          <header className="smart-result-topbar">
+            <button type="button" className="smart-result-back" onClick={onBack} aria-label="返回">
+              ←
+            </button>
+          </header>
+          <div className="smart-result-hero-inner">
           <h1 className="smart-result-hero-title">
-            {progressDone ? (
-              <>
-                为你选好了 <span className="smart-result-hero-spark" aria-hidden>✦</span>
-              </>
-            ) : (
-              "正在为你生成"
-            )}
+            {progressDone ? "今天的训练方案" : "正在为你生成"}
           </h1>
+          {progressDone ? (
+            <p className="smart-result-hero-sub">根据你的状态，我帮你安排好了</p>
+          ) : null}
           <div className="smart-result-tags">
             <span className="smart-result-tag">{cycleChipText(selection.cycleStatus)}</span>
             <span className="smart-result-tag">{energyChipText(selection.energyLevel)}</span>
@@ -299,6 +295,7 @@ export function SmartResult({ onStartToday, onBack }: Props) {
                 style={{ width: `${progress}%` }}
               />
             </div>
+          </div>
           </div>
         </section>
 

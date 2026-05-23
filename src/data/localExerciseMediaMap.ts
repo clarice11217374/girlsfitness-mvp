@@ -136,11 +136,11 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "肩前三角肌拉伸",
   },
   "up-pull-wu-band-pull-apart": {
-    imageUrl: "/exercises/up-pull-wu-band-pull-apart.jpg",
+    videoUrl: "/exercise-local/band-pull-apart.mp4",
     name: "弹力带胸前拉开",
   },
   "up-pull-wu-dead-hang-light": {
-    imageUrl: "/exercises/up-pull-wu-dead-hang-light.jpg",
+    imageUrl: "/exercise-local/dead-hang-light.jpeg",
     name: "悬垂肩袖激活（轻悬吊）",
   },
   "up-pull-st-lat-pulldown": {
@@ -148,7 +148,7 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "高位下拉",
   },
   "up-pull-st-seated-cable-row": {
-    imageUrl: "/exercises/up-pull-st-seated-cable-row.jpg",
+    videoUrl: "/exercise-local/seated-cable-row.mp4",
     name: "坐姿划船",
   },
   "up-pull-st-face-pull": {
@@ -156,15 +156,15 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "绳索面拉",
   },
   "up-pull-st-dumbbell-curl": {
-    imageUrl: "/exercises/up-pull-st-dumbbell-curl.jpg",
+    videoUrl: "/exercise-local/dumbbell-curl.mp4",
     name: "哑铃弯举",
   },
   "up-pull-ca-rower-easy": {
-    imageUrl: "/exercises/up-pull-ca-rower-easy.jpg",
+    videoUrl: "/exercise-local/rower-easy.mp4",
     name: "划船机轻松划行",
   },
   "up-pull-st-lat-stretch": {
-    imageUrl: "/exercises/up-pull-st-lat-stretch.jpg",
+    videoUrl: "/exercise-local/lat-stretch.mp4",
     name: "背阔肌侧屈拉伸",
   },
   "up-pull-st-biceps-stretch": {
@@ -176,15 +176,16 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "扶墙髋部绕环",
   },
   "lower-wu-bodyweight-squat": {
+    videoUrl: "/exercise-local/bodyweight-squat-warmup.mp4",
     imageUrl: "/exercise-local/bodyweight-squat.jpg",
     name: "徒手深蹲热身",
   },
   "lower-st-leg-press": {
-    imageUrl: "/exercises/lower-st-leg-press.jpg",
+    videoUrl: "/exercise-local/leg-press.mp4",
     name: "腿举机",
   },
   "lower-st-hip-abduction": {
-    imageUrl: "/exercises/lower-st-hip-abduction.jpg",
+    videoUrl: "/exercise-local/hip-abduction.mp4",
     name: "坐姿髋外展",
   },
   "lower-st-leg-curl": {
@@ -204,6 +205,7 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "坐姿臀部拉伸（简易版）",
   },
   "full-wu-goblet-hold-squat": {
+    videoUrl: "/exercise-local/bodyweight-squat-warmup.mp4",
     imageUrl: "/exercise-local/bodyweight-squat.jpg",
     name: "徒手深蹲节奏热身",
   },
@@ -236,15 +238,15 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "胸背打开组合拉伸",
   },
   "period-wu-cat-cow": {
-    imageUrl: "/exercises/period-wu-cat-cow.jpg",
+    videoUrl: "/exercise-local/cat-cow.mp4",
     name: "猫牛式",
   },
   "period-wu-easy-walk": {
-    imageUrl: "/exercises/period-wu-easy-walk.jpg",
+    imageUrl: "/exercise-local/easy-walk.jpg",
     name: "轻松步行",
   },
   "period-st-wall-sit-shallow": {
-    imageUrl: "/exercises/period-st-wall-sit-shallow.jpg",
+    videoUrl: "/exercise-local/wall-sit-shallow.mp4",
     name: "靠墙静蹲（浅角度）",
   },
   "period-st-clamshell": {
@@ -256,16 +258,32 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "仰卧骨盆前后倾",
   },
   "period-ca-walk-talk-test": {
-    imageUrl: "/exercises/period-ca-walk-talk-test.jpg",
+    imageUrl: "/exercise-local/easy-walk.jpg",
     name: "轻松步行（对话强度）",
   },
   "period-st-child-pose": {
-    imageUrl: "/exercises/period-st-child-pose.jpg",
+    videoUrl: "/exercise-local/child-pose.mp4",
     name: "婴儿式",
   },
   "period-st-supine-spinal-twist": {
     imageUrl: "/exercises/period-st-child-pose.jpg",
     name: "仰卧脊柱扭转",
+  },
+  "up-pull-st-reverse-pec-fly": {
+    videoUrl: "/exercise-local/reverse-pec-fly.mp4",
+    name: "蝴蝶机反向飞鸟",
+  },
+  "lower-st-hip-adduction": {
+    videoUrl: "/exercise-local/hip-adduction.mp4",
+    name: "坐姿内收",
+  },
+  "lower-st-glute-bridge": {
+    videoUrl: "/exercise-local/glute-bridge.mp4",
+    name: "臀桥",
+  },
+  "lower-st-plank": {
+    videoUrl: "/exercise-local/plank.mp4",
+    name: "平板支撑",
   },
 };
 

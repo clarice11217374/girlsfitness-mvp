@@ -1,7 +1,24 @@
 "use client";
 
-import { useState } from "react";
-import { Bot, Dumbbell, Link, Footprints, Sparkles, Zap } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  Bot,
+  CalendarCheck,
+  CalendarDays,
+  Check,
+  CircleHelp,
+  Droplet,
+  Dumbbell,
+  Footprints,
+  Frown,
+  Heart,
+  Lightbulb,
+  Link,
+  Smile,
+  Sparkles,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
 import type { CycleStatus, EnergyLevel } from "@/data/workoutTemplates";
 import {
   getLastTargetAreaFromRecords,
@@ -17,12 +34,61 @@ import { StatusBar } from "@/components/StatusBar";
 type Props = {
   onDone: () => void;
   onSmartDone: () => void;
+  onBack?: () => void;
 };
+type Step = "status" | "training";
+type TrainingMode = "smart" | "upper_push" | "upper_pull" | "lower_core" | "full_body";
 
-function mapPeriodLabelToCycle(label: string): CycleStatus {
-  if (label === "经期中") return "period";
-  if (label === "不在经期") return "not_period";
-  return "uncertain";
+const periodOptions: { icon: LucideIcon; label: string; value: CycleStatus }[] = [
+  { icon: Droplet, label: "经期中", value: "period" },
+  { icon: CalendarCheck, label: "不在经期", value: "not_period" },
+  { icon: CircleHelp, label: "不确定", value: "uncertain" },
+];
+
+const energyOptions: { icon: LucideIcon; label: string; value: EnergyLevel }[] = [
+  { icon: Zap, label: "精力充沛", value: "high" },
+  { icon: Smile, label: "正常", value: "normal" },
+  { icon: Frown, label: "有点累", value: "low" },
+];
+
+const trainingOptions = [
+  {
+    mode: "smart" as const,
+    icon: Bot,
+    name: "智能推荐",
+    desc: "根据经期状态和今日状态自动选择最佳训练",
+    badge: "推荐",
+  },
+  {
+    mode: "upper_push" as const,
+    icon: Dumbbell,
+    name: "上肢推",
+    desc: "胸 · 肩 · 三头",
+  },
+  {
+    mode: "upper_pull" as const,
+    icon: Link,
+    name: "上肢拉",
+    desc: "背 · 二头 · 肩后",
+  },
+  {
+    mode: "lower_core" as const,
+    icon: Footprints,
+    name: "臀腿核心",
+    desc: "臀 · 大腿 · 核心",
+  },
+  {
+    mode: "full_body" as const,
+    icon: Zap,
+    name: "全身燃脂",
+    desc: "全身 · 有氧结合",
+  },
+];
+
+function trainingModeToChoice(mode: TrainingMode): TrainingChoice {
+  if (mode === "smart") return "smart";
+  if (mode === "lower_core") return "lower_body";
+  return mode;
 }
 
 function syncTodayCycleRecord(cycleStatus: CycleStatus): void {
@@ -36,69 +102,42 @@ function syncTodayCycleRecord(cycleStatus: CycleStatus): void {
   }
 }
 
-function mapEnergyLabelToLevel(label: string): EnergyLevel {
-  if (label === "精力充沛") return "high";
-  if (label === "正常") return "normal";
-  return "low";
-}
+export function StatusInput({ onDone, onSmartDone, onBack }: Props) {
+  const [step, setStep] = useState<Step>("status");
+  const [periodStatus, setPeriodStatus] = useState<CycleStatus | null>(null);
+  const [energyStatus, setEnergyStatus] = useState<EnergyLevel | null>(null);
+  const [selectedTrainingMode, setSelectedTrainingMode] = useState<TrainingMode | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
-function mapPartIdToTraining(id: string): TrainingChoice {
-  switch (id) {
-    case "push":
-      return "upper_push";
-    case "pull":
-      return "upper_pull";
-    case "legs":
-      return "lower_body";
-    case "full":
-      return "full_body";
-    default:
-      return "full_body";
-  }
-}
+  const canContinue = Boolean(periodStatus && energyStatus);
+  const canSubmit = Boolean(selectedTrainingMode);
 
-export function StatusInput({ onDone, onSmartDone }: Props) {
-  const [period, setPeriod] = useState<string | null>(null);
-  const [energy, setEnergy] = useState<string | null>(null);
-  const [part, setPart] = useState<string | null>(null);
-  const [smart, setSmart] = useState(false);
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: 0 });
+  }, [step]);
 
-  const periods = ["经期中", "不在经期", "不确定"];
-  const energies = [
-    { l: "精力充沛", s: "sl" },
-    { l: "正常", s: "sb" },
-    { l: "有点累", s: "sl" },
-  ];
-  const parts = [
-    { id: "push", icon: Dumbbell, name: "上肢推", desc: "胸 · 肩 · 三头" },
-    { id: "pull", icon: Link, name: "上肢拉", desc: "背 · 二头 · 肩后" },
-    { id: "legs", icon: Footprints, name: "臀腿核心", desc: "臀 · 大腿 · 核心" },
-    { id: "full", icon: Zap, name: "全身燃脂", desc: "全身 · 有氧结合" },
-  ];
-
-  const canSubmit = Boolean(period && energy && (smart || part));
+  const handleNext = () => {
+    if (!canContinue) return;
+    setStep("training");
+  };
 
   const handleGenerate = () => {
-    if (!period || !energy) return;
-    if (!smart && !part) return;
+    if (!periodStatus || !energyStatus || !selectedTrainingMode) return;
 
-    const cycleStatus = mapPeriodLabelToCycle(period);
-    const energyLevel = mapEnergyLabelToLevel(energy);
-    const selectedTraining: TrainingChoice = smart ? "smart" : mapPartIdToTraining(part!);
-
+    const selectedTraining = trainingModeToChoice(selectedTrainingMode);
     const records = getTrainingRecords();
     const lastTargetArea = getLastTargetAreaFromRecords([...records].reverse());
 
     const template = getMatchedWorkoutTemplate({
-      cycleStatus,
-      energyLevel,
+      cycleStatus: periodStatus,
+      energyLevel: energyStatus,
       selectedTraining,
       lastTargetArea,
     });
 
     saveCurrentWorkoutSelection({
-      cycleStatus,
-      energyLevel,
+      cycleStatus: periodStatus,
+      energyLevel: energyStatus,
       selectedTraining,
       matchedTemplateId: template.meta.id,
       matchedTemplateTitle: template.meta.title,
@@ -106,9 +145,9 @@ export function StatusInput({ onDone, onSmartDone }: Props) {
       selectedAt: new Date().toISOString(),
     });
 
-    syncTodayCycleRecord(cycleStatus);
+    syncTodayCycleRecord(periodStatus);
 
-    if (smart) {
+    if (selectedTrainingMode === "smart") {
       onSmartDone();
     } else {
       onDone();
@@ -116,78 +155,150 @@ export function StatusInput({ onDone, onSmartDone }: Props) {
   };
 
   return (
-    <div className="page status-screen">
+    <div className={`page status-screen status-screen--${step}`}>
       <StatusBar />
-      <div className="status-scroll">
-        <div style={{ paddingTop: 24, marginBottom: 28 }}>
-          <div className="t-title">
-            告诉我你<br />
-            今天的状态
-            <span className="title-inline-icon" aria-hidden>
-              <Sparkles className="w-5 h-5" />
-            </span>
-          </div>
-          <div className="t-sub">我会为你定制最适合的训练计划</div>
-        </div>
-        <div className="t-label">经期状态</div>
-        <div className="chips">
-          {periods.map((o) => (
-            <div key={o} className={`chip ${period === o ? "sl" : ""}`} onClick={() => setPeriod(o)}>
-              {o}
-            </div>
-          ))}
-        </div>
-        <div className="t-label">今日状态</div>
-        <div className="chips">
-          {energies.map((o) => (
-            <div key={o.l} className={`chip ${energy === o.l ? o.s : ""}`} onClick={() => setEnergy(o.l)}>
-              {o.l}
-            </div>
-          ))}
-        </div>
-        <div className="t-label">训练选择</div>
-        <div className="smart-wrap">
-          <div className="smart-badge">推荐</div>
-          <div
-            className={`smart ${smart ? "sel" : ""}`}
-            onClick={() => {
-              setSmart(!smart);
-              setPart(null);
-            }}
-          >
-            <div className="smart-icon" aria-hidden>
-              <Bot className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="sname">智能推荐</div>
-              <div className="ssub">根据你的状态自动选择最佳训练</div>
-            </div>
-          </div>
-        </div>
-        <div className="status-divider">
-          <span>或者自己选</span>
-        </div>
-        <div className="pgrid">
-          {parts.map((p) => (
-            <div
-              key={p.id}
-              className={`pcard ${part === p.id ? "sel" : ""}`}
-              onClick={() => {
-                setPart(p.id);
-                setSmart(false);
-              }}
-            >
-              <div className="picon">
-                {(() => {
-                  const Icon = p.icon;
-                  return <Icon className="w-5 h-5" />;
-                })()}
+
+      <div className="status-scroll" ref={scrollRef}>
+        {step === "status" ? (
+          <>
+            <div className={`status-hero ${onBack ? "status-hero-with-back" : ""}`}>
+              {onBack ? (
+                <button className="status-back-btn" type="button" onClick={onBack}>
+                  ← 返回
+                </button>
+              ) : null}
+              <div className="status-step-pill">1 / 2</div>
+              <div className="t-title status-title">
+                告诉我你今天的状态
+                <Sparkles className="status-title-sparkle" aria-hidden />
               </div>
-              <div className="pname">{p.name}</div>
-              <div className="pdesc">{p.desc}</div>
+              <div className="t-sub status-sub">我会为你定制最适合的训练计划</div>
             </div>
-          ))}
-        </div>
+
+            <section className="status-choice-card" aria-labelledby="period-status-title">
+              <div className="status-choice-heading">
+                <span className="status-choice-heading-icon" aria-hidden>
+                  <CalendarDays />
+                </span>
+                <span id="period-status-title">经期状态</span>
+              </div>
+              <div className="status-option-grid">
+                {periodOptions.map((option) => {
+                  const Icon = option.icon;
+                  const selected = periodStatus === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      className={`status-option ${selected ? "is-selected" : ""}`}
+                      type="button"
+                      onClick={() => setPeriodStatus(option.value)}
+                    >
+                      {selected ? (
+                        <span className="status-option-check" aria-hidden>
+                          <Check />
+                        </span>
+                      ) : null}
+                      <Icon className="status-option-icon" aria-hidden />
+                      <span className="status-option-label">{option.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            <section className="status-choice-card" aria-labelledby="energy-status-title">
+              <div className="status-choice-heading">
+                <span className="status-choice-heading-icon" aria-hidden>
+                  <Heart />
+                </span>
+                <span id="energy-status-title">今日状态</span>
+              </div>
+              <div className="status-option-grid">
+                {energyOptions.map((option) => {
+                  const Icon = option.icon;
+                  const selected = energyStatus === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      className={`status-option ${selected ? "is-selected" : ""}`}
+                      type="button"
+                      onClick={() => setEnergyStatus(option.value)}
+                    >
+                      {selected ? (
+                        <span className="status-option-check" aria-hidden>
+                          <Check />
+                        </span>
+                      ) : null}
+                      <Icon className="status-option-icon" aria-hidden />
+                      <span className="status-option-label">{option.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            <div className="status-note">
+              <span className="status-note-icon" aria-hidden>
+                <Lightbulb />
+              </span>
+              <span>状态只用于调整今日训练强度，不会影响长期计划，放心告诉我吧。</span>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="status-hero status-hero-with-back">
+              <button className="status-back-btn" type="button" onClick={() => setStep("status")}>
+                ← 返回
+              </button>
+              <div className="status-step-pill">2 / 2</div>
+              <div className="t-title status-title">
+                选择今天的训练
+                <Sparkles className="status-title-sparkle" aria-hidden />
+              </div>
+              <div className="t-sub status-sub">你可以让系统推荐，也可以自己选择</div>
+            </div>
+
+            <div className="training-mode-grid">
+              {trainingOptions.map((option) => {
+                const Icon = option.icon;
+                return (
+                  <button
+                    key={option.mode}
+                    className={`training-mode-card ${selectedTrainingMode === option.mode ? "sel" : ""}`}
+                    type="button"
+                    onClick={() => setSelectedTrainingMode(option.mode)}
+                  >
+                    {option.badge ? <span className="training-mode-badge">{option.badge}</span> : null}
+                    <span className="training-mode-icon" aria-hidden>
+                      <Icon className="w-5 h-5" />
+                    </span>
+                    <span className="training-mode-copy">
+                      <span className="training-mode-name">{option.name}</span>
+                      <span className="training-mode-desc">{option.desc}</span>
+                    </span>
+                    <span className="training-mode-radio" aria-hidden>
+                      {selectedTrainingMode === option.mode ? <Check /> : null}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="training-change-note">你可以随时更换训练方式</div>
+          </>
+        )}
+      </div>
+
+      {step === "status" ? (
+        <button
+          className="cta"
+          type="button"
+          disabled={!canContinue}
+          onClick={handleNext}
+          style={!canContinue ? { opacity: 0.45, cursor: "not-allowed", boxShadow: "none" } : undefined}
+        >
+          下一步 →
+        </button>
+      ) : (
         <button
           className="cta"
           type="button"
@@ -197,7 +308,7 @@ export function StatusInput({ onDone, onSmartDone }: Props) {
         >
           生成今日训练 →
         </button>
-      </div>
+      )}
     </div>
   );
 }

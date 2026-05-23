@@ -29,6 +29,7 @@ export default function AppPage() {
   const [previewTemplateId, setPreviewTemplateId] = useState<string | null>(null);
   const [previewReturnTo, setPreviewReturnTo] = useState<"home" | "training" | "smartResult">("home");
   const [execTemplateId, setExecTemplateId] = useState<string | null>(null);
+  const [statusCanBack, setStatusCanBack] = useState(false);
   const cssVars = createThemeCssVars() as React.CSSProperties;
 
   return (
@@ -36,8 +37,22 @@ export default function AppPage() {
       <div className="shell">
         {page === "status" && (
           <StatusInput
-            onDone={() => setPage("home")}
-            onSmartDone={() => setPage("smartResult")}
+            onBack={
+              statusCanBack
+                ? () => {
+                    setStatusCanBack(false);
+                    setPage("home");
+                  }
+                : undefined
+            }
+            onDone={() => {
+              setStatusCanBack(false);
+              setPage("home");
+            }}
+            onSmartDone={() => {
+              setStatusCanBack(false);
+              setPage("smartResult");
+            }}
           />
         )}
         {page === "smartResult" && (
@@ -59,7 +74,10 @@ export default function AppPage() {
             }}
             onTraining={() => setPage("training")}
             onRecords={() => setPage("records")}
-            onReSelect={() => setPage("status")}
+            onReSelect={() => {
+              setStatusCanBack(true);
+              setPage("status");
+            }}
           />
         )}
         {page === "training" && (

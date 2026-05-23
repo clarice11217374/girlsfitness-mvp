@@ -1222,10 +1222,10 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
 
           <div
             className={`ex-anim ${
-              currentMediaState.status === "loading" ? "is-loading" : showVideo || showGif || showImage ? "has-media" : ""
+              showVideo || showGif || showImage ? "has-media" : currentMediaState.status === "loading" ? "is-loading" : ""
             }`}
           >
-            {currentMediaState.status === "loading" && (
+            {currentMediaState.status === "loading" && !displayMedia && (
               <div className="exercise-media-skeleton" aria-label="Loading exercise media" />
             )}
             {showVideo && (

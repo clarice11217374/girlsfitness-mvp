@@ -31,6 +31,7 @@ const CARD_REVEAL_DELAY_MS = 180;
 const TYPING_START_DELAY_MS = 320;
 const TARGET_TYPING_MS = 4200;
 const CTA_REVEAL_DELAY_MS = 400;
+const SMART_RESULT_FETCH_TIMEOUT_MS = 10000;
 
 const PROGRESS_LABELS = ["匹配训练模板…", "生成建议中…", "完成 ✓"] as const;
 
@@ -76,6 +77,21 @@ function segmentTextsFromCopy(copy: SmartResultCopy): string[] {
   return [copy.reason, copy.knowledge, copy.tip, copy.fact];
 }
 
+function isSmartResultCopyPayload(data: unknown): data is SmartResultCopy {
+  if (data === null || typeof data !== "object") return false;
+  const o = data as Record<string, unknown>;
+  return (
+    typeof o.reason === "string" &&
+    o.reason.trim().length > 0 &&
+    typeof o.knowledge === "string" &&
+    o.knowledge.trim().length > 0 &&
+    typeof o.tip === "string" &&
+    o.tip.trim().length > 0 &&
+    typeof o.fact === "string" &&
+    o.fact.trim().length > 0
+  );
+}
+
 export function SmartResult({ onStartToday, onBack }: Props) {
   const [selection] = useState(() => loadCurrentWorkoutSelection());
   const copySessionKey = buildCopySessionKey(selection);
@@ -87,6 +103,7 @@ export function SmartResult({ onStartToday, onBack }: Props) {
   const [activeTextIndex, setActiveTextIndex] = useState(-1);
   const [typedText, setTypedText] = useState("");
   const [ctaVisible, setCtaVisible] = useState(false);
+  const [aiCopy, setAiCopy] = useState<SmartResultCopy | null>(null);
 
   const forcedCompleteRef = useRef(false);
   const charDelayRef = useRef(24);
@@ -102,7 +119,7 @@ export function SmartResult({ onStartToday, onBack }: Props) {
     }
   }, [selection?.matchedTemplateId]);
 
-  const copy = useMemo(() => {
+  const fallbackCopy = useMemo(() => {
     if (!selection || !template || !copySessionKey) return null;
     const records = getTrainingRecords();
     const lastTargetArea = getLastTargetAreaFromRecords([...records].reverse());
@@ -113,6 +130,8 @@ export function SmartResult({ onStartToday, onBack }: Props) {
       lastTargetArea,
     });
   }, [copySessionKey, selection, template]);
+
+  const displayCopy = aiCopy ?? fallbackCopy;
 
   const onBackRef = useRef(onBack);
   onBackRef.current = onBack;
@@ -146,10 +165,72 @@ export function SmartResult({ onStartToday, onBack }: Props) {
   }, [selection?.matchedTemplateId, template]);
 
   useEffect(() => {
-    if (!copySessionKey || !copy) return;
+    if (!copySessionKey || !selection || !template || !fallbackCopy) return;
+
+    setAiCopy(null);
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), SMART_RESULT_FETCH_TIMEOUT_MS);
+
+    void (async () => {
+      try {
+        const records = getTrainingRecords();
+        const lastTargetArea = getLastTargetAreaFromRecords([...records].reverse());
+        const response = await fetch("/api/smart-result", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          body: JSON.stringify({
+            cycleStatus: selection.cycleStatus,
+            energyLevel: selection.energyLevel,
+            matchedTemplateId: selection.matchedTemplateId,
+            matchedTemplateTitle: selection.matchedTemplateTitle,
+            lastTargetArea,
+          }),
+        });
+
+        if (!response.ok) return;
+
+        const payload = (await response.json()) as {
+          success?: boolean;
+          source?: string;
+          data?: unknown;
+        };
+
+        if (
+          payload.success !== true ||
+          payload.source !== "deepseek" ||
+          !isSmartResultCopyPayload(payload.data)
+        ) {
+          return;
+        }
+
+        const nextCopy: SmartResultCopy = {
+          reason: payload.data.reason.trim(),
+          knowledge: payload.data.knowledge.trim(),
+          tip: payload.data.tip.trim(),
+          fact: payload.data.fact.trim(),
+        };
+        setAiCopy(nextCopy);
+        segmentTextsRef.current = segmentTextsFromCopy(nextCopy);
+      } catch {
+        // Keep local fallback copy; no user-facing error.
+      } finally {
+        window.clearTimeout(timeoutId);
+      }
+    })();
+
+    return () => {
+      controller.abort();
+      window.clearTimeout(timeoutId);
+    };
+  }, [copySessionKey, fallbackCopy, selection, template]);
+
+  useEffect(() => {
+    if (!copySessionKey || !fallbackCopy) return;
 
     forcedCompleteRef.current = false;
-    segmentTextsRef.current = segmentTextsFromCopy(copy);
+    segmentTextsRef.current = segmentTextsFromCopy(fallbackCopy);
 
     const totalChars = segmentTextsRef.current.join("").length;
     charDelayRef.current = Math.max(16, Math.min(32, Math.round(TARGET_TYPING_MS / Math.max(totalChars, 1))));
@@ -211,10 +292,15 @@ export function SmartResult({ onStartToday, onBack }: Props) {
         ctaRevealTimerRef.current = null;
       }
     };
-  }, [copySessionKey, copy, forceCompleteAll]);
+  }, [copySessionKey, fallbackCopy, forceCompleteAll]);
 
   useEffect(() => {
-    if (!progressDone || !cardVisible || !copy) return;
+    if (!aiCopy) return;
+    segmentTextsRef.current = segmentTextsFromCopy(aiCopy);
+  }, [aiCopy]);
+
+  useEffect(() => {
+    if (!progressDone || !cardVisible || !displayCopy) return;
     if (forcedCompleteRef.current) return;
     if (activeTextIndex < 0 || activeTextIndex >= SEGMENT_COUNT) return;
 
@@ -237,15 +323,15 @@ export function SmartResult({ onStartToday, onBack }: Props) {
     }, charDelayRef.current);
 
     return () => window.clearTimeout(timer);
-  }, [progressDone, cardVisible, copy, activeTextIndex, typedText, scheduleCtaReveal]);
+  }, [progressDone, cardVisible, displayCopy, activeTextIndex, typedText, scheduleCtaReveal]);
 
-  if (!selection || !template || !copy) {
+  if (!selection || !template || !fallbackCopy) {
     return null;
   }
 
   const exerciseCount = countTemplateExercises(template);
   const { meta } = template;
-  const segmentTexts = segmentTextsFromCopy(copy);
+  const segmentTexts = segmentTextsFromCopy(aiCopy ?? fallbackCopy);
   const allTypingDone = activeTextIndex >= SEGMENT_COUNT;
   const isTypingPhase = progressDone && !allTypingDone;
 

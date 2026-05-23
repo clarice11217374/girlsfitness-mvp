@@ -1,6 +1,7 @@
 import { isFutureDateKey, isValidDateKey } from "@/utils/dayKey";
 
 export const CYCLE_RECORDS_KEY = "fitness.cycle.records.v1";
+export const CYCLE_RECORDS_UPDATED_EVENT = "fitness-cycle-records-updated";
 
 export type CycleRecordEntryV1 = {
   isPeriod: boolean;
@@ -42,6 +43,19 @@ function writeCycleRecords(data: CycleRecordsV1): void {
   window.localStorage.setItem(CYCLE_RECORDS_KEY, JSON.stringify(data));
 }
 
+function notifyCycleRecordsUpdated(): void {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent(CYCLE_RECORDS_UPDATED_EVENT));
+}
+
+export function getPeriodDateKeys(): Set<string> {
+  const keys = new Set<string>();
+  for (const [dateKey, entry] of Object.entries(loadCycleRecords())) {
+    if (entry.isPeriod) keys.add(dateKey);
+  }
+  return keys;
+}
+
 export function loadCycleRecords(): CycleRecordsV1 {
   if (!canUseLocalStorage()) return {};
 
@@ -68,6 +82,7 @@ export function setCyclePeriod(dateKey: string, isPeriod: boolean): void {
   if (!isPeriod) {
     delete data[dateKey];
     writeCycleRecords(data);
+    notifyCycleRecordsUpdated();
     return;
   }
 
@@ -76,6 +91,7 @@ export function setCyclePeriod(dateKey: string, isPeriod: boolean): void {
     updatedAt: new Date().toISOString(),
   };
   writeCycleRecords(data);
+  notifyCycleRecordsUpdated();
 }
 
 export function clearCycleRecords(): void {

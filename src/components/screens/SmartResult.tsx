@@ -110,14 +110,15 @@ export function SmartResult({ onStartToday, onBack }: Props) {
   const segmentTextsRef = useRef<string[]>([]);
   const ctaRevealTimerRef = useRef<number | null>(null);
 
+  const matchedTemplateId = selection?.matchedTemplateId ?? null;
   const template = useMemo(() => {
-    if (!selection?.matchedTemplateId) return null;
+    if (!matchedTemplateId) return null;
     try {
-      return getWorkoutTemplateById(selection.matchedTemplateId);
+      return getWorkoutTemplateById(matchedTemplateId);
     } catch {
       return null;
     }
-  }, [selection?.matchedTemplateId]);
+  }, [matchedTemplateId]);
 
   const fallbackCopy = useMemo(() => {
     if (!selection || !template || !copySessionKey) return null;
@@ -134,7 +135,9 @@ export function SmartResult({ onStartToday, onBack }: Props) {
   const displayCopy = aiCopy ?? fallbackCopy;
 
   const onBackRef = useRef(onBack);
-  onBackRef.current = onBack;
+  useEffect(() => {
+    onBackRef.current = onBack;
+  });
 
   const scheduleCtaReveal = useCallback(() => {
     if (ctaRevealTimerRef.current !== null) {

@@ -107,7 +107,15 @@ type SmartRoute =
   | { kind: "full_body" }
   | { kind: "recovery" };
 
-function smartRouteFromLast(lastTargetArea: TargetArea | null): SmartRoute {
+function shouldUseRecoveryRoute(cycleStatus: CycleStatus, energyLevel: EnergyLevel): boolean {
+  return isPeriodCycle(cycleStatus) || energyLevel === "low";
+}
+
+function smartRouteFromLast(
+  lastTargetArea: TargetArea | null,
+  cycleStatus: CycleStatus,
+  energyLevel: EnergyLevel,
+): SmartRoute {
   if (lastTargetArea === "upper_push" || lastTargetArea === "upper_pull") {
     return { kind: "body", area: "lower_body" };
   }
@@ -118,7 +126,10 @@ function smartRouteFromLast(lastTargetArea: TargetArea | null): SmartRoute {
     return { kind: "body", area: "upper_push" };
   }
   if (lastTargetArea === "recovery") {
-    return { kind: "recovery" };
+    if (shouldUseRecoveryRoute(cycleStatus, energyLevel)) {
+      return { kind: "recovery" };
+    }
+    return { kind: "body", area: "upper_push" };
   }
   return { kind: "full_body" };
 }
@@ -126,9 +137,10 @@ function smartRouteFromLast(lastTargetArea: TargetArea | null): SmartRoute {
 function matchSmartTemplate(
   lastTargetArea: TargetArea | null,
   energyLevel: EnergyLevel,
+  cycleStatus: CycleStatus,
 ): WorkoutTemplate {
   const tier = tierFromEnergy(energyLevel);
-  const route = smartRouteFromLast(lastTargetArea);
+  const route = smartRouteFromLast(lastTargetArea, cycleStatus, energyLevel);
 
   if (route.kind === "recovery") {
     return getWorkoutTemplateById(
@@ -165,7 +177,7 @@ export function getMatchedWorkoutTemplate(params: MatchWorkoutParams): WorkoutTe
     );
   }
 
-  return matchSmartTemplate(lastTargetArea ?? null, energyLevel);
+  return matchSmartTemplate(lastTargetArea ?? null, energyLevel, cycleStatus);
 }
 
 /** 从记录数组中读取最近一次出现的 targetArea；无有效值时返回 null。 */

@@ -5,7 +5,10 @@ import React from "react";
 import { Home, ClipboardList, BarChart3, Dumbbell, Flame, ThumbsUp, Trophy, Wind } from "lucide-react";
 import { DayDetailSheet } from "@/components/DayDetailSheet";
 import { dayMarkerState } from "@/utils/calendarDayMarkers";
-import { loadCycleRecords } from "@/utils/cycleRecordStorage";
+import {
+  CYCLE_RECORDS_UPDATED_EVENT,
+  getPeriodDateKeys,
+} from "@/utils/cycleRecordStorage";
 import { dateKeyFromParts } from "@/utils/dayKey";
 import { getTrainingRecords, type TrainingRecord } from "@/utils/trainingRecordStorage";
 import { StatusBar } from "@/components/StatusBar";
@@ -151,13 +154,13 @@ export function Record({ onHome, onTraining }: Props) {
 
   const calendarCells = useMemo(() => buildCalendarCells(viewYear, viewMonth), [viewYear, viewMonth]);
 
-  const periodDateKeys = useMemo(() => {
-    const keys = new Set<string>();
-    for (const [key, entry] of Object.entries(loadCycleRecords())) {
-      if (entry.isPeriod) keys.add(key);
-    }
-    return keys;
-  }, [cycleRevision]);
+  const periodDateKeys = useMemo(() => getPeriodDateKeys(), [cycleRevision]);
+
+  useEffect(() => {
+    const onCycleRecordsUpdated = () => setCycleRevision((n) => n + 1);
+    window.addEventListener(CYCLE_RECORDS_UPDATED_EVENT, onCycleRecordsUpdated);
+    return () => window.removeEventListener(CYCLE_RECORDS_UPDATED_EVENT, onCycleRecordsUpdated);
+  }, []);
 
   const isToday = (day: number) =>
     now.getFullYear() === viewYear && now.getMonth() + 1 === viewMonth && now.getDate() === day;

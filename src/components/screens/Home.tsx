@@ -15,7 +15,10 @@ import {
 } from "@/utils/currentWorkoutSelectionStorage";
 import { DayDetailSheet } from "@/components/DayDetailSheet";
 import { dayMarkerState } from "@/utils/calendarDayMarkers";
-import { loadCycleRecords } from "@/utils/cycleRecordStorage";
+import {
+  CYCLE_RECORDS_UPDATED_EVENT,
+  getPeriodDateKeys,
+} from "@/utils/cycleRecordStorage";
 import { toDateKey } from "@/utils/dayKey";
 import { getTrainingRecords } from "@/utils/trainingRecordStorage";
 import { StatusBar } from "@/components/StatusBar";
@@ -149,13 +152,13 @@ export function Home({ onStart, onTraining, onRecords, onReSelect }: Props) {
     return keys;
   }, [totalMinutes]);
 
-  const periodDateKeys = useMemo(() => {
-    const keys = new Set<string>();
-    for (const [key, entry] of Object.entries(loadCycleRecords())) {
-      if (entry.isPeriod) keys.add(key);
-    }
-    return keys;
-  }, [cycleRevision]);
+  const periodDateKeys = useMemo(() => getPeriodDateKeys(), [cycleRevision]);
+
+  useEffect(() => {
+    const onCycleRecordsUpdated = () => setCycleRevision((n) => n + 1);
+    window.addEventListener(CYCLE_RECORDS_UPDATED_EVENT, onCycleRecordsUpdated);
+    return () => window.removeEventListener(CYCLE_RECORDS_UPDATED_EVENT, onCycleRecordsUpdated);
+  }, []);
 
   const totalHours = totalMinutes / 60;
   const hasProgress = totalMinutes > 0;

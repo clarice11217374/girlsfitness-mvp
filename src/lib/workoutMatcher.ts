@@ -6,6 +6,7 @@ import {
   type WorkoutTemplate,
   workoutTemplates,
 } from "@/data/workoutTemplates";
+import { getTrainingRecords } from "@/utils/trainingRecordStorage";
 
 if (workoutTemplates.length === 0) {
   throw new Error("workoutTemplates: library is empty");
@@ -17,6 +18,7 @@ const LEGACY_TEMPLATE_IDS = {
   lowerCore: "lower-core-strength-day",
   fullBody: "full-body-cardio-day",
   periodRecovery: "period-recovery-day",
+  firstGymStarter: "first-gym-starter-day",
 } as const;
 
 const VARIANT_TEMPLATE_IDS = {
@@ -134,6 +136,16 @@ function smartRouteFromLast(
   return { kind: "full_body" };
 }
 
+function hasTrainingHistory(): boolean {
+  return getTrainingRecords().length > 0;
+}
+
+/** Smart + 非经期 + 零训练记录 → 新手健身房体验课。 */
+function shouldRecommendFirstGymStarter(cycleStatus: CycleStatus): boolean {
+  if (isPeriodCycle(cycleStatus)) return false;
+  return !hasTrainingHistory();
+}
+
 function matchSmartTemplate(
   lastTargetArea: TargetArea | null,
   energyLevel: EnergyLevel,
@@ -174,6 +186,12 @@ export function getMatchedWorkoutTemplate(params: MatchWorkoutParams): WorkoutTe
     }
     return getWorkoutTemplateById(
       resolveTemplateId(bodyTemplateId(selectedTraining, tier)),
+    );
+  }
+
+  if (shouldRecommendFirstGymStarter(cycleStatus)) {
+    return getWorkoutTemplateById(
+      resolveTemplateId(LEGACY_TEMPLATE_IDS.firstGymStarter),
     );
   }
 

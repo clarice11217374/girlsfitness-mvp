@@ -366,5 +366,47 @@
     "searchQuery": "supine spinal twist",
     "mediaType": "image",
     "source": "gallery-fallback"
+  },
+  "fg-starter-wu-shoulder-circles": {
+    "source": "local-static",
+    "searchQuery": "shoulder circles",
+    "mediaType": "image",
+    "imageUrl": "/exercises/fg-starter-wu-shoulder-circles.jpg"
+  },
+  "fg-starter-wu-treadmill-walk": {
+    "source": "local-static",
+    "searchQuery": "walking treadmill",
+    "mediaType": "image",
+    "imageUrl": "/exercises/fg-starter-wu-treadmill-walk.jpg"
+  },
+  "fg-starter-st-chest-press": {
+    "source": "local-static",
+    "searchQuery": "machine chest press",
+    "mediaType": "image",
+    "imageUrl": "/exercises/fg-starter-st-chest-press.jpg"
+  },
+  "fg-starter-st-lat-pulldown": {
+    "source": "local-static",
+    "searchQuery": "lat pulldown",
+    "mediaType": "image",
+    "imageUrl": "/exercises/fg-starter-st-lat-pulldown.jpg"
+  },
+  "fg-starter-ca-elliptical": {
+    "source": "local-static",
+    "searchQuery": "elliptical trainer",
+    "mediaType": "image",
+    "imageUrl": "/exercises/fg-starter-ca-elliptical.jpg"
+  },
+  "fg-starter-st-hamstring-stretch": {
+    "source": "local-static",
+    "searchQuery": "hamstring stretch",
+    "mediaType": "image",
+    "imageUrl": "/exercises/fg-starter-st-hamstring-stretch.jpg"
+  },
+  "fg-starter-st-seated-side-stretch": {
+    "source": "local-static",
+    "searchQuery": "seated side stretch yoga",
+    "mediaType": "image",
+    "imageUrl": "/exercises/fg-starter-st-seated-side-stretch.jpg"
   }
 }

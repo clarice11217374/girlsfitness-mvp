@@ -60,11 +60,11 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "肩部环绕",
   },
   "warmup-scap-activation": {
-    imageUrl: "/exercises/warmup-scap-activation.jpg",
+    imageUrl: "/exercise-local/scap-activation.jpg",
     name: "肩胛激活",
   },
   "up-push-wu-scapula-activation": {
-    imageUrl: "/exercises/up-push-wu-scapula-activation.jpg",
+    imageUrl: "/exercise-local/scap-activation.jpg",
     name: "肩胛激活",
   },
   "strength-machine-chest-press": {
@@ -84,11 +84,11 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "上斜俯卧撑",
   },
   "strength-dumbbell-shoulder-press": {
-    imageUrl: "/exercises/strength-dumbbell-shoulder-press.jpg",
+    imageUrl: "/exercise-local/dumbbell-shoulder-press.jpg",
     name: "哑铃肩推",
   },
   "up-push-st-dumbbell-shoulder-press": {
-    imageUrl: "/exercises/up-push-st-dumbbell-shoulder-press.jpg",
+    imageUrl: "/exercise-local/dumbbell-shoulder-press.jpg",
     name: "哑铃肩推",
   },
   "up-push-st-lateral-raise": {
@@ -96,43 +96,47 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "哑铃侧平举",
   },
   "strength-cable-pushdown": {
-    imageUrl: "/exercises/strength-cable-pushdown.jpg",
+    imageUrl: "/exercise-local/cable-pushdown.jpg",
     name: "绳索下压",
   },
   "up-push-st-cable-triceps-pushdown": {
-    imageUrl: "/exercises/up-push-st-cable-triceps-pushdown.jpg",
+    imageUrl: "/exercise-local/cable-pushdown.jpg",
     name: "绳索下压",
   },
   "cardio-elliptical": {
+    videoUrl: "/exercise-local/elliptical.mp4",
     imageUrl: "/exercise-local/elliptical.jpg",
     name: "椭圆机轻有氧",
   },
   "up-push-ca-elliptical-easy": {
+    videoUrl: "/exercise-local/elliptical.mp4",
     imageUrl: "/exercise-local/elliptical.jpg",
     name: "椭圆机轻有氧",
   },
   "lower-ca-elliptical-recovery": {
+    videoUrl: "/exercise-local/elliptical-recovery.mp4",
     imageUrl: "/exercise-local/elliptical.jpg",
     name: "椭圆机匀速放松有氧",
   },
   "full-ca-elliptical-steady": {
+    videoUrl: "/exercise-local/elliptical-steady.mp4",
     imageUrl: "/exercise-local/elliptical.jpg",
     name: "椭圆机匀速全身有氧",
   },
   "stretch-chest": {
-    imageUrl: "/exercises/stretch-chest.jpg",
+    imageUrl: "/exercise-local/chest-stretch.jpg",
     name: "胸部拉伸",
   },
   "up-push-st-chest-stretch": {
-    imageUrl: "/exercises/up-push-st-chest-stretch.jpg",
+    imageUrl: "/exercise-local/chest-stretch.jpg",
     name: "胸部拉伸",
   },
   "stretch-front-delt": {
-    imageUrl: "/exercises/stretch-front-delt.jpg",
+    imageUrl: "/exercise-local/front-delt-stretch.jpg",
     name: "肩前三角肌拉伸",
   },
   "up-push-st-front-shoulder-stretch": {
-    imageUrl: "/exercises/up-push-st-front-shoulder-stretch.jpg",
+    imageUrl: "/exercise-local/front-delt-stretch.jpg",
     name: "肩前三角肌拉伸",
   },
   "up-pull-wu-band-pull-apart": {
@@ -140,11 +144,11 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "弹力带胸前拉开",
   },
   "up-pull-wu-dead-hang-light": {
-    imageUrl: "/exercise-local/dead-hang-light.jpeg",
+    imageUrl: "/exercise-local/dead-hang-light.png",
     name: "悬垂肩袖激活（轻悬吊）",
   },
   "up-pull-st-lat-pulldown": {
-    imageUrl: "/exercises/up-pull-st-lat-pulldown.jpg",
+    imageUrl: "/exercise-local/lat-pulldown.png",
     name: "高位下拉",
   },
   "up-pull-st-seated-cable-row": {
@@ -152,7 +156,7 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "坐姿划船",
   },
   "up-pull-st-face-pull": {
-    imageUrl: "/exercises/up-pull-st-face-pull.jpg",
+    imageUrl: "/exercise-local/face-pull.jpeg",
     name: "绳索面拉",
   },
   "up-pull-st-dumbbell-curl": {
@@ -168,11 +172,11 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "背阔肌侧屈拉伸",
   },
   "up-pull-st-biceps-stretch": {
-    imageUrl: "/exercises/up-pull-st-biceps-stretch.jpg",
+    imageUrl: "/exercise-local/biceps-wall-stretch.png",
     name: "肱二头肌扶墙拉伸",
   },
   "lower-wu-hip-circle": {
-    imageUrl: "/exercises/lower-wu-hip-circle.jpg",
+    imageUrl: "/exercise-local/hip-circle.png",
     name: "扶墙髋部绕环",
   },
   "lower-wu-bodyweight-squat": {
@@ -189,19 +193,19 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "坐姿髋外展",
   },
   "lower-st-leg-curl": {
-    imageUrl: "/exercises/lower-st-leg-curl.jpg",
+    imageUrl: "/exercise-local/leg-curl.png",
     name: "腿弯举机",
   },
   "lower-st-dead-bug": {
-    imageUrl: "/exercises/lower-st-dead-bug.jpg",
+    imageUrl: "/exercise-local/dead-bug.jpg",
     name: "死虫式",
   },
   "lower-st-quad-stretch": {
-    imageUrl: "/exercises/lower-st-quad-stretch.jpg",
+    imageUrl: "/exercise-local/quad-stretch.png",
     name: "站姿股四头肌拉伸",
   },
   "lower-st-glute-pigeon-lite": {
-    imageUrl: "/exercises/lower-st-glute-pigeon-lite.jpg",
+    imageUrl: "/exercise-local/seated-glute-stretch.jpg",
     name: "坐姿臀部拉伸（简易版）",
   },
   "full-wu-goblet-hold-squat": {
@@ -234,7 +238,7 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "坐姿体前屈（腘绳肌）",
   },
   "full-st-thoracic-open": {
-    imageUrl: "/exercises/stretch-chest.jpg",
+    imageUrl: "/exercise-local/thoracic-open.jpg",
     name: "胸背打开组合拉伸",
   },
   "period-wu-cat-cow": {
@@ -242,7 +246,7 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "猫牛式",
   },
   "period-wu-easy-walk": {
-    imageUrl: "/exercise-local/easy-walk.jpg",
+    imageUrl: "/exercise-local/easy-walk.png",
     name: "轻松步行",
   },
   "period-st-wall-sit-shallow": {
@@ -250,15 +254,15 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "靠墙静蹲（浅角度）",
   },
   "period-st-clamshell": {
-    imageUrl: "/exercises/period-st-clamshell.jpg",
+    imageUrl: "/exercise-local/clamshell.png",
     name: "侧卧蚌式开合",
   },
   "period-st-pelvic-tilt-supine": {
-    imageUrl: "/exercises/period-st-pelvic-tilt-supine.jpg",
+    imageUrl: "/exercise-local/pelvic-tilt-supine.png",
     name: "仰卧骨盆前后倾",
   },
   "period-ca-walk-talk-test": {
-    imageUrl: "/exercise-local/easy-walk.jpg",
+    imageUrl: "/exercise-local/walk-talk-test.png",
     name: "轻松步行（对话强度）",
   },
   "period-st-child-pose": {
@@ -266,8 +270,12 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "婴儿式",
   },
   "period-st-supine-spinal-twist": {
-    imageUrl: "/exercises/period-st-child-pose.jpg",
+    imageUrl: "/exercise-local/supine-spinal-twist.png",
     name: "仰卧脊柱扭转",
+  },
+  "up-push-st-pec-fly": {
+    imageUrl: "/exercise-local/pec-fly.jpg",
+    name: "蝴蝶机夹胸",
   },
   "up-pull-st-reverse-pec-fly": {
     videoUrl: "/exercise-local/reverse-pec-fly.mp4",
@@ -282,8 +290,12 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
     name: "臀桥",
   },
   "lower-st-plank": {
-    videoUrl: "/exercise-local/plank.mp4",
+    imageUrl: "/exercise-local/plank.png",
     name: "平板支撑",
+  },
+  "lower-st-bird-dog": {
+    imageUrl: "/exercise-local/bird-dog.png",
+    name: "对侧伸展",
   },
 };
 

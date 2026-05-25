@@ -866,7 +866,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
       ? {
           kind: "video" as const,
           src: localMedia.videoUrl,
-          poster: localMedia.imageUrl ?? localMedia.gifUrl ?? undefined,
+          poster: undefined,
         }
       : localMedia?.gifUrl && failedMediaKeys[localMedia.gifUrl] !== true
         ? { kind: "gif" as const, src: localMedia.gifUrl }
@@ -877,7 +877,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
             ? {
                 kind: "video" as const,
                 src: currentMediaRegistryItem.localVideoUrl,
-                poster: currentMediaRegistryItem.localImageUrl ?? currentMediaRegistryItem.localGifUrl ?? undefined,
+                poster: undefined,
               }
             : currentMediaRegistryItem?.localGifUrl &&
                 failedMediaKeys[currentMediaRegistryItem.localGifUrl] !== true
@@ -889,7 +889,7 @@ export function WorkoutExec({ onDone, templateId = null, onBack }: Props) {
             ? {
                 kind: "video" as const,
                 src: currentMedia.videoUrl,
-                poster: currentMedia.imageUrl ?? currentMedia.gifUrl ?? undefined,
+                poster: undefined,
               }
             : currentMedia?.gifUrl && failedMediaKeys[currentMedia.gifUrl] !== true
               ? { kind: "gif" as const, src: currentMedia.gifUrl }

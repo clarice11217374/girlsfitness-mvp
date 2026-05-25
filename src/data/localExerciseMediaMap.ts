@@ -105,12 +105,12 @@ const UI_SYH_LOCAL_EXERCISE_MEDIA: Record<string, ExerciseMedia> = {
   },
   "cardio-elliptical": {
     videoUrl: "/exercise-local/elliptical.mp4",
-    imageUrl: "/exercise-local/elliptical.jpg",
+    imageUrl: "/exercise-local/elliptical-light.png",
     name: "椭圆机轻有氧",
   },
   "up-push-ca-elliptical-easy": {
     videoUrl: "/exercise-local/elliptical.mp4",
-    imageUrl: "/exercise-local/elliptical.jpg",
+    imageUrl: "/exercise-local/elliptical-light.png",
     name: "椭圆机轻有氧",
   },
   "lower-ca-elliptical-recovery": {

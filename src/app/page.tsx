@@ -12,16 +12,32 @@ import { WorkoutExec } from "@/components/screens/WorkoutExec";
 import { workoutTemplates } from "@/data/workoutTemplates";
 import { createThemeCssVars } from "@/theme";
 import { loadCurrentWorkoutSelection } from "@/utils/currentWorkoutSelectionStorage";
+import { getTrainingRecords } from "@/utils/trainingRecordStorage";
+
+type AppPageName =
+  | "booting"
+  | "home"
+  | "status"
+  | "smartResult"
+  | "training"
+  | "preview"
+  | "exec"
+  | "records"
+  | "complete";
+
+function hasValidCurrentSelection(): boolean {
+  const selection = loadCurrentWorkoutSelection();
+  if (!selection?.matchedTemplateId) return false;
+  return workoutTemplates.some((item) => item.meta.id === selection.matchedTemplateId);
+}
 
 function resolveInitialPage(): "home" | "status" {
-  const selection = loadCurrentWorkoutSelection();
-  if (!selection?.matchedTemplateId) return "status";
-  const valid = workoutTemplates.some((item) => item.meta.id === selection.matchedTemplateId);
-  return valid ? "home" : "status";
+  const hasTrainingRecords = getTrainingRecords().length > 0;
+  return hasTrainingRecords || hasValidCurrentSelection() ? "home" : "status";
 }
 
 export default function AppPage() {
-  const [page, setPage] = useState("status");
+  const [page, setPage] = useState<AppPageName>("booting");
 
   useEffect(() => {
     setPage(resolveInitialPage());
@@ -35,6 +51,7 @@ export default function AppPage() {
   return (
     <div className="app-root" style={cssVars}>
       <div className="shell">
+        {page === "booting" && <div className="page status-screen" />}
         {page === "status" && (
           <StatusInput
             onBack={
